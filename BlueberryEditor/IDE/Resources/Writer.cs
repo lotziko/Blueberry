@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace BlueberryEditor.IDE
 {
-    public abstract class Writer<T> where T : Resource<T>
+    public abstract class Writer<T>
     {
-        public abstract void Write<T>(string path, T content);
+        public abstract void Write(T resource);
+
+        public Action OnWriteStarted, OnWriteEnded;
     }
 }

@@ -157,7 +157,7 @@ namespace BlueberryCore.UI
                 n = -1;
                 incr = -1;
             }
-            for (int r = 0; i != n; i += incr)
+            for (; i != n; i += incr)
             {
                 var element = elements[i];
 

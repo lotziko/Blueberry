@@ -251,7 +251,6 @@ namespace BlueberryCore.UI
         public override void Draw(Graphics graphics, float parentAlpha)
         {
             Validate();
-
             var color = new Color(this.color, (int)(this.color.A * parentAlpha));
             if (_style.background != null)
                 _style.background.Draw(graphics, x, y, width == 0 ? _prefSize.X : width, height, color);

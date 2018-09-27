@@ -10,10 +10,10 @@ namespace BlueberryEditor
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Core
+    public class IDECore : Core
     {
         //TextureAtlas atlas;
-        public Game1() : base() { }
+        public IDECore() : base() { }
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -30,7 +30,7 @@ namespace BlueberryEditor
             //var type = Type.GetType("BlueberryCore.Sprite, BlueberryCore, Version=1.0.0.0, Culture=neutral");
             //var inst = Activator.CreateInstance(type, "test", "/missileLauncer/Image");
             //new BinTexturePacker(graphicsDevice).Pack("C:/Users/lotziko/Dropbox/TomorrowMY/GM2/Tomorrow2/sprites", "C:/Users/lotziko/Dropbox/Workspace/Workspace/BlueberryEditor/Content", "test", true, FileType.PNG, 1024, 1024, 0);
-            new BinTexturePacker(graphicsDevice).Pack("C:/Users/lotziko/Dropbox/x1", "C:/Users/lotziko/Dropbox/Workspace/Workspace/BlueberryEditor/Content", "UI", true, FileType.BlueberryAtlas);
+            //new BinTexturePacker(graphicsDevice).Pack("C:/Users/lotziko/Dropbox/x1", "C:/Users/lotziko/Dropbox/BlueberryWorkspace/BlueberryEditor/Content", "UI", true, FileType.BlueberryAtlas);
             //new BinTexturePacker(graphicsDevice).Pack("C:/Users/lotziko/Dropbox/NewTomorrowGraphics", "C:/Users/lotziko/Dropbox/Workspace/Workspace/BlueberryEditor/Content", "test", true, FileType.BlueberryAtlas, 512, 512);
             Scene = new TestScene();
 

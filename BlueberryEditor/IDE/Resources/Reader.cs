@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace BlueberryEditor.IDE
 {
-    public abstract class Reader<T> where T : Resource<T>
+    public abstract class Reader<T>
     {
-        public abstract T Read<T>(string path);
+        public abstract T Read(string path);
+
+        public Action OnReadStarted, OnReadEnded;
     }
 }

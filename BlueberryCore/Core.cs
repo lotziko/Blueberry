@@ -1,4 +1,5 @@
-﻿using BlueberryCore.Properties;
+﻿using BlueberryCore.InputModels;
+using BlueberryCore.Properties;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,13 +13,17 @@ namespace BlueberryCore
 
         public static ContentPool content;
 
-        internal static ContentPool libraryContent;
-
         public static BitmapFont font;
 
         public static GameTime time;
 
         private Scene _current, _next;
+
+        internal static ContentPool libraryContent;
+
+        internal static PlatformID pid = Environment.OSVersion.Platform;
+
+        internal static bool is64 = Environment.Is64BitProcess;
 
         GraphicsDeviceManager graphicsManager;
 
@@ -62,7 +67,6 @@ namespace BlueberryCore
             libraryContent = new ContentPool(new ResourceContentManager(Services, Resources.ResourceManager));
 
             Window.ClientSizeChanged += OnGraphicsDeviceReset;
-            Window.TextInput += Input.TextInput;
             IsMouseVisible = true;
             IsFixedTimeStep = true;
             Content.RootDirectory = RootDirectory;
@@ -77,14 +81,15 @@ namespace BlueberryCore
             graphicsDevice = GraphicsDevice;
             _finalTarget = new RenderTarget2D(graphicsDevice, Screen.Width, Screen.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
             Graphics.instance = new Graphics(graphicsDevice);
+            Input.Initialize(new SDLInputModel());
         }
 
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
             time = gameTime;
-            
             //update global systems here
+            TimeUtils.CountFrame();
             Input.Update();
 
             Window.Title = (GC.GetTotalMemory(false) / 1048576f).ToString("F") + " MB";
@@ -124,6 +129,11 @@ namespace BlueberryCore
             Graphics.instance.End();
 
             renderRequested = false;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
         }
 
         protected void OnGraphicsDeviceReset(object sender, EventArgs e)

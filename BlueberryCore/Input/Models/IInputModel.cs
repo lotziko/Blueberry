@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlueberryEditor.UIElements
+namespace BlueberryCore.InputModels
 {
-    public class ImageEditor
+    public interface IInputModel
     {
+        void Initialize();
 
+        void Update();
     }
 }

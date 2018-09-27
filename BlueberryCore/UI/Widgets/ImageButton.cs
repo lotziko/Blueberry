@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace BlueberryCore.UI
 {
@@ -6,6 +7,7 @@ namespace BlueberryCore.UI
     {
         protected Image image;
         private ImageButtonStyle style;
+        private bool generateDisabledImage = false;
 
         public ImageButton(IDrawable imageUp, Skin skin, string stylename = "default") : this(imageUp, skin.Get<ImageButtonStyle>(stylename))
         {
@@ -24,6 +26,8 @@ namespace BlueberryCore.UI
             image.SetScaling(Scaling.Fit);
             Add(image);
             SetSize(PreferredWidth, PreferredHeight);
+            if (style.imageDisabled == null)
+                generateDisabledImage = true;
             UpdateImage();
         }
 
@@ -69,11 +73,54 @@ namespace BlueberryCore.UI
             else if (style.imageUp != null)
                 drawable = style.imageUp;
             image.SetDrawable(drawable);
+            if (generateDisabledImage && style.imageDisabled == null && IsDisabled())
+                image.SetColor(Color.Gray);
+            else
+                image.SetColor(Color.White);
+        }
+
+        public bool IsGenerateDisabledImage()
+        {
+            return generateDisabledImage;
+        }
+
+        /**
+         * @param generate when set to true and button state is set to disabled then button image will be tinted with gray
+         * color to better symbolize that button is disabled. This works best for white images.
+         */
+        public void SetGenerateDisabledImage(bool generate)
+        {
+            generateDisabledImage = generate;
         }
     }
 
     public class ImageButtonStyle : ButtonStyle
     {
         public IDrawable imageUp, imageDown, imageOver, imageChecked, imageCheckedOver, imageDisabled;
+
+        public ImageButtonStyle()
+        {
+        }
+
+        public ImageButtonStyle(IDrawable up, IDrawable down, IDrawable checkked, IDrawable imageUp, IDrawable imageDown, IDrawable imageChecked) : base(up, down, checkked)
+        {
+            this.imageUp = imageUp;
+            this.imageDown = imageDown;
+            this.imageChecked = imageChecked;
+        }
+
+        public ImageButtonStyle(ImageButtonStyle style) : base(style)
+        {
+            this.imageUp = style.imageUp;
+            this.imageDown = style.imageDown;
+            this.imageOver = style.imageOver;
+            this.imageChecked = style.imageChecked;
+            this.imageCheckedOver = style.imageCheckedOver;
+            this.imageDisabled = style.imageDisabled;
+        }
+
+        public ImageButtonStyle(ButtonStyle style) : base(style)
+        {
+        }
     }
 }

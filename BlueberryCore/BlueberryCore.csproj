@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BlueberryCore</RootNamespace>
     <AssemblyName>BlueberryCore</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
     <LangVersion>latest</LangVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,11 +36,11 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Framework.Portable.3.6.0.1625\lib\portable-net45+win8+wpa81\MonoGame.Framework.dll</HintPath>
+    <Reference Include="MonoGame.Framework, Version=3.7.0.1681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.Portable.3.7.0.1681-develop\lib\portable-net45+win8+wpa81\MonoGame.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="MonoGame.Framework.Content.Pipeline, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Framework.Content.Pipeline.Portable.3.6.0.1625\lib\portable-net45+win8+wpa81\MonoGame.Framework.Content.Pipeline.dll</HintPath>
+    <Reference Include="MonoGame.Framework.Content.Pipeline, Version=3.7.0.1681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.Content.Pipeline.Portable.3.7.0.1681-develop\lib\portable-net45+win8+wpa81\MonoGame.Framework.Content.Pipeline.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -47,17 +49,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -80,12 +74,16 @@
     <Compile Include="ECS\Lists\ComponentList.cs" />
     <Compile Include="ECS\Lists\EntityList.cs" />
     <Compile Include="ECS\Scene.cs" />
+    <Compile Include="Graphics\Canvas\Canvas.cs" />
     <Compile Include="Graphics\Fonts\BitmapFont.cs" />
     <Compile Include="Graphics\Fonts\FntReader.cs" />
     <Compile Include="Input\Clipboard.cs" />
     <Compile Include="Input\GestureDetector.cs" />
     <Compile Include="Input\InputAdapter.cs" />
     <Compile Include="Input\InputProcessor.cs" />
+    <Compile Include="Input\Models\IInputModel.cs" />
+    <Compile Include="Input\Models\SDLInputModel.cs" />
+    <Compile Include="Input\Models\StandardInputModel.cs" />
     <Compile Include="Pipeline\FntImporter.cs" />
     <Compile Include="Pipeline\FntProcessor.cs" />
     <Compile Include="Pipeline\FntWriter.cs" />
@@ -94,6 +92,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SDL\EDSManager.cs" />
+    <Compile Include="SDL\SDL2.cs" />
     <Compile Include="UI\Basic\Action.cs" />
     <Compile Include="UI\Basic\Actions\SAction.cs" />
     <Compile Include="UI\Basic\Actions\AlphaAction.cs" />
@@ -107,6 +107,7 @@
     <Compile Include="UI\Basic\ICullable.cs" />
     <Compile Include="UI\Basic\IDisablable.cs" />
     <Compile Include="UI\Basic\IFocusable.cs" />
+    <Compile Include="UI\Basic\IUndoable.cs" />
     <Compile Include="UI\Basic\ListSelection.cs" />
     <Compile Include="UI\Basic\Selection.cs" />
     <Compile Include="UI\Basic\TooltipManager.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="Utils\ColorExt.cs" />
     <Compile Include="Utils\DelayedRemovalList.cs" />
     <Compile Include="Utils\Interpolation.cs" />
+    <Compile Include="Utils\KeyboardUtils.cs" />
     <Compile Include="Utils\KeysExt.cs" />
     <Compile Include="Utils\ListExt.cs" />
     <Compile Include="Utils\MathF.cs" />
@@ -222,10 +224,10 @@
     <None Include="Properties\Resources\defaultFont_0.xnb" />
     <None Include="Properties\Resources\shader.xnb" />
     <None Include="Properties\Resources\UI.xnb" />
-    <None Include="Resources\defaultFont.xnb" />
-    <None Include="Resources\defaultFont_0.xnb" />
-    <None Include="Resources\shader.xnb" />
-    <None Include="Resources\UI.xnb" />
+    <None Include="Resources\consolas.xnb" />
+    <None Include="Resources\consolas_0.xnb" />
+    <None Include="Resources\smallFont.xnb" />
+    <None Include="Resources\smallFont_0.xnb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

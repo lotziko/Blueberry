@@ -56,7 +56,7 @@ namespace BlueberryCore.UI
                 }
                 else
                 {
-                    float[] glyphPositions = this.glyphPositions.ToArray();
+                    //float[] glyphPositions = this.glyphPositions.ToArray();
                     int start = linesBreak[cursorLine * 2];
                     x += glyphPositions[start];
                     int end = linesBreak[cursorLine * 2 + 1];

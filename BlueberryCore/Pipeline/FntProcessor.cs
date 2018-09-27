@@ -58,18 +58,19 @@ namespace BlueberryCore.Pipeline
                         { // Use one page.
                         }
                     }
-
+                    result.pages = pageCount;
                     result.glyphPages = new GlyphPage[pageCount];
 
                     // Read each page definition.
                     for (int p = 0; p < pageCount; p++)
                     {
+                        line = reader.ReadLine();
                         if (result.glyphPages[p].Equals(default(GlyphPage)))
                         {
+                            var pageWords = line.Split(' ');
                             var page = new GlyphPage
                             {
-                                //TODO rewrite
-                                name = GetValue("file", line).Trim('"').Replace(".png", "")
+                                name = pageWords[2].Substring(6, pageWords[2].Length - 6 - 5)
                             };
                             result.glyphPages[p] = page;
                         }

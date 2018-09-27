@@ -13,9 +13,9 @@ namespace BlueberryCore.UI
         public override void Update(float delta)
         {
             base.Update(delta);
-            var list = elements.ToArray();
-            for (int i = 0, n = list.Length; i < n; i++)
-                list[i].Update(delta);
+            lock(elements)
+                for (int i = 0, n = elements.Count; i < n; i++)
+                    elements[i].Update(delta);
         }
 
         public override void SetStage(Stage stage)
@@ -29,6 +29,8 @@ namespace BlueberryCore.UI
 
         public virtual T AddElement<T>(T element) where T : Element
         {
+            if (element == null)
+                return null;
             if (element.parent != null)
                 element.parent.RemoveElement(element);
 

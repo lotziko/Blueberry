@@ -567,9 +567,9 @@ namespace BlueberryCore.UI
             if (textField == null)
             { // Try to wrap around.
                 if (up)
-                    tmp1.Set(float.MinValue, float.MinValue);
-                else
                     tmp1.Set(float.MaxValue, float.MaxValue);
+                else
+                    tmp1.Set(float.MinValue, float.MinValue);
                 textField = FindNextTextField(GetStage().GetElements(), null, tmp2, tmp1, up);
             }
             if (textField != null)
@@ -605,10 +605,10 @@ namespace BlueberryCore.UI
 
                 tmp3.Set(element.GetX(), element.GetY());
                 Vector2 actorCoords = element.GetParent().LocalToStageCoordinates(tmp3);
-                if ((actorCoords.Y < currentCoords.Y || (actorCoords.Y == currentCoords.Y && actorCoords.X > currentCoords.X)) ^ up)
+                if ((actorCoords.Y > currentCoords.Y || (actorCoords.Y == currentCoords.Y && actorCoords.X > currentCoords.X)) ^ up)
                 {
                     if (best == null
-                            || (actorCoords.Y > bestCoords.Y || (actorCoords.Y == bestCoords.Y && actorCoords.X < bestCoords.X)) ^ up)
+                            || (actorCoords.Y < bestCoords.Y || (actorCoords.Y == bestCoords.Y && actorCoords.X < bestCoords.X)) ^ up)
                     {
                         best = element as TextField;
                         bestCoords.Set(actorCoords);
@@ -1280,7 +1280,7 @@ namespace BlueberryCore.UI
                 }
 
                 //lotziko fix for selection lose when typing wrong char
-                if (t.filter != null && !t.filter.AcceptChar(t, character))
+                if (t.filter != null && !t.filter.AcceptChar(t, character) && !char.IsControl(character))
                     return false;
 
                 var stage = t.GetStage();

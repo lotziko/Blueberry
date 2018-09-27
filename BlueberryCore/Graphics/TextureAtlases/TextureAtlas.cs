@@ -96,7 +96,7 @@ namespace BlueberryCore.TextureAtlases
             throw new KeyNotFoundException(name);
         }
 
-        public Texture2D GetTexture(int page) => texture[page];
+        public Texture2D GetTexture(int page = 0) => texture[page];
 
         /// <summary>
         /// Dispose an atlas

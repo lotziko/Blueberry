@@ -13,7 +13,7 @@ namespace BlueberryCore.UI
         public static Skin CreateDefaultSkin()
         {
             var skin = new Skin();
-            var defFont = Core.libraryContent.Load<BitmapFont>("defaultFont");
+            var defFont = Core.libraryContent.Load<BitmapFont>("smallFont");
             var atlas = Core.libraryContent.Load<TextureAtlas>("UI");
 
             var buttonStyle = new ButtonStyle()

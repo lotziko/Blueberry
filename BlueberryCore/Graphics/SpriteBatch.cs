@@ -97,7 +97,7 @@ namespace BlueberryCore
             Matrix? transformMatrix = null
         )
         {
-            base.Begin(sortMode = SpriteSortMode.BackToFront, blendState ?? BlendState.AlphaBlend, samplerState ?? SamplerState.PointClamp, depthStencilState, rasterizerState, effect, transformMatrix);
+            base.Begin(sortMode = SpriteSortMode.Deferred, blendState ?? BlendState.AlphaBlend, samplerState ?? SamplerState.PointClamp, depthStencilState, rasterizerState, effect, transformMatrix);
             _sortMode = sortMode;
             _blendState = blendState;
             _samplerState = samplerState;

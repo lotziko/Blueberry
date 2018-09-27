@@ -85,7 +85,7 @@ namespace BlueberryCore.UI
 
         }
 
-        public TextButtonStyle(IDrawable up, IDrawable down, BitmapFont font) : base(up, down)
+        public TextButtonStyle(IDrawable up, IDrawable down, BitmapFont font) : base(up, down, null)
         {
             this.font = font;
         }

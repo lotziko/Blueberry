@@ -218,7 +218,7 @@ namespace BlueberryCore.UI
             {
                 _p.ResetFade();
                 if (_p.scrollY)
-                    _p.SetScrollY(_p.amountY + _p.GetMouseWheelY() * amount);
+                    _p.SetScrollY(_p.amountY + _p.GetMouseWheelY() * -amount);
                 else if (_p.scrollX) //
                     _p.SetScrollX(_p.amountX + _p.GetMouseWheelX() * amount);
                 else

@@ -14,6 +14,23 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin consolas.fnt
+/importer:FntImporter
+/processor:FntProcessor
+/build:consolas.fnt
+
+#begin consolas_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:consolas_0.png
+
 #begin defaultFont.fnt
 /importer:FntImporter
 /processor:FntProcessor
@@ -36,6 +53,23 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:shader.fx
+
+#begin smallFont.fnt
+/importer:FntImporter
+/processor:FntProcessor
+/build:smallFont.fnt
+
+#begin smallFont_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:smallFont_0.png
 
 #begin UI.bba
 /importer:BBAtlasImporter

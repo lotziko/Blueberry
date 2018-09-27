@@ -241,9 +241,9 @@ namespace BlueberryCore.UI
                 }
                 pointerOverElements[pointer] = FireEnterAndExit(overLast, pointerScreenX[pointer], pointerScreenY[pointer], pointer);
             }
-#if DESKTOP
+//#if DESKTOP
             mouseOverElement = FireEnterAndExit(mouseOverElement, mouseScreenX, mouseScreenY, -1);
-#endif
+//#endif
         }
 
         private Element FireEnterAndExit(Element overLast, int screenX, int screenY, int pointer)

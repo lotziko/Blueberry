@@ -181,8 +181,7 @@ namespace BlueberryCore
             color.B = (byte)SimpleMath.Clamp((int)(b * 255.0), 0, 255);
             color.A = a;
         }
-
-
+        
         public static Color CreateFromHSV(this Color color, float h, float S, float V, byte a = 255)
         {
             color.FromHSV(h, S, V, a);
@@ -276,6 +275,17 @@ namespace BlueberryCore
                 h += 360;
             
             return new Vector3(h / 360, s, v);
+        }
+
+        public static Color FromPremultiplied(this Color color)
+        {
+            if (color.A == 0)
+                return color;
+            byte A = color.A;
+            float a = 1.0f / ((float)A / 255);
+            color *= a;
+            color.A = A;
+            return color;
         }
     }
 }

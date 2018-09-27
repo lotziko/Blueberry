@@ -93,6 +93,26 @@ namespace BlueberryCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] smallFont {
+            get {
+                object obj = ResourceManager.GetObject("smallFont", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] smallFont_0 {
+            get {
+                object obj = ResourceManager.GetObject("smallFont_0", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] UI {
             get {
                 object obj = ResourceManager.GetObject("UI", resourceCulture);

@@ -13,7 +13,7 @@
     <AssemblyName>BlueberryEditor</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
@@ -48,21 +48,41 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Game1.cs" />
+    <Compile Include="IDECore.cs" />
+    <Compile Include="IDE\ImageEditor\Actions\Action.cs" />
+    <Compile Include="IDE\ImageEditor\ImageEditorController.cs" />
+    <Compile Include="IDE\ImageEditor\ImageEditorSelection.cs" />
+    <Compile Include="IDE\ImageEditor\Shapes\Shape.cs" />
+    <Compile Include="IDE\ImageEditor\Tools\Tool.cs" />
+    <Compile Include="IDE\ImageEditor\UI\ImageEditorCanvas.cs" />
+    <Compile Include="IDE\ProjectManager.cs" />
+    <Compile Include="IDE\ResourceManager.cs" />
+    <Compile Include="IDE\Resources\Data.cs" />
+    <Compile Include="IDE\Resources\Project\ProjectReader.cs" />
+    <Compile Include="IDE\Resources\Project\ProjectResource.cs" />
+    <Compile Include="IDE\Resources\Project\ProjectWriter.cs" />
     <Compile Include="IDE\Resources\Reader.cs" />
     <Compile Include="IDE\Resources\Resource.cs" />
+    <Compile Include="IDE\Resources\Sprite\SpriteReader.cs" />
+    <Compile Include="IDE\Resources\Sprite\SpriteResource.cs" />
+    <Compile Include="IDE\Resources\Sprite\SpriteWriter.cs" />
     <Compile Include="IDE\Resources\Writer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestComponent.cs" />
     <Compile Include="TestScene.cs" />
-    <Compile Include="UIElements\ImageEditor.cs" />
+    <Compile Include="IDE\ImageEditor\ImageEditor.cs" />
     <Compile Include="UIElements\Palette.cs" />
+    <Compile Include="UIElements\FolderTree.cs" />
     <Compile Include="UIElements\ZoomableArea.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Framework">
-      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
+    <Reference Include="MonoGame.Framework, Version=3.7.0.1701, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -132,6 +152,7 @@
     <None Include="Content\obj\DesktopGL\Content\x1\skinConfig.mgcontent" />
     <None Include="Content\obj\DesktopGL\File.mgcontent" />
     <None Include="Content\obj\DesktopGL\test.mgcontent" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BlueberryCore\BlueberryCore.csproj">

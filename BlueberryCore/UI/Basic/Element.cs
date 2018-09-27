@@ -17,6 +17,8 @@ namespace BlueberryCore.UI
         protected Stage stage;
         protected Touchable touchable = Touchable.Enabled;
 
+        public string name;
+
         #region Actions
 
         protected List<Action> actions = new List<Action>();
@@ -26,7 +28,11 @@ namespace BlueberryCore.UI
             action.SetElement(this);
             actions.Add(action);
 
-            if (stage != null /*&& stage.getActionsRequestRendering()*/) Core.RequestRender();
+            if (stage != null /*&& stage.getActionsRequestRendering()*/)
+            {
+                Core.RequestRender();
+            }
+            
         }
 
         public void RemoveAction(Action action)
@@ -158,10 +164,10 @@ namespace BlueberryCore.UI
             try
             {
                 //Notify all parent capture listeners, starting at the root. Ancestors may stop an event before children receive it.
-                var ancestorsArray = ancestors.ToArray();
+                //var ancestorsArray = ancestors.ToArray();
                 for (int i = ancestors.Count - 1; i >= 0; i--)
                 {
-                    var currentTarget = ancestorsArray[i];
+                    var currentTarget = ancestors[i];
                     currentTarget.Notify(ev, true);
                     if (ev.IsStopped()) return ev.IsCancelled();
                 }
@@ -178,7 +184,7 @@ namespace BlueberryCore.UI
                 // Notify all parent listeners, starting at the target. Children may stop an event before ancestors receive it.
                 for (int i = 0, n = ancestors.Count; i < n; i++)
                 {
-                    (ancestorsArray[i]).Notify(ev, false);
+                    (ancestors[i]).Notify(ev, false);
                     if (ev.IsStopped()) return ev.IsCancelled();
                 }
 
@@ -202,24 +208,27 @@ namespace BlueberryCore.UI
             ev.SetCapture(capture);
 		    if (ev.GetStage() == null) ev.SetStage(stage);
 
-            listeners.Begin();
-            for (int i = 0, n = listeners.Count; i < n; i++)
+            lock (listeners)
             {
-                var listener = listeners[i];
-                if (listener.Handle(ev))
+                listeners.Begin();
+                for (int i = 0, n = listeners.Count; i < n; i++)
                 {
-                    ev.Handle();
-                    if (ev is InputEvent)
+                    var listener = listeners[i];
+                    if (listener.Handle(ev))
                     {
-                        var iev = ev as InputEvent;
-                        if (iev.GetInputType() == InputType.touchDown)
+                        ev.Handle();
+                        if (ev is InputEvent)
                         {
-                            ev.GetStage().AddTouchFocus(listener, this, iev.GetTarget(), iev.GetPointer(), iev.GetButton());
+                            var iev = ev as InputEvent;
+                            if (iev.GetInputType() == InputType.touchDown)
+                            {
+                                ev.GetStage().AddTouchFocus(listener, this, iev.GetTarget(), iev.GetPointer(), iev.GetButton());
+                            }
                         }
                     }
                 }
-            }
-            listeners.End();
+                listeners.End();
+            }  
 
             return ev.IsCancelled();
         }
@@ -240,7 +249,7 @@ namespace BlueberryCore.UI
         public virtual void Draw(Graphics graphics, float parentAlpha)
         {
             Validate();
-            graphics.DrawRectangleBorder(x, y, width, height, color);
+            //graphics.DrawRectangleBorder(x, y, width, height, color);
         }
 
         public virtual void SetStage(Stage stage)
@@ -454,7 +463,11 @@ namespace BlueberryCore.UI
 
         public void SetScaleX(float scaleX)
         {
-            this.scaleX = scaleX;
+            if (scaleX != this.scaleX)
+            {
+                this.scaleX = scaleX;
+                ScaleChanged();
+            }
         }
 
         public float GetScaleY()
@@ -464,21 +477,33 @@ namespace BlueberryCore.UI
 
         public void SetScaleY(float scaleY)
         {
-            this.scaleY = scaleY;
+            if (scaleY != this.scaleY)
+            {
+                this.scaleY = scaleY;
+                ScaleChanged();
+            }
         }
 
         /** Sets the scale for both X and Y */
         public void SetScale(float scaleXY)
         {
-            this.scaleX = scaleXY;
-            this.scaleY = scaleXY;
+            if (scaleXY != this.scaleX || scaleXY != this.scaleY)
+            {
+                this.scaleX = scaleXY;
+                this.scaleY = scaleXY;
+                ScaleChanged();
+            }
         }
 
         /** Sets the scale X and scale Y. */
         public void SetScale(float scaleX, float scaleY)
         {
-            this.scaleX = scaleX;
-            this.scaleY = scaleY;
+            if (scaleX != this.scaleX || scaleY != this.scaleY)
+            {
+                this.scaleX = scaleX;
+                this.scaleY = scaleY;
+                ScaleChanged();
+            }
         }
 
         /** Adds the specified scale to the current scale. */
@@ -486,6 +511,7 @@ namespace BlueberryCore.UI
         {
             scaleX += scale;
             scaleY += scale;
+            ScaleChanged();
         }
 
         /** Adds the specified scale to the current scale. */
@@ -493,6 +519,7 @@ namespace BlueberryCore.UI
         {
             this.scaleX += scaleX;
             this.scaleY += scaleY;
+            ScaleChanged();
         }
 
         public float GetRotation()
@@ -562,6 +589,11 @@ namespace BlueberryCore.UI
         }
 
         protected virtual void RotationChanged()
+        {
+
+        }
+
+        protected virtual void ScaleChanged()
         {
 
         }

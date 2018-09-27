@@ -23,6 +23,9 @@ namespace BlueberryCore.DataTools
 
         public void Pack(string input, string output, string filename = "test", bool recursive = false, FileType type = FileType.BlueberryAtlas, int? preferredWidth = null, int? preferredHeight = null, int? trimOffset = null)
         {
+            if (!Directory.Exists(input))
+                return;
+
             Clear();
             var data = ProcessRegionsAfterLoad(LoadTexturesFromDirectory(input, recursive), trimOffset);
             data = CalculateRectangles(data, preferredWidth, preferredHeight);

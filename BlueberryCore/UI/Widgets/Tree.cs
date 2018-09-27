@@ -300,6 +300,7 @@ namespace BlueberryCore.UI
             IDrawable plus = style.plus, minus = style.minus;
             Color col = new Color(color, color.A * parentAlpha);
             float x = GetX(), y = GetY(), expandX = x + indent, iconX = expandX + plusMinusWidth + iconSpacingLeft;
+            lock(nodes)
             for (int i = 0, n = nodes.Count; i < n; i++)
             {
                 Node node = nodes[i];
@@ -427,7 +428,7 @@ namespace BlueberryCore.UI
         #endregion
 
         #region ClickListener
-
+        
         private class Listener : ClickListener
         {
             private Tree _t;
@@ -469,6 +470,7 @@ namespace BlueberryCore.UI
                     if (x < rowX)
                     {
                         node.SetExpanded(!node.expanded);
+                        node.OnExpanded?.Invoke(node.expanded);
                         return;
                     }
                 }
@@ -526,6 +528,8 @@ namespace BlueberryCore.UI
             internal IDrawable icon;
             internal float height;
             internal Object obj;
+
+            public Action<bool> OnExpanded;
 
             public Node(Element element)
             {

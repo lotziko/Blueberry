@@ -219,10 +219,11 @@ namespace BlueberryCore.UI
 
         }
 
-        public ButtonStyle(IDrawable up, IDrawable down)
+        public ButtonStyle(IDrawable up, IDrawable down, IDrawable checkked)
         {
             this.up = up;
             this.down = down;
+            this.checkked = checkked;
         }
 
         public ButtonStyle(ButtonStyle style)
