@@ -6,7 +6,7 @@ namespace BlueberryCore.UI
     {
         private InputType type;
         private float stageX, stageY;
-        private int keyCode, scrollAmount;
+        private int keyCode, scrollAmountX, scrollAmountY;
         private int button, pointer;
         private char character;
         private Element relatedElement;
@@ -100,14 +100,24 @@ namespace BlueberryCore.UI
         }
 
         /** The amount the mouse was scrolled. Valid for: scrolled. */
-        public int GetScrollAmount()
+        public int GetScrollAmountX()
         {
-            return scrollAmount;
+            return scrollAmountX;
         }
 
-        public void SetScrollAmount(int scrollAmount)
+        public void SetScrollAmountX(int scrollAmount)
         {
-            this.scrollAmount = scrollAmount;
+            this.scrollAmountX = scrollAmount;
+        }
+
+        public int GetScrollAmountY()
+        {
+            return scrollAmountY;
+        }
+
+        public void SetScrollAmountY(int scrollAmount)
+        {
+            this.scrollAmountY = scrollAmount;
         }
 
         /** The actor related to the event. Valid for: enter and exit. For enter, this is the actor being exited, or null. For exit,
