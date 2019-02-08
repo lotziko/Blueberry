@@ -42,7 +42,7 @@ namespace BlueberryCore.UI
                     TouchDragged(ev, tmpCoords.X, tmpCoords.Y, ev.GetPointer());
                     break;
                 case InputType.scrolled:
-                    Scrolled(ev, tmpCoords.X, tmpCoords.Y, ev.GetScrollAmount());
+                    Scrolled(ev, tmpCoords.X, tmpCoords.Y, ev.GetScrollAmountX(), ev.GetScrollAmountY());
                     break;
                 case InputType.enter:
                     Enter(ev, tmpCoords.X, tmpCoords.Y, ev.GetPointer(), ev.GetRelatedElement());
@@ -75,7 +75,7 @@ namespace BlueberryCore.UI
 
         }
 
-        public virtual bool Scrolled(InputEvent ev, float x, float y, int amount)
+        public virtual bool Scrolled(InputEvent ev, float x, float y, int amountX, int amountY)
         {
             return false;
         }

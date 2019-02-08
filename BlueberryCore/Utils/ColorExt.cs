@@ -1,4 +1,4 @@
-﻿using BlueberryCore.SMath;
+﻿
 using Microsoft.Xna.Framework;
 using System;
 
@@ -106,6 +106,28 @@ namespace BlueberryCore
             color.G = (byte)SimpleMath.Clamp((int)(G * 255.0), 0, 255);
             color.B = (byte)SimpleMath.Clamp((int)(B * 255.0), 0, 255);
         }*/
+
+        
+        public static bool TestColor(this Color a, Color b, int tolerance)
+        {
+            int sum = 0;
+            int diff;
+
+            diff = a.R - b.R;
+            sum += (1 + diff * diff) * a.A / 256;
+
+            diff = a.G - b.G;
+            sum += (1 + diff * diff) * a.A / 256;
+
+            diff = a.B - b.B;
+            sum += (1 + diff * diff) * a.A / 256;
+
+            diff = a.A - b.A;
+            sum += diff * diff;
+
+            return (sum <= tolerance * tolerance * 4);
+        }
+
         public static void FromHSV(this ref Color color, float h, float s, float v, byte a = 255)
         {
             s /= 100;

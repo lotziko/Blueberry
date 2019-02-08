@@ -1,4 +1,5 @@
-﻿using BlueberryCore.UI.Actions;
+﻿using BlueberryCore.UI;
+using BlueberryCore.UI.Actions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -11,23 +12,18 @@ namespace BlueberryCore.UI
         private static Vector2 tmpSize = new Vector2();
         private static readonly int MOVE = 1 << 5;
 
+        public static float FADE_TIME = 0.4f;
+
         private WindowStyle style;
-        bool isMovable = true, isModal, isResizable;
-        int resizeBorder = 6;
-        bool keepWithinStage = true;
-        Label titleLabel;
-        Table titleTable;
-        bool drawTitleTable;
+        private bool isMovable = true, isModal, isResizable;
+        private int resizeBorder = 6;
+        private bool keepWithinStage = true;
+        private Label titleLabel;
+        private Table titleTable;
+        private bool drawTitleTable;
 
         protected int edge;
         protected bool dragging;
-
-
-
-
-
-
-        public static float FADE_TIME = 0.4f;
 
         private bool centerOnAdd;
         private bool keepWithinParent = false;
@@ -439,7 +435,7 @@ namespace BlueberryCore.UI
                 Mouse.SetCursor(MouseCursor.Arrow);
             }
 
-            public override bool Scrolled(InputEvent ev, float x, float y, int amount)
+            public override bool Scrolled(InputEvent ev, float x, float y, int amountX, int amountY)
             {
                 return w.isModal;
             }

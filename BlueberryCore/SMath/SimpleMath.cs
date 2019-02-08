@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BlueberryCore.SMath
+namespace BlueberryCore
 {
     public class SimpleMath
     {
@@ -93,5 +93,64 @@ namespace BlueberryCore.SMath
 
         #endregion
 
+        #region Min
+
+        public static int Min(params int[] vs)
+        {
+            if (vs.Length == 0)
+                throw new Exception("array is empty");
+            int result = vs[0];
+            for(int i = 1; i < vs.Length; i++)
+            {
+                if (vs[i] < result)
+                    result = vs[i];
+            }
+            return result;
+        }
+
+        public static float Min(params float[] vs)
+        {
+            if (vs.Length == 0)
+                throw new Exception("array is empty");
+            float result = vs[0];
+            for (int i = 1; i < vs.Length; i++)
+            {
+                if (vs[i] < result)
+                    result = vs[i];
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region Max
+
+        public static int Max(params int[] vs)
+        {
+            if (vs.Length == 0)
+                throw new Exception("array is empty");
+            int result = vs[0];
+            for (int i = 1; i < vs.Length; i++)
+            {
+                if (vs[i] > result)
+                    result = vs[i];
+            }
+            return result;
+        }
+
+        public static float Max(params float[] vs)
+        {
+            if (vs.Length == 0)
+                throw new Exception("array is empty");
+            float result = vs[0];
+            for (int i = 1; i < vs.Length; i++)
+            {
+                if (vs[i] > result)
+                    result = vs[i];
+            }
+            return result;
+        }
+
+        #endregion
     }
 }

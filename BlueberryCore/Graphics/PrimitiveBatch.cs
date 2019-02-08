@@ -46,6 +46,8 @@ namespace BlueberryCore
         // sure users don't call End before Begin is called.
         bool hasBegun = false;
 
+        public bool HasBegun => hasBegun;
+
         bool isDisposed = false;
 
         #endregion
@@ -241,6 +243,9 @@ namespace BlueberryCore
                     primitiveCount = positionInBuffer / numVertsPerPrimitive;
                     break;
             }
+
+            if (primitiveCount <= 0)
+                return;
             
             device.RasterizerState = _rasterizerState;
             device.BlendState = BlendState.NonPremultiplied;
@@ -264,27 +269,34 @@ namespace BlueberryCore
             set
             {
                 basicEffect.View = value;
-                int bufferWidth = 0, bufferHeight = 0;
-
-                if (bufferWidth == 0 || bufferHeight == 0)
-                {
-                    if (device.RenderTargetCount > 0)
-                    {
-                        var renderTarget = (RenderTarget2D)device.GetRenderTargets()[0].RenderTarget;
-                        bufferWidth = renderTarget.Bounds.Width;
-                        bufferHeight = renderTarget.Bounds.Height;
-                    }
-                    else
-                    {
-                        bufferWidth = device.Viewport.Width;
-                        bufferHeight = device.Viewport.Height;
-                    }
-                }
-
-                basicEffect.Projection = Matrix.CreateOrthographicOffCenter(0, bufferWidth, bufferHeight, 0, 0, 1);
+                RefreshProjection();
             }
         }
 
+        /// <summary>
+        /// Refresh current basiceffect projection to adapt to current rendertarget
+        /// </summary>
+        public void RefreshProjection()
+        {
+            int bufferWidth = 0, bufferHeight = 0;
+
+            if (bufferWidth == 0 || bufferHeight == 0)
+            {
+                if (device.RenderTargetCount > 0)
+                {
+                    var renderTarget = (RenderTarget2D)device.GetRenderTargets()[0].RenderTarget;
+                    bufferWidth = renderTarget.Bounds.Width;
+                    bufferHeight = renderTarget.Bounds.Height;
+                }
+                else
+                {
+                    bufferWidth = device.Viewport.Width;
+                    bufferHeight = device.Viewport.Height;
+                }
+            }
+
+            basicEffect.Projection = Matrix.CreateOrthographicOffCenter(0, bufferWidth, bufferHeight, 0, 0, 1);
+        }
 
         #region Drawing functions
 
@@ -384,6 +396,44 @@ namespace BlueberryCore
         public void DrawTriangle(float x1, float y1, float x2, float y2, float x3, float y3)
         {
             DrawTriangle(x1, y1, x2, y2, x3, y3, Color.Black);
+        }
+
+        public void DrawCircle(float xc, float yc, float radius, Color color)
+        {
+            if (radius < 0)
+                radius = -radius;
+
+            float x = 0;
+            float y = radius;
+            float d = (5 - radius * 4) / 4;
+            float previous = y;
+            do
+            {
+                if (y != previous)
+                {
+                    if (x != y)
+                    {
+                        DrawLine(xc - x, yc + y, xc + x, yc + y, color);
+                        DrawLine(xc - x, yc - y, xc + x, yc - y, color);
+                    }
+                    previous = y;
+                }
+                if (x != 0)
+                    DrawLine(xc - y, yc + x, xc + y, yc + x, color);
+                DrawLine(xc - y, yc - x, xc + y, yc - x, color);
+
+                if (d < 0)
+                {
+                    d += 2 * x + 1;
+                }
+                else
+                {
+                    d += 2 * (x - y) + 1;
+                    y--;
+                }
+                x++;
+            }
+            while (x <= y);
         }
 
         #endregion

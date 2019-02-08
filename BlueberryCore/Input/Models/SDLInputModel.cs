@@ -64,8 +64,8 @@ namespace BlueberryCore.InputModels
             Input.mouseWheelX = args.x;
             Input.mouseWheelY = args.y;
 
-            if (Input.Processor != null && Input.mouseWheelY != 0)
-                Input.Processor.Scrolled(Input.mouseWheelY);
+            if (Input.Processor != null && !(Input.mouseWheelX == 0 && Input.mouseWheelY == 0))
+                Input.Processor.Scrolled(Input.mouseWheelX, Input.mouseWheelY);
         }
 
         private void OnMouseButtonDown(object sender, MouseButtonDownEventArgs args)

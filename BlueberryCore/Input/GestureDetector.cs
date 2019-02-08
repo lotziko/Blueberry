@@ -1,6 +1,4 @@
-﻿using BlueberryCore.UI;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
 
 namespace BlueberryCore

@@ -14,9 +14,13 @@ namespace BlueberryCore
         Matrix? _transformMatrix = null;
 
         public bool HasBegun { get; private set; } = false;
+        public bool HasShader => _effect != null;
 
         GraphicsDevice _graphicsDevice;
 
+        /// <summary>
+        /// Call it after spriteBatch Begin()
+        /// </summary>
         public Matrix TransformMatrix
         {
             get
@@ -97,12 +101,14 @@ namespace BlueberryCore
             Matrix? transformMatrix = null
         )
         {
-            base.Begin(sortMode = SpriteSortMode.Deferred, blendState ?? BlendState.AlphaBlend, samplerState ?? SamplerState.PointClamp, depthStencilState, rasterizerState, effect, transformMatrix);
+            base.Begin(sortMode = SpriteSortMode.Deferred, blendState ?? BlendState.AlphaBlend, samplerState ?? SamplerState.PointClamp, depthStencilState, rasterizerState ?? _rasterizerState, effect, transformMatrix);
             _sortMode = sortMode;
             _blendState = blendState;
             _samplerState = samplerState;
-            _depthStencilState = depthStencilState;
-            _rasterizerState = rasterizerState;
+            if (depthStencilState != null)
+                _depthStencilState = depthStencilState;
+            if (rasterizerState != null)
+                _rasterizerState = rasterizerState;
             _effect = effect;
             _transformMatrix = transformMatrix;
             HasBegun = true;

@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9F866F25-E007-41F3-B99C-F99ABA151E83}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BlueberryOpenTK</RootNamespace>
+    <AssemblyName>BlueberryOpenTK</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK, Version=3.0.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.3.0.1\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TrueTypeSharp, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TrueTypeSharp.1.0.5\lib\net20\TrueTypeSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core.cs" />
+    <None Include="Graphics\Fonts\BitmapFontOld.cs" />
+    <Compile Include="Graphics\Fonts\BitmapFont.cs" />
+    <Compile Include="Graphics\Graphics.cs" />
+    <Compile Include="ECS\Components\Camera.cs" />
+    <Compile Include="Graphics\IBatch.cs" />
+    <Compile Include="Graphics\PrimitiveBatch.cs" />
+    <Compile Include="Graphics\RenderTarget2D.cs" />
+    <Compile Include="Graphics\ScissorStack.cs" />
+    <Compile Include="Graphics\ShaderProgram.cs" />
+    <Compile Include="Graphics\Texture2D.cs" />
+    <Compile Include="Graphics\TextureAtlases\TextureAtlas.cs" />
+    <Compile Include="Graphics\TextureBatch.cs" />
+    <Compile Include="Graphics\TextureAtlases\TextureRegion.cs" />
+    <Compile Include="Input\Input.cs" />
+    <Compile Include="PipelineTools\Atlases\BBAtlasImporter.cs" />
+    <Compile Include="PipelineTools\Content.cs" />
+    <Compile Include="PipelineTools\ContentImporter.cs" />
+    <Compile Include="PipelineTools\ContentImporterAttribute.cs" />
+    <Compile Include="PipelineTools\IContentImporter.cs" />
+    <Compile Include="PipelineTools\Atlases\LibgdxAtlasImporter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Screen.cs" />
+    <Compile Include="UI\Basic\Group.cs" />
+    <Compile Include="UI\Containers\HorizontalGroup.cs" />
+    <Compile Include="UI\Containers\VerticalGroup.cs" />
+    <Compile Include="UI\Drawables\NinePatchDrawable.cs" />
+    <Compile Include="UI\Drawables\TextureRegionDrawable.cs" />
+    <Compile Include="UI\Stage.cs" />
+    <Compile Include="Utils\Viewports\Viewport.cs" />
+    <Compile Include="Utils\WrapperStructs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OpenTK.dll.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UI\Widgets\" />
+  </ItemGroup>
+  <Import Project="..\Blueberry\Blueberry.projitems" Label="Shared" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

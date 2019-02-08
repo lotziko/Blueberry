@@ -17,9 +17,60 @@ namespace BlueberryCore.SDL
 
         static EDSManager()
         {
+            //callback = (IntPtr data, Sdl.Event ev) =>
+            //{
+            //    //Console.WriteLine(ev.Type);
+            //    switch(ev.Type)
+            //    {
+            //        case Sdl.EventType.TextInput:
+
+            //            int len = 0;
+            //            string text = string.Empty;
+            //            unsafe
+            //            {
+            //                while (Marshal.ReadByte((IntPtr)ev.Text.Text, len) != 0)
+            //                {
+            //                    len++;
+            //                }
+            //                var buffer = new byte[len];
+            //                Marshal.Copy((IntPtr)ev.Text.Text, buffer, 0, len);
+            //                text = System.Text.Encoding.UTF8.GetString(buffer);
+            //            }
+            //            if (text.Length == 0)
+            //                break;
+            //            foreach (var c in text)
+            //            {
+            //                var key = KeyboardUtils.ToXna((int)c);
+            //                TextInput?.Invoke(null, new Microsoft.Xna.Framework.TextInputEventArgs(c, key));
+            //            }
+            //            break;
+            //        case Sdl.EventType.KeyDown:
+            //            KeyDown?.Invoke(null, new KeyDownEventArgs(KeyboardUtils.ToXna((int)ev.Key.Keysym.Sym), (char)ev.Key.Keysym.Sym));
+            //            break;
+            //        case Sdl.EventType.KeyUp:
+            //            KeyUp?.Invoke(null, new KeyUpEventArgs(KeyboardUtils.ToXna((int)ev.Key.Keysym.Sym), (char)ev.Key.Keysym.Sym));
+            //            break;
+            //        case Sdl.EventType.MouseMotion:
+            //            MouseMotion?.Invoke(null, new MouseMotionEventArgs(ev.Motion.X, ev.Motion.Y));
+            //            break;
+            //        //case Sdl.EventType.MouseButtonUp:
+            //        //    MouseButtonUp?.Invoke(null, new MouseButtonUpEventArgs(ev.Motion.X, ev.Motion.Y, GetMouseButtonFromSDLButton(ev.)));
+            //        //    break;
+            //        //case Sdl.EventType.MouseButtonDown:
+            //        //    MouseButtonDown?.Invoke(null, new MouseButtonDownEventArgs(ev.button.x, ev.button.y, GetMouseButtonFromSDLButton(ev.button.button)));
+            //        //    break;
+            //        case Sdl.EventType.MouseWheel:
+            //            MouseWheel?.Invoke(null, new MouseWheelEventArgs(ev.Wheel.X, ev.Wheel.Y));
+            //            break;
+            //    }
+            //    return 0;
+            //};
+            //Sdl.SDL_AddEventWatch(callback, IntPtr.Zero);
+
             callback = (IntPtr data, SDL.SDL_Event ev) =>
             {
-                switch(ev.type)
+                Console.WriteLine(ev.type);
+                switch (ev.type)
                 {
                     case SDL.SDL_EventType.SDL_TEXTINPUT:
 
@@ -42,7 +93,7 @@ namespace BlueberryCore.SDL
                             var key = KeyboardUtils.ToXna((int)c);
                             TextInput?.Invoke(null, new Microsoft.Xna.Framework.TextInputEventArgs(c, key));
                         }
-                        
+
                         break;
                     case SDL.SDL_EventType.SDL_KEYDOWN:
                         KeyDown?.Invoke(null, new KeyDownEventArgs(KeyboardUtils.ToXna((int)ev.key.keysym.sym), (char)ev.key.keysym.sym));

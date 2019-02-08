@@ -7,7 +7,7 @@ namespace BlueberryCore.UI
         protected Element element;
 
         protected Element target;
-        
+
         public virtual bool Update(float delta)
         {
             return false;

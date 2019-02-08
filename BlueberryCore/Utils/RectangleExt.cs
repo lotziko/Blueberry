@@ -11,10 +11,10 @@ namespace BlueberryCore
     {
         public static Rectangle Set(this ref Rectangle r, float x, float y, float width, float height)
         {
-            r.X = (int) x;
-            r.Y = (int) y;
-            r.Width = (int) width;
-            r.Height = (int) height;
+            r.X = Convert.ToInt32(x);
+            r.Y = Convert.ToInt32(y);
+            r.Width = Convert.ToInt32(width);
+            r.Height = Convert.ToInt32(height);
             return r;
         }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace BlueberryCore
+namespace BlueberryGeneric
 {
     public static class ArrayExt
     {

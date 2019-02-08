@@ -3,6 +3,7 @@ using BlueberryCore.Properties;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input.Touch;
 using System;
 
 namespace BlueberryCore
@@ -68,9 +69,9 @@ namespace BlueberryCore
 
             Window.ClientSizeChanged += OnGraphicsDeviceReset;
             IsMouseVisible = true;
-            IsFixedTimeStep = true;
+            //IsFixedTimeStep = true;
             Content.RootDirectory = RootDirectory;
-            TargetElapsedTime = TimeSpan.FromSeconds(1d / 30);
+            //TargetElapsedTime = TimeSpan.FromSeconds(1d / 30);
 
             Screen.Initialize(graphicsManager);
         }
@@ -81,12 +82,13 @@ namespace BlueberryCore
             graphicsDevice = GraphicsDevice;
             _finalTarget = new RenderTarget2D(graphicsDevice, Screen.Width, Screen.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
             Graphics.instance = new Graphics(graphicsDevice);
-            Input.Initialize(new SDLInputModel());
+            Input.Initialize(false ? new SDLInputModel() : new StandardInputModel() as IInputModel);
         }
 
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            
             time = gameTime;
             //update global systems here
             TimeUtils.CountFrame();

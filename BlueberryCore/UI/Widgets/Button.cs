@@ -5,7 +5,7 @@ namespace BlueberryCore.UI
 {
     public class Button : Table, IFocusable, IDisablable
     {
-        public event Action<Button> OnClicked;
+        public event System.Action OnClicked;
         internal ButtonGroup buttonGroup;
         internal bool isChecked, isDisabled, focusBorderEnabled = true, drawBorder;
         private ButtonStyle style;
@@ -16,7 +16,7 @@ namespace BlueberryCore.UI
         {
             touchable = Touchable.Enabled;
             listeners.Add(listener = new ButtonListener(this));
-            
+
             SetStyle(style);
         }
 
@@ -87,7 +87,7 @@ namespace BlueberryCore.UI
                 background = style.up;
 
             SetBackground(background);
-            
+
             base.Draw(graphics, parentAlpha);
 
             if (focusBorderEnabled && drawBorder && style.focusedBorder != null)
@@ -202,7 +202,7 @@ namespace BlueberryCore.UI
                 if (_b.IsDisabled())
                     return;
                 _b.SetChecked(!_b.isChecked, true);
-                _b.OnClicked?.Invoke(_b);
+                _b.OnClicked?.Invoke();
                 FocusManager.SwitchFocus(_b.GetStage(), _b);
             }
         }

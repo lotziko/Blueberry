@@ -1,6 +1,4 @@
-﻿using BlueberryCore.SMath;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
 
 namespace BlueberryCore.UI
@@ -214,13 +212,13 @@ namespace BlueberryCore.UI
                 _p = p;
             }
 
-            public override bool Scrolled(InputEvent ev, float x, float y, int amount)
+            public override bool Scrolled(InputEvent ev, float x, float y, int amountX, int amountY)
             {
                 _p.ResetFade();
                 if (_p.scrollY)
-                    _p.SetScrollY(_p.amountY + _p.GetMouseWheelY() * -amount);
+                    _p.SetScrollY(_p.amountY + _p.GetMouseWheelY() * -amountY);
                 else if (_p.scrollX) //
-                    _p.SetScrollX(_p.amountX + _p.GetMouseWheelX() * amount);
+                    _p.SetScrollX(_p.amountX + _p.GetMouseWheelX() * amountY);
                 else
                     return false;
                 return true;
@@ -708,11 +706,9 @@ namespace BlueberryCore.UI
             var scissor = ScissorStack.CalculateScissors(stage?.entity?.scene?.camera, graphics.TransformMatrix, widgetAreaBounds);
             if (ScissorStack.PushScissors(scissor))
             {
-                graphics.spriteBatch.SetScissorTest(true);
-                graphics.primitiveBatch.SetScissorTest(true);
+                graphics.SetScissorTest(true);
                 DrawElements(graphics, parentAlpha);
-                graphics.spriteBatch.SetScissorTest(false);
-                graphics.primitiveBatch.SetScissorTest(false);
+                graphics.SetScissorTest(false);
                 ScissorStack.PopScissors();
             }
 

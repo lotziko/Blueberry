@@ -21,9 +21,10 @@
     <DefineConstants>TRACE;DEBUG;DESKTOP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>7.3</LangVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,15 +33,60 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;DESKTOP</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
     <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;DESKTOP</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Framework, Version=3.7.0.1681, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Framework.Portable.3.7.0.1681-develop\lib\portable-net45+win8+wpa81\MonoGame.Framework.dll</HintPath>
+    <Reference Include="MonoGame.Framework, Version=3.7.1.189, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.Portable.3.7.1.189\lib\portable-net45+win8+wpa81\MonoGame.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="MonoGame.Framework.Content.Pipeline, Version=3.7.0.1681, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Framework.Content.Pipeline.Portable.3.7.0.1681-develop\lib\portable-net45+win8+wpa81\MonoGame.Framework.Content.Pipeline.dll</HintPath>
+    <Reference Include="MonoGame.Framework.Content.Pipeline, Version=3.7.1.189, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.Content.Pipeline.Portable.3.7.1.189\lib\portable-net45+win8+wpa81\MonoGame.Framework.Content.Pipeline.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -59,6 +105,7 @@
     <Compile Include="Core.cs" />
     <Compile Include="DataTools\BinTexturePacker.cs" />
     <Compile Include="DataTools\MaxRectsBinPack.cs" />
+    <Compile Include="DataTools\MaxRectsPacker.cs" />
     <Compile Include="ECS\Components\Bullet.cs" />
     <Compile Include="ECS\Components\Camera.cs" />
     <Compile Include="ECS\Component.cs" />
@@ -74,13 +121,16 @@
     <Compile Include="ECS\Lists\ComponentList.cs" />
     <Compile Include="ECS\Lists\EntityList.cs" />
     <Compile Include="ECS\Scene.cs" />
+    <Compile Include="Graphics\Canvas\BlendMode.cs" />
     <Compile Include="Graphics\Canvas\Canvas.cs" />
+    <Compile Include="Graphics\Canvas\Pen.cs" />
     <Compile Include="Graphics\Fonts\BitmapFont.cs" />
     <Compile Include="Graphics\Fonts\FntReader.cs" />
+    <Compile Include="Graphics\GenericColor.cs" />
     <Compile Include="Input\Clipboard.cs" />
     <Compile Include="Input\GestureDetector.cs" />
+    <Compile Include="Input\IInputProcessor.cs" />
     <Compile Include="Input\InputAdapter.cs" />
-    <Compile Include="Input\InputProcessor.cs" />
     <Compile Include="Input\Models\IInputModel.cs" />
     <Compile Include="Input\Models\SDLInputModel.cs" />
     <Compile Include="Input\Models\StandardInputModel.cs" />
@@ -92,43 +142,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SDL\CurrentPlatform.cs" />
     <Compile Include="SDL\EDSManager.cs" />
+    <Compile Include="SDL\FuncLoader.cs" />
+    <Compile Include="SDL\Sdl.cs" />
     <Compile Include="SDL\SDL2.cs" />
-    <Compile Include="UI\Basic\Action.cs" />
-    <Compile Include="UI\Basic\Actions\SAction.cs" />
-    <Compile Include="UI\Basic\Actions\AlphaAction.cs" />
-    <Compile Include="UI\Basic\Actions\ParallelAction.cs" />
-    <Compile Include="UI\Basic\Actions\RemoveElementAction.cs" />
-    <Compile Include="UI\Basic\Actions\RemoveListenerAction.cs" />
-    <Compile Include="UI\Basic\Actions\ScaleToAction.cs" />
-    <Compile Include="UI\Basic\Actions\SequenceAction.cs" />
-    <Compile Include="UI\Basic\Actions\TemporalAction.cs" />
-    <Compile Include="UI\Basic\FocusManager.cs" />
-    <Compile Include="UI\Basic\ICullable.cs" />
-    <Compile Include="UI\Basic\IDisablable.cs" />
-    <Compile Include="UI\Basic\IFocusable.cs" />
-    <Compile Include="UI\Basic\IUndoable.cs" />
-    <Compile Include="UI\Basic\ListSelection.cs" />
-    <Compile Include="UI\Basic\Selection.cs" />
-    <Compile Include="UI\Basic\TooltipManager.cs" />
-    <Compile Include="UI\Containers\Container.cs" />
-    <Compile Include="UI\Containers\HorizontalGroup.cs" />
-    <Compile Include="UI\EL\FocusListener.cs" />
-    <Compile Include="UI\Widgets\ColorPicker.cs" />
-    <Compile Include="UI\Widgets\Dialog.cs" />
-    <Compile Include="UI\Widgets\ListBox.cs" />
-    <Compile Include="UI\Containers\Stack.cs" />
-    <Compile Include="UI\Containers\VerticalGroup.cs" />
-    <Compile Include="UI\Widgets\Menu\MenuItem.cs" />
-    <Compile Include="UI\Widgets\Menu\PopupMenu.cs" />
-    <Compile Include="UI\Widgets\Menu\Separator.cs" />
-    <Compile Include="UI\Widgets\SimpleTooltip.cs" />
-    <Compile Include="UI\Widgets\TextTooltip.cs" />
-    <Compile Include="UI\Widgets\Tooltip.cs" />
-    <Compile Include="UI\Widgets\Window.cs" />
-    <Compile Include="UI\EL\ChangeListener.cs" />
-    <Compile Include="UI\EL\ClickListener.cs" />
-    <Compile Include="UI\EL\Event.cs" />
     <Compile Include="Graphics\Graphics.cs" />
     <Compile Include="Graphics\NinePatches\NinePatch.cs" />
     <Compile Include="Graphics\PrimitiveBatch.cs" />
@@ -141,44 +159,6 @@
     <Compile Include="Pipeline\BBAtlasWriter.cs" />
     <Compile Include="Pipeline\BBAtlasProcessor.cs" />
     <Compile Include="Pipeline\BBAtlasImporter.cs" />
-    <Compile Include="UI\Basic\AlignInternal.cs" />
-    <Compile Include="UI\Basic\Cell.cs" />
-    <Compile Include="UI\Basic\Element.cs" />
-    <Compile Include="UI\Basic\ILayout.cs" />
-    <Compile Include="UI\Basic\Scaling.cs" />
-    <Compile Include="UI\Basic\Touchable.cs" />
-    <Compile Include="UI\Basic\Value.cs" />
-    <Compile Include="UI\Basic\Group.cs" />
-    <Compile Include="UI\Containers\Table.cs" />
-    <Compile Include="UI\Drawables\IDrawable.cs" />
-    <Compile Include="UI\Drawables\NinePatchDrawable.cs" />
-    <Compile Include="UI\Drawables\PrimitiveDrawable.cs" />
-    <Compile Include="UI\Drawables\TextureRegionDrawable.cs" />
-    <Compile Include="UI\Drawables\TiledDrawable.cs" />
-    <Compile Include="UI\EL\ElementGestureListener.cs" />
-    <Compile Include="UI\EL\IEventListener.cs" />
-    <Compile Include="UI\EL\InputEvent.cs" />
-    <Compile Include="UI\EL\InputListener.cs" />
-    <Compile Include="UI\Skin.cs" />
-    <Compile Include="UI\Stage.cs" />
-    <Compile Include="UI\Widgets\Button.cs" />
-    <Compile Include="UI\Widgets\ButtonGroup.cs" />
-    <Compile Include="UI\Widgets\CheckBox.cs" />
-    <Compile Include="UI\Widgets\CollapsibleWidget.cs" />
-    <Compile Include="UI\Widgets\Image.cs" />
-    <Compile Include="UI\Widgets\ImageButton.cs" />
-    <Compile Include="UI\Widgets\Label.cs" />
-    <Compile Include="UI\Widgets\ProgressBar.cs" />
-    <Compile Include="UI\Containers\ScrollPane.cs" />
-    <Compile Include="UI\Widgets\ScrollableTextArea.cs" />
-    <Compile Include="UI\Widgets\SelectBox.cs" />
-    <Compile Include="UI\Widgets\Slider.cs" />
-    <Compile Include="UI\Containers\SplitPane.cs" />
-    <Compile Include="UI\Widgets\TextArea.cs" />
-    <Compile Include="UI\Widgets\TextButton.cs" />
-    <Compile Include="UI\Widgets\TextField.cs" />
-    <Compile Include="UI\Widgets\Tree.cs" />
-    <Compile Include="Utils\ArrayExt.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="Input\InputUtils.cs" />
     <Compile Include="DataTools\Data.cs" />
@@ -203,6 +183,80 @@
     <Compile Include="Pipeline\TilemapWriter.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="SMath\SimpleMath.cs" />
+    <Compile Include="UI\Basic\Action.cs" />
+    <Compile Include="UI\Basic\Actions\AlphaAction.cs" />
+    <Compile Include="UI\Basic\Actions\ParallelAction.cs" />
+    <Compile Include="UI\Basic\Actions\RemoveElementAction.cs" />
+    <Compile Include="UI\Basic\Actions\RemoveListenerAction.cs" />
+    <Compile Include="UI\Basic\Actions\SAction.cs" />
+    <Compile Include="UI\Basic\Actions\ScaleToAction.cs" />
+    <Compile Include="UI\Basic\Actions\SequenceAction.cs" />
+    <Compile Include="UI\Basic\Actions\TemporalAction.cs" />
+    <Compile Include="UI\Basic\AlignInternal.cs" />
+    <Compile Include="UI\Basic\Cell.cs" />
+    <Compile Include="UI\Basic\Element.cs" />
+    <Compile Include="UI\Basic\FocusManager.cs" />
+    <Compile Include="UI\Basic\Group.cs" />
+    <Compile Include="UI\Basic\ICullable.cs" />
+    <Compile Include="UI\Basic\IDisablable.cs" />
+    <Compile Include="UI\Basic\IFocusable.cs" />
+    <Compile Include="UI\Basic\ILayout.cs" />
+    <Compile Include="UI\Basic\IUndoable.cs" />
+    <Compile Include="UI\Basic\ListSelection.cs" />
+    <Compile Include="UI\Basic\Scaling.cs" />
+    <Compile Include="UI\Basic\Selection.cs" />
+    <Compile Include="UI\Basic\TooltipManager.cs" />
+    <Compile Include="UI\Basic\Touchable.cs" />
+    <Compile Include="UI\Basic\Value.cs" />
+    <Compile Include="UI\Containers\Container.cs" />
+    <Compile Include="UI\Containers\HorizontalGroup.cs" />
+    <Compile Include="UI\Containers\ScrollPane.cs" />
+    <Compile Include="UI\Containers\SplitPane.cs" />
+    <Compile Include="UI\Containers\Stack.cs" />
+    <Compile Include="UI\Containers\Table.cs" />
+    <Compile Include="UI\Containers\VerticalGroup.cs" />
+    <Compile Include="UI\Drawables\IDrawable.cs" />
+    <Compile Include="UI\Drawables\NinePatchDrawable.cs" />
+    <Compile Include="UI\Drawables\PrimitiveDrawable.cs" />
+    <Compile Include="UI\Drawables\TextureDrawable.cs" />
+    <Compile Include="UI\Drawables\TextureRegionDrawable.cs" />
+    <Compile Include="UI\Drawables\TiledDrawable.cs" />
+    <Compile Include="UI\EL\ChangeListener.cs" />
+    <Compile Include="UI\EL\ClickListener.cs" />
+    <Compile Include="UI\EL\ElementGestureListener.cs" />
+    <Compile Include="UI\EL\Event.cs" />
+    <Compile Include="UI\EL\FocusListener.cs" />
+    <Compile Include="UI\EL\IEventListener.cs" />
+    <Compile Include="UI\EL\InputEvent.cs" />
+    <Compile Include="UI\EL\InputListener.cs" />
+    <Compile Include="UI\Skin.cs" />
+    <Compile Include="UI\Stage.cs" />
+    <Compile Include="UI\Widgets\Button.cs" />
+    <Compile Include="UI\Widgets\ButtonGroup.cs" />
+    <Compile Include="UI\Widgets\CheckBox.cs" />
+    <Compile Include="UI\Widgets\CollapsibleWidget.cs" />
+    <Compile Include="UI\Widgets\ColorPicker.cs" />
+    <Compile Include="UI\Widgets\Dialog.cs" />
+    <Compile Include="UI\Widgets\Image.cs" />
+    <Compile Include="UI\Widgets\ImageButton.cs" />
+    <Compile Include="UI\Widgets\Label.cs" />
+    <Compile Include="UI\Widgets\ListBox.cs" />
+    <Compile Include="UI\Widgets\Menu\MenuItem.cs" />
+    <Compile Include="UI\Widgets\Menu\PopupMenu.cs" />
+    <Compile Include="UI\Widgets\Menu\Separator.cs" />
+    <Compile Include="UI\Widgets\ProgressBar.cs" />
+    <Compile Include="UI\Widgets\ScrollableTextArea.cs" />
+    <Compile Include="UI\Widgets\SelectBox.cs" />
+    <Compile Include="UI\Widgets\SimpleTooltip.cs" />
+    <Compile Include="UI\Widgets\Slider.cs" />
+    <Compile Include="UI\Widgets\TextArea.cs" />
+    <Compile Include="UI\Widgets\TextButton.cs" />
+    <Compile Include="UI\Widgets\TextField.cs" />
+    <Compile Include="UI\Widgets\TextTooltip.cs" />
+    <Compile Include="UI\Widgets\Tooltip.cs" />
+    <Compile Include="UI\Widgets\Tree.cs" />
+    <Compile Include="UI\Widgets\Window.cs" />
+    <Compile Include="Utils\ArrayExt.cs" />
     <Compile Include="Utils\ColorExt.cs" />
     <Compile Include="Utils\DelayedRemovalList.cs" />
     <Compile Include="Utils\Interpolation.cs" />
@@ -210,9 +264,11 @@
     <Compile Include="Utils\KeysExt.cs" />
     <Compile Include="Utils\ListExt.cs" />
     <Compile Include="Utils\MathF.cs" />
+    <Compile Include="Utils\PointExt.cs" />
     <Compile Include="Utils\Pool.cs" />
     <Compile Include="Utils\RectangleExt.cs" />
     <Compile Include="Utils\SortedSetExt.cs" />
+    <Compile Include="Utils\Texture2DExt.cs" />
     <Compile Include="Utils\Timer.cs" />
     <Compile Include="Utils\TimeUtils.cs" />
     <Compile Include="Utils\VectorExt.cs" />
@@ -228,6 +284,7 @@
     <None Include="Resources\consolas_0.xnb" />
     <None Include="Resources\smallFont.xnb" />
     <None Include="Resources\smallFont_0.xnb" />
+    <Content Include="shader.fx" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -235,11 +292,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CLRWrapper\CLRWrapper.vcxproj">
-      <Project>{9e2476d6-ff22-4e9c-8d99-909d2235e872}</Project>
-      <Name>CLRWrapper</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

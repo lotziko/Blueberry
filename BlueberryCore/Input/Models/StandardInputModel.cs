@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace BlueberryCore.InputModels
@@ -11,10 +12,12 @@ namespace BlueberryCore.InputModels
         private int previousMouseWheelY;
         private int previousMouseWheelX;
         private List<(MouseButton button, PropertyInfo info)> mouseButtonProperties;
+        private List<Keys> toRemove;
 
         public void Initialize()
         {
             mouseButtonProperties = new List<(MouseButton, PropertyInfo)>();
+            toRemove = new List<Keys>();
             var properties = typeof(MouseState).GetProperties();
             foreach (var info in properties)
             {
@@ -27,6 +30,7 @@ namespace BlueberryCore.InputModels
 
         public void Update()
         {
+
             keyboardState = Keyboard.GetState();
             mouseState = Mouse.GetState();
 
@@ -63,26 +67,28 @@ namespace BlueberryCore.InputModels
         {
             var pressedKeys = keyboardState.GetPressedKeys();
 
-            lock(Input.keyStates.Keys)
-            foreach (var key in Input.keyStates.Keys)
-            {
-                if (pressedKeys.Contains(key))
+            lock (Input.keyStates.Keys)
+                foreach (var key in Input.keyStates.Keys)
                 {
-                    Input.CheckEventTime();
-
-                    Input.keyStates.TryGetValue(key, out InputState state);
-                    if (state != null)
+                    if (pressedKeys.Contains(key))
                     {
-                        Input.keyStates.Remove(key);
-                        Pool<InputState>.Free(state);
-                    }
+                        Input.CheckEventTime();
 
-                    if (Input.Processor != null)
-                    {
-                        Input.Processor.KeyUp((int)key);
+                        Input.keyStates.TryGetValue(key, out InputState state);
+                        if (state != null)
+                        {
+                            toRemove.Add(key);
+                            Pool<InputState>.Free(state);
+                        }
+                        if (Input.Processor != null)
+                        {
+                            Input.Processor.KeyUp((int)key);
+                        }
                     }
                 }
-            }
+            if (toRemove.Count > 0)
+                foreach (Keys key in toRemove)
+                    Input.keyStates.Remove(key);
         }
 
         private void MouseMotion()
@@ -115,9 +121,13 @@ namespace BlueberryCore.InputModels
             if (mouseWheelX != previousMouseWheelX)
             {
                 Input.CheckEventTime();
-                Input.mouseWheelX = mouseWheelX - previousMouseWheelX;
+                Input.mouseWheelX = (mouseWheelX - previousMouseWheelX) / 120;
 
                 previousMouseWheelX = mouseWheelX;
+            }
+            else
+            {
+                Input.mouseWheelX = 0;
             }
 
             if (mouseWheelY != previousMouseWheelY)
@@ -125,11 +135,14 @@ namespace BlueberryCore.InputModels
                 Input.CheckEventTime();
                 Input.mouseWheelY = (mouseWheelY - previousMouseWheelY) / 120;
 
-                if (Input.Processor != null && Input.mouseWheelY != 0)
-                    Input.Processor.Scrolled(Input.mouseWheelY);
-
                 previousMouseWheelY = mouseWheelY;
             }
+            else
+            {
+                Input.mouseWheelY = 0;
+            }
+            if (Input.Processor != null && (Input.mouseWheelY != 0 || Input.mouseWheelX != 0))
+                Input.Processor.Scrolled(Input.mouseWheelX, Input.mouseWheelY);
         }
 
         private void OnMouseButtonDownUp()

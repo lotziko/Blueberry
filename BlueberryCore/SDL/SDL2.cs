@@ -9,7 +9,7 @@ namespace BlueberryCore.SDL
     {
         #region SDL2# Variables
 
-        private const string nativeLibName = "SDL2";
+        private const string nativeLibName = "SDL2.dll";
 
         #endregion
 

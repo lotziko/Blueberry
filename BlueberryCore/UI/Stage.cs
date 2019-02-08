@@ -1,8 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Input.Touch;
-using System;
+﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace BlueberryCore.UI
@@ -433,7 +429,7 @@ namespace BlueberryCore.UI
             return handled;
         }
 
-        public override bool Scrolled(int amount)
+        public override bool Scrolled(int amountX, int amountY)
         {
             Element target = scrollFocus ?? root;
 
@@ -444,7 +440,8 @@ namespace BlueberryCore.UI
             ev.Reset();
             ev.SetStage(this);
             ev.SetInputType(InputType.scrolled);
-            ev.SetScrollAmount(amount);
+            ev.SetScrollAmountX(amountX);
+            ev.SetScrollAmountY(amountY);
             ev.SetStageX(tmpCoords.X);
             ev.SetStageY(tmpCoords.Y);
             target.Fire(ev);

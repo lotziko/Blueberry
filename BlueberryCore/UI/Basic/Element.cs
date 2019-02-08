@@ -889,8 +889,7 @@ namespace BlueberryCore.UI
             var scissorBounds = ScissorStack.CalculateScissors(stage?.entity?.scene?.camera, graphics.TransformMatrix, tableBounds);
             if (ScissorStack.PushScissors(scissorBounds))
             {
-                graphics.spriteBatch.SetScissorTest(true);
-                graphics.primitiveBatch.SetScissorTest(true);
+                graphics.SetScissorTest(true);
                 return true;
             }
 
@@ -904,8 +903,7 @@ namespace BlueberryCore.UI
         /// <returns>The end.</returns>
         public void ClipEnd(Graphics graphics)
         {
-            graphics.spriteBatch.SetScissorTest(false);
-            graphics.primitiveBatch.SetScissorTest(false);
+            graphics.SetScissorTest(false);
             ScissorStack.PopScissors();
         }
     }

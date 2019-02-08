@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>6981b2f8-6992-4716-a2bf-c653e8c49585</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Blueberry</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Bindings\DataBinding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Bindings\IDataBinding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Bindings\ListBinding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Data.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Image.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\ImageProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\MaxRectsBinPack.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\TexturePacker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ECS\Component.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ECS\Components\Camera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ECS\Components\RenderableComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ECS\Components\Transform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ECS\Components\UiCanvas.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ECS\Components\UpdatableComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ECS\Components\UpdatableRenderableComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ECS\Entity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ECS\Interfaces\IRenderable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ECS\Interfaces\IUpdatable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ECS\Lists\ComponentList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ECS\Lists\EntityList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ECS\Scene.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\IFont.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Ninepatches\NinePatch.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\ScissorStack.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlases\TextureAtlas.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlases\TextureRegion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\Clipboard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\GestureDetector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\IInputProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\Input.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\InputAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\Key.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Screen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Action.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Actions\AlphaAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Actions\ParallelAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Actions\RemoveElementAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Actions\RemoveListenerAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Actions\Actions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Actions\ScaleToAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Actions\SequenceAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Actions\TemporalAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\AlignInternal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Cell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Element.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\FocusManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Group.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\ICullable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\IDisablable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\IFocusable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\ILayout.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\ListSelection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Selection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Touchable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Value.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Containers\Container.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Containers\HorizontalGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Containers\ScrollPane.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Containers\SplitPane.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Containers\Stack.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Containers\Table.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Containers\VerticalGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Containers\VerticalScrollPane.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Drawables\IDrawable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\EL\ChangeListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\EL\ClickListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\EL\ElementGestureListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\EL\Event.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\EL\FocusListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\EL\IEventListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\EL\InputEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\EL\InputListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Skin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Stage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\Button.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\ButtonGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\CheckBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\CollapsibleWidget.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\Dialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\Image.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\ImageButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\Label.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\ListBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\Menu\MenuItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\Menu\PopupMenu.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\Menu\Separator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\ProgressBar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\Slider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\TextButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\TextField.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\Tooltip.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\Tree.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\Window.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Widgets\ZoomableArea.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\DelayedRemovalList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Interpolation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\ListExt.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Scaling.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Timer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Viewports\ExtendViewport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Viewports\FillViewport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Viewports\FitViewport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Viewports\ScalingViewport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Viewports\ScreenViewport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Viewports\StretchViewport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Viewports\Viewport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\WrapperStructs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\MathF.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Pool.cs" />
+  </ItemGroup>
+</Project>

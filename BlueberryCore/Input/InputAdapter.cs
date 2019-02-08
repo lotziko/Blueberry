@@ -25,7 +25,7 @@ namespace BlueberryCore
             return false;
         }
 
-        public virtual bool Scrolled(int amount)
+        public virtual bool Scrolled(int amountX, int amountY)
         {
             return false;
         }

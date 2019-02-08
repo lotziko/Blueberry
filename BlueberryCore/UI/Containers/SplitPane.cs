@@ -14,9 +14,9 @@ namespace BlueberryCore.UI
 
         private Rectangle firstWidgetBounds = new Rectangle();
         private Rectangle secondWidgetBounds = new Rectangle();
-        Rectangle handleBounds = new Rectangle();
-        bool cursorOverHandle, dragging;
         private Rectangle tempScissors = new Rectangle();
+        private Rectangle handleBounds = new Rectangle();
+        bool cursorOverHandle, dragging;
 
         Vector2 lastPoint = new Vector2();
         Vector2 handlePosition = new Vector2();

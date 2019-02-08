@@ -1,5 +1,4 @@
-﻿using BlueberryCore.SMath;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 
 namespace BlueberryCore.Tilemaps

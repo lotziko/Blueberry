@@ -13,6 +13,8 @@ namespace BlueberryCore
         private static Vector2 position = new Vector2();
         private static Rectangle tmpSrc = new Rectangle();
 
+        public Rectangle GetSource() => source;
+
         public int GetWidth() => source.Width;
         public int GetHeight() => source.Height;
         public Texture2D GetTexture() => texture;
@@ -107,7 +109,7 @@ namespace BlueberryCore
             {
                 position.X = x;
                 position.Y = y;
-                graphics.spriteBatch.SetScissorTest(true);
+                graphics.SetScissorTest(true);
                 for(int i = 0; i < width; i += source.Width)
                 {
                     for(int j = 0; j < height; j += source.Height)
@@ -119,7 +121,7 @@ namespace BlueberryCore
                     position.X += source.Width;
                 }
 
-                graphics.spriteBatch.SetScissorTest(false);
+                graphics.SetScissorTest(false);
                 ScissorStack.PopScissors();
             }
         }

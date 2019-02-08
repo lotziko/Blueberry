@@ -1,4 +1,4 @@
-﻿using BlueberryCore.SMath;
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -123,6 +123,7 @@ namespace BlueberryCore.UI
             var cancelButton = new TextButton("Close", style.button);
             cancelButton.OnClicked += (a) =>
             {
+                OnClose?.Invoke(pickerOldColor);
                 Close();
             };
             buttonsPane.Add(cancelButton).Width(50).Pad(10);
@@ -493,19 +494,19 @@ namespace BlueberryCore.UI
             {
                 Validate();
 
-                if (graphics.spriteBatch.HasBegun)
-                    graphics.spriteBatch.End();
+                //if (graphics.spriteBatch.HasBegun)
+                //    graphics.spriteBatch.End();
 
                 var col = new Color(color.R, color.G, color.B, (int)(color.A * parentAlpha));
 
-                graphics.spriteBatch.SetShader(picker.shader);
+                graphics.Shader = picker.shader;
                 picker.shader.Parameters["mode"].SetValue(1);
-                graphics.spriteBatch.Begin();
+                //graphics.spriteBatch.Begin();
 
                 graphics.Draw(texture, new Vector2(GetX(), GetY()), texture.Bounds, col);
 
-                graphics.spriteBatch.End();
-                graphics.spriteBatch.ResetShader();
+                //graphics.spriteBatch.End();
+                graphics.Shader = null;
 
                 graphics.DrawRectangleBorder(GetX(), GetY(), GetWidth(), GetHeight(), new Color(Color.Black, col.A));
                 if (picker.style != null)
@@ -617,20 +618,20 @@ namespace BlueberryCore.UI
             {
                 Validate();
 
-                if (graphics.spriteBatch.HasBegun)
-                    graphics.spriteBatch.End();
+                //if (graphics.spriteBatch.HasBegun)
+                //    graphics.spriteBatch.End();
 
                 var col = new Color(color.R, color.G, color.B, (int)(color.A * parentAlpha));
 
-                graphics.spriteBatch.SetShader(picker.shader);
+                graphics.Shader = picker.shader;
                 picker.shader.Parameters["hsv"].SetValue(new Vector3((float)picker.Hue / 360, (float)picker.Saturation / 100, (float)picker.Value / 100));
                 picker.shader.Parameters["mode"].SetValue(0);
-                graphics.spriteBatch.Begin();
+                //graphics.spriteBatch.Begin();
 
                 graphics.Draw(texture, new Vector2(GetX(), GetY()), texture.Bounds, col);
 
-                graphics.spriteBatch.End();
-                graphics.spriteBatch.ResetShader();
+                //graphics.spriteBatch.End();
+                graphics.Shader = null;
                 
                 graphics.DrawRectangleBorder(GetX(), GetY(), GetWidth(), GetHeight(), new Color(Color.Black, col.A));
                 if (picker.style != null)
@@ -776,20 +777,20 @@ namespace BlueberryCore.UI
                 {
                     Validate();
                     
-                    if (graphics.spriteBatch.HasBegun)
-                        graphics.spriteBatch.End();
+                    //if (graphics.spriteBatch.HasBegun)
+                    //    graphics.spriteBatch.End();
 
                     var col = new Color(color.R, color.G, color.B, (int)(color.A * parentAlpha));
 
-                    graphics.spriteBatch.SetShader(picker.shader);
+                    graphics.Shader = picker.shader;
                     picker.shader.Parameters["mode"].SetValue((int)chanel + 2);
                     picker.shader.Parameters["dimensions"].SetValue(new Vector2(texture.Width, texture.Height));
-                    graphics.spriteBatch.Begin();
+                    //graphics.spriteBatch.Begin();
 
                     graphics.Draw(texture, new Vector2(GetX(), GetY()), texture.Bounds, col);
 
-                    graphics.spriteBatch.End();
-                    graphics.spriteBatch.ResetShader();
+                    //graphics.spriteBatch.End();
+                    graphics.Shader = null;
 
                     graphics.DrawRectangleBorder(GetX(), GetY(), GetWidth(), GetHeight(), new Color(Color.Black, col.A));
                     if (picker.style != null)
@@ -876,20 +877,20 @@ namespace BlueberryCore.UI
             {
                 Validate();
 
-                if (graphics.spriteBatch.HasBegun)
-                    graphics.spriteBatch.End();
+                //if (graphics.spriteBatch.HasBegun)
+                //    graphics.spriteBatch.End();
 
                 var col = new Color(color.R, color.G, color.B, (int)(color.A * parentAlpha));
 
-                graphics.spriteBatch.SetShader(picker.shader);
+                graphics.Shader = picker.shader;
                 picker.shader.Parameters["mode"].SetValue(9);
                 picker.shader.Parameters["dimensions"].SetValue(new Vector2(texture.Width, texture.Height));
-                graphics.spriteBatch.Begin();
+                //graphics.spriteBatch.Begin();
 
                 graphics.Draw(texture, new Vector2(GetX(), GetY()), texture.Bounds, col);
 
-                graphics.spriteBatch.End();
-                graphics.spriteBatch.ResetShader();
+                //graphics.spriteBatch.End();
+                graphics.Shader = null;
 
                 graphics.DrawRectangleBorder(GetX(), GetY(), GetWidth(), GetHeight(), new Color(Color.Black, col.A));
             }
