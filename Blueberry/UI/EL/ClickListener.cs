@@ -2,7 +2,7 @@
 
 namespace Blueberry.UI
 {
-    public class ClickListener : InputListener
+    public abstract class ClickListener : InputListener
     {
         public static float visualPressedDuration = 0.1f;
 
@@ -18,7 +18,10 @@ namespace Blueberry.UI
 
         private static Vec2 tmpCoords;
 
-        public ClickListener() { }
+        public ClickListener()
+        {
+
+        }
 
         public ClickListener(int button)
         {
@@ -193,6 +196,21 @@ namespace Blueberry.UI
         public void SetButton(int button)
         {
             this.button = button;
+        }
+    }
+
+    public class ClickListener<T> : ClickListener
+    {
+        protected readonly T par;
+
+        public ClickListener(T par, int button) : base(button)
+        {
+            this.par = par;
+        }
+
+        public ClickListener(T par) : base()
+        {
+            this.par = par;
         }
     }
 }

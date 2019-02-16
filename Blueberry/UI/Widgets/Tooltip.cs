@@ -87,18 +87,15 @@ namespace Blueberry.UI
 
         #region Listener
 
-        private class Listener : InputListener
+        private class Listener : InputListener<Tooltip>
         {
-            private Tooltip tooltip;
-
-            public Listener(Tooltip tooltip)
+            public Listener(Tooltip par) : base(par)
             {
-                this.tooltip = tooltip;
             }
 
             public override bool TouchDown(InputEvent ev, float x, float y, int pointer, int button)
             {
-                tooltip.ToFront();
+                par.ToFront();
                 return true;
             }
 
@@ -106,8 +103,8 @@ namespace Blueberry.UI
             {
                 if (pointer == -1)
                 {
-                    tooltip.ClearActions();
-                    tooltip.AddAction(Actions.Sequence(Actions.FadeIn(tooltip.fadeTime, Interpolation.fade)));
+                    par.ClearActions();
+                    par.AddAction(Actions.Sequence(Actions.FadeIn(par.fadeTime, Interpolation.fade)));
                 }
             }
 
@@ -115,7 +112,7 @@ namespace Blueberry.UI
             {
                 if (pointer == -1)
                 {
-                    tooltip.FadeOut();
+                    par.FadeOut();
                 }
             }
         }
@@ -178,7 +175,7 @@ namespace Blueberry.UI
         private Table FadeIn()
         {
             ClearActions();
-            SetColor(new Col(255, 255, 255, 0));
+            SetColor(new Col(1.0f, 1.0f, 1.0f, 0));
             AddAction(Actions.Sequence(Actions.FadeIn(fadeTime, Interpolation.fade)));
             return this;
         }

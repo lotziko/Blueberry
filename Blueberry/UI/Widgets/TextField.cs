@@ -1051,39 +1051,36 @@ namespace Blueberry.UI
             void KeyTyped(TextField textField, char c);
         }
 
-        public class TextFieldClickListener : ClickListener
+        public class TextFieldClickListener : ClickListener<TextField>
         {
-            protected readonly TextField t;
-
-            public TextFieldClickListener(TextField t)
+            public TextFieldClickListener(TextField par) : base(par)
             {
-                this.t = t;
             }
 
             public override void Clicked(InputEvent ev, float x, float y)
             {
                 int count = GetTapCount() % 4;
-                if (count == 0) t.ClearSelection();
+                if (count == 0) par.ClearSelection();
                 if (count == 2)
                 {
-                    int[] array = t.WordUnderCursor(x);
-                    t.SetSelection(array[0], array[1]);
+                    int[] array = par.WordUnderCursor(x);
+                    par.SetSelection(array[0], array[1]);
                 }
-                if (count == 3) t.SelectAll();
+                if (count == 3) par.SelectAll();
             }
 
             public override bool TouchDown(InputEvent ev, float x, float y, int pointer, int button)
             {
                 if (!base.TouchDown(ev, x, y, pointer, button)) return false;
                 if (pointer == 0 && button != 0) return false;
-                if (t.disabled) return true;
-                var stage = t.GetStage();
-                FocusManager.SwitchFocus(stage, t);
+                if (par.disabled) return true;
+                var stage = par.GetStage();
+                FocusManager.SwitchFocus(stage, par);
                 SetCursorPosition(x, y);
-                t.selectionStart = t.cursor;
-                if (stage != null) stage.SetKeyboardFocus(t);
+                par.selectionStart = par.cursor;
+                if (stage != null) stage.SetKeyboardFocus(par);
                 //if (readOnly == false) keyboard.show(true);
-                t.hasSelection = true;
+                par.hasSelection = true;
                 return true;
             }
 
@@ -1095,95 +1092,95 @@ namespace Blueberry.UI
 
             public override void TouchUp(InputEvent ev, float x, float y, int pointer, int button)
             {
-                if (t.selectionStart == t.cursor) t.hasSelection = false;
+                if (par.selectionStart == par.cursor) par.hasSelection = false;
                 base.TouchUp(ev, x, y, pointer, button);
             }
 
             protected virtual void SetCursorPosition(float x, float y)
             {
-                t.lastBlink = 0;
-                t.cursorOn = false;
-                t.cursor = Math.Min(t.LetterUnderCursor(x), t.text.Length);
+                par.lastBlink = 0;
+                par.cursorOn = false;
+                par.cursor = Math.Min(par.LetterUnderCursor(x), par.text.Length);
             }
 
             protected virtual void GoHome(bool jump)
             {
-                t.cursor = 0;
+                par.cursor = 0;
             }
 
             protected virtual void GoEnd(bool jump)
             {
-                t.cursor = t.text.Length;
+                par.cursor = par.text.Length;
             }
 
             public override bool KeyDown(InputEvent ev, int keycode)
             {
-                if (t.disabled) return false;
+                if (par.disabled) return false;
 
-                t.lastBlink = 0;
-                t.cursorOn = false;
+                par.lastBlink = 0;
+                par.cursorOn = false;
 
-                var stage = t.GetStage();
-                if (stage == null || stage.GetKeyboardFocus() != t) return false;
-                if (t.drawBorder == false) return false;
+                var stage = par.GetStage();
+                if (stage == null || stage.GetKeyboardFocus() != par) return false;
+                if (par.drawBorder == false) return false;
 
                 bool repeat = false;
                 bool ctrl = Input.IsCtrlDown();
-                bool jump = ctrl && !t.passwordMode;
+                bool jump = ctrl && !par.passwordMode;
 
                 if (ctrl)
                 {
-                    if (keycode == (int)Key.V && t.readOnly == false)
+                    if (keycode == (int)Key.V && par.readOnly == false)
                     {
-                        t.Paste(Clipboard.GetText(), true);
+                        par.Paste(Clipboard.GetText(), true);
                         repeat = true;
                     }
                     if (keycode == (int)Key.C || keycode == (int)Key.Insert)
                     {
-                        t.Copy();
+                        par.Copy();
                         return true;
                     }
-                    if (keycode == (int)Key.X && t.readOnly == false)
+                    if (keycode == (int)Key.X && par.readOnly == false)
                     {
-                        t.Cut(true);
+                        par.Cut(true);
                         return true;
                     }
                     if (keycode == (int)Key.A)
                     {
-                        t.SelectAll();
+                        par.SelectAll();
                         return true;
                     }
-                    if (keycode == (int)Key.Z && t.readOnly == false)
+                    if (keycode == (int)Key.Z && par.readOnly == false)
                     {
-                        var oldText = t.text;
-                        int oldCursorPos = t.GetCursorPosition();
-                        t.SetText(t.undoText);
-                        t.SetCursorPosition(MathF.Clamp(t.cursor, 0, t.undoText.Length));
-                        t.undoText = oldText;
-                        t.undoCursorPos = oldCursorPos;
-                        t.UpdateDisplayText();
+                        var oldText = par.text;
+                        int oldCursorPos = par.GetCursorPosition();
+                        par.SetText(par.undoText);
+                        par.SetCursorPosition(MathF.Clamp(par.cursor, 0, par.undoText.Length));
+                        par.undoText = oldText;
+                        par.undoCursorPos = oldCursorPos;
+                        par.UpdateDisplayText();
                         return true;
                     }
                 }
 
                 if (Input.IsShiftDown())
                 {
-                    if (keycode == (int)Key.Insert && t.readOnly == false) t.Paste(Clipboard.GetText(), true);
-                    if (keycode == (int)Key.Delete && t.readOnly == false) t.Cut(true);
+                    if (keycode == (int)Key.Insert && par.readOnly == false) par.Paste(Clipboard.GetText(), true);
+                    if (keycode == (int)Key.Delete && par.readOnly == false) par.Cut(true);
                     //selection:
                     {
-                        int temp = t.cursor;
+                        int temp = par.cursor;
                         keys:
                         {
                             if (keycode == (int)Key.Left)
                             {
-                                t.MoveCursor(false, jump);
+                                par.MoveCursor(false, jump);
                                 repeat = true;
                                 goto keys;
                             }
                             if (keycode == (int)Key.Right)
                             {
-                                t.MoveCursor(true, jump);
+                                par.MoveCursor(true, jump);
                                 repeat = true;
                                 goto keys;
                             }
@@ -1199,10 +1196,10 @@ namespace Blueberry.UI
                             }
                             //goto selection;
                         }
-                        if (!t.hasSelection)
+                        if (!par.hasSelection)
                         {
-                            t.selectionStart = temp;
-                            t.hasSelection = true;
+                            par.selectionStart = temp;
+                            par.hasSelection = true;
                         }
                     }
                 }
@@ -1211,28 +1208,28 @@ namespace Blueberry.UI
                     // Cursor movement or other keys (kills selection).
                     if (keycode == (int)Key.Left)
                     {
-                        t.MoveCursor(false, jump);
-                        t.ClearSelection();
+                        par.MoveCursor(false, jump);
+                        par.ClearSelection();
                         repeat = true;
                     }
                     if (keycode == (int)Key.Right)
                     {
-                        t.MoveCursor(true, jump);
-                        t.ClearSelection();
+                        par.MoveCursor(true, jump);
+                        par.ClearSelection();
                         repeat = true;
                     }
                     if (keycode == (int)Key.Home)
                     {
                         GoHome(jump);
-                        t.ClearSelection();
+                        par.ClearSelection();
                     }
                     if (keycode == (int)Key.End)
                     {
                         GoEnd(jump);
-                        t.ClearSelection();
+                        par.ClearSelection();
                     }
                 }
-                t.cursor = MathF.Clamp(t.cursor, 0, t.text.Length);
+                par.cursor = MathF.Clamp(par.cursor, 0, par.text.Length);
 
                 if (repeat)
                 {
@@ -1243,27 +1240,27 @@ namespace Blueberry.UI
 
             protected void ScheduleKeyRepeatTask(int keycode)
             {
-                if (!t.keyRepeatTask.IsScheduled() || t.keyRepeatTask.keycode != keycode)
+                if (!par.keyRepeatTask.IsScheduled() || par.keyRepeatTask.keycode != keycode)
                 {
-                    t.keyRepeatTask.keycode = keycode;
-                    t.keyRepeatTask.Cancel();
-                    if (Input.IsKeyDown((Key)t.keyRepeatTask.keycode))
+                    par.keyRepeatTask.keycode = keycode;
+                    par.keyRepeatTask.Cancel();
+                    if (Input.IsKeyDown((Key)par.keyRepeatTask.keycode))
                     { //issue #179
-                        Timer.Schedule(t.keyRepeatTask, TimeSpan.FromSeconds(keyRepeatInitialTime), TimeSpan.FromSeconds(keyRepeatTime));
+                        Timer.Schedule(par.keyRepeatTask, TimeSpan.FromSeconds(keyRepeatInitialTime), TimeSpan.FromSeconds(keyRepeatTime));
                     }
                 }
             }
 
             public override bool KeyUp(InputEvent ev, int keycode)
             {
-                if (t.disabled) return false;
-                t.keyRepeatTask.Cancel();
+                if (par.disabled) return false;
+                par.keyRepeatTask.Cancel();
                 return true;
             }
 
             public override bool KeyTyped(InputEvent ev, int keycode, char character)
             {
-                if (t.disabled || t.readOnly) return false;
+                if (par.disabled || par.readOnly) return false;
 
                 // Disallow "typing" most ASCII control characters, which would show up as a space when onlyFontChars is true.
                 switch (character)
@@ -1279,67 +1276,67 @@ namespace Blueberry.UI
                 }
 
                 //lotziko fix for selection lose when typing wrong char
-                if (t.filter != null && !t.filter.AcceptChar(t, character) && !char.IsControl(character))
+                if (par.filter != null && !par.filter.AcceptChar(par, character) && !char.IsControl(character))
                     return false;
 
-                var stage = t.GetStage();
-                if (stage == null || stage.GetKeyboardFocus() != t) return false;
+                var stage = par.GetStage();
+                if (stage == null || stage.GetKeyboardFocus() != par) return false;
 
                 //if (UIUtils.isMac && Gdx.input.isKeyPressed(Key.SYM)) return true;
 
-                if (t.focusTraversal && (character == TAB || (character == ENTER_ANDROID && t.enterKeyFocusTraversal)))
+                if (par.focusTraversal && (character == TAB || (character == ENTER_ANDROID && par.enterKeyFocusTraversal)))
                 {
-                    t.Next(Input.IsShiftDown());
+                    par.Next(Input.IsShiftDown());
                 }
                 else
                 {
                     bool delete = character == DELETE;
                     bool backspace = character == BACKSPACE;
                     bool enter = character == ENTER_DESKTOP || character == ENTER_ANDROID;
-                    bool add = enter ? t.writeEnters : (!t.onlyFontChars || t.style.font.HasCharacter(character));
+                    bool add = enter ? par.writeEnters : (!par.onlyFontChars || par.style.font.HasCharacter(character));
                     bool remove = backspace || delete;
                     if (add || remove)
                     {
-                        string oldText = t.text;
-                        int oldCursor = t.cursor;
-                        if (t.hasSelection)
-                            t.cursor = t.Delete(false);
+                        string oldText = par.text;
+                        int oldCursor = par.cursor;
+                        if (par.hasSelection)
+                            par.cursor = par.Delete(false);
                         else
                         {
-                            if (backspace && t.cursor > 0)
+                            if (backspace && par.cursor > 0)
                             {
-                                t.text = t.text.Substring(0, t.cursor - 1) + t.text.Substring(t.cursor--);
-                                t.renderOffset = 0;
+                                par.text = par.text.Substring(0, par.cursor - 1) + par.text.Substring(par.cursor--);
+                                par.renderOffset = 0;
                             }
-                            if (delete && t.cursor < t.text.Length)
+                            if (delete && par.cursor < par.text.Length)
                             {
-                                t.text = t.text.Substring(0, t.cursor) + t.text.Substring(t.cursor + 1);
+                                par.text = par.text.Substring(0, par.cursor) + par.text.Substring(par.cursor + 1);
                             }
                         }
                         if (add && !remove)
                         {
                             // Character may be added to the text.
-                            if (!enter && t.filter != null && !t.filter.AcceptChar(t, character)) return true;
-                            if (!t.WithinMaxLength(t.text.Length)) return true;
+                            if (!enter && par.filter != null && !par.filter.AcceptChar(par, character)) return true;
+                            if (!par.WithinMaxLength(par.text.Length)) return true;
                             string insertion = enter ? "\n" : character + "";
-                            t.text = t.Insert(t.cursor++, insertion, t.text);
+                            par.text = par.Insert(par.cursor++, insertion, par.text);
                         }
-                        if (t.ChangeText(oldText, t.text))
+                        if (par.ChangeText(oldText, par.text))
                         {
                             long time = TimeUtils.CurrentTimeMillis();
-                            if (time - 750 > t.lastChangeTime)
+                            if (time - 750 > par.lastChangeTime)
                             {
-                                t.undoText = oldText;
-                                t.undoCursorPos = t.GetCursorPosition() - 1;
+                                par.undoText = oldText;
+                                par.undoCursorPos = par.GetCursorPosition() - 1;
                             }
-                            t.lastChangeTime = time;
+                            par.lastChangeTime = time;
                         }
                         else
-                            t.cursor = oldCursor;
-                        t.UpdateDisplayText();
+                            par.cursor = oldCursor;
+                        par.UpdateDisplayText();
                     }
                 }
-                if (t.listener != null) t.listener.KeyTyped(t, character);
+                if (par.listener != null) par.listener.KeyTyped(par, character);
                 return true;
             }
 

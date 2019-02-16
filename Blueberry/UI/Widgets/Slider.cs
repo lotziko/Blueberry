@@ -22,49 +22,46 @@ namespace Blueberry.UI
 
         #region Listener
 
-        private class Listener : InputListener
+        private class Listener : InputListener<Slider>
         {
-            private Slider _slider;
-
-            public Listener(Slider slider)
+            public Listener(Slider par) : base(par)
             {
-                _slider = slider;
             }
 
             public override bool TouchDown(InputEvent ev, float x, float y, int pointer, int button)
             {
-                if (_slider.isDisabled) return false;
-                if (_slider.draggingPointer != -1) return false;
-                _slider.draggingPointer = pointer;
-                _slider.CalculatePositionAndValue(x, y);
+                if (par.isDisabled) return false;
+                if (par.draggingPointer != -1) return false;
+                par.draggingPointer = pointer;
+                par.CalculatePositionAndValue(x, y);
                 return true;
             }
 
             public override void TouchUp(InputEvent ev, float x, float y, int pointer, int button)
             {
-                if (pointer != _slider.draggingPointer) return;
-                _slider.draggingPointer = -1;
-                if (!_slider.CalculatePositionAndValue(x, y))
+                if (pointer != par.draggingPointer) return;
+                par.draggingPointer = -1;
+                if (!par.CalculatePositionAndValue(x, y))
                 {
                     var changeEv = Pool<ChangeEvent>.Obtain();
-                    _slider.Fire(changeEv);
+                    par.Fire(changeEv);
                     Pool<ChangeEvent>.Free(changeEv);
                 }
             }
 
             public override void TouchDragged(InputEvent ev, float x, float y, int pointer)
             {
-                _slider.CalculatePositionAndValue(x, y);
+                par.CalculatePositionAndValue(x, y);
             }
 
             public override void Enter(InputEvent ev, float x, float y, int pointer, Element fromElement)
             {
-                if (pointer == -1) _slider.mouseOver = true;
+                if (pointer == -1) par.mouseOver = true;
             }
 
             public override void Exit(InputEvent ev, float x, float y, int pointer, Element toElement)
             {
-                if (pointer == -1) _slider.mouseOver = false;
+                if (pointer == -1) par.mouseOver = false;
             }
         }
 

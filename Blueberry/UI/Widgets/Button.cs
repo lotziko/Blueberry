@@ -24,8 +24,8 @@ namespace Blueberry.UI
                     width = Math.Max(width, style.up.MinWidth);
                 if (style.down != null)
                     width = Math.Max(width, style.down.MinWidth);
-                if (style.checkked != null)
-                    width = Math.Max(width, style.checkked.MinWidth);
+                if (style.@checked != null)
+                    width = Math.Max(width, style.@checked.MinWidth);
                 return width;
             }
         }
@@ -39,8 +39,8 @@ namespace Blueberry.UI
                     height = Math.Max(height, style.up.MinHeight);
                 if (style.down != null)
                     height = Math.Max(height, style.down.MinHeight);
-                if (style.checkked != null)
-                    height = Math.Max(height, style.checkked.MinHeight);
+                if (style.@checked != null)
+                    height = Math.Max(height, style.@checked.MinHeight);
                 return height;
             }
         }
@@ -85,14 +85,19 @@ namespace Blueberry.UI
 
             if (isPressed && isOver && !isDisabled)
                 tempBackground = style.down ?? style.up;
-            else if (isDisabled && style.disabled != null)
-                tempBackground = style.disabled;
-            else if (isChecked && style.checkked != null)
+            else if (isDisabled)
+            {
+                if (style.disabled != null)
+                    tempBackground = style.disabled;
+                else
+                    tempBackground = style.up;
+            }
+            else if (isChecked && style.@checked != null)
             {
                 if (isOver && style.checkedOver != null)
                     tempBackground = style.checkedOver;
                 else
-                    tempBackground = style.checkked;
+                    tempBackground = style.@checked;
             }
             else if (isOver && style.over != null)
                 tempBackground = style.over;
@@ -202,22 +207,19 @@ namespace Blueberry.UI
 
         #region Listener
 
-        private class ButtonListener : ClickListener
+        private class ButtonListener : ClickListener<Button>
         {
-            private readonly Button _b;
-
-            public ButtonListener(Button b)
+            public ButtonListener(Button par) : base(par)
             {
-                _b = b;
             }
 
             public override void Clicked(InputEvent ev, float x, float y)
             {
-                if (_b.IsDisabled())
+                if (par.IsDisabled())
                     return;
-                _b.SetChecked(!_b.isChecked, true);
-                _b.OnClicked?.Invoke();
-                FocusManager.SwitchFocus(_b.GetStage(), _b);
+                par.SetChecked(!par.isChecked, true);
+                par.OnClicked?.Invoke();
+                FocusManager.SwitchFocus(par.GetStage(), par);
             }
         }
 

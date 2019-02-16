@@ -1,7 +1,7 @@
 ﻿
 namespace Blueberry.UI
 {
-    abstract public class FocusListener : IEventListener
+    public abstract class FocusListener : IEventListener
     {
         public bool Handle(Event ev)
         {
@@ -27,6 +27,16 @@ namespace Blueberry.UI
         /** @param element The ev target, which is the element that emitted the focus ev. */
         public virtual void ScrollFocusChanged(FocusEvent ev, Element element, bool focused)
         {
+        }
+    }
+
+    public abstract class FocusListener<T> : FocusListener
+    {
+        protected readonly T par;
+
+        public FocusListener(T par)
+        {
+            this.par = par;
         }
     }
 

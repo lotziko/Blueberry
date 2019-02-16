@@ -76,30 +76,27 @@ namespace Blueberry.UI
             }
         }
 
-        private class Input : InputListener
+        private class Input : InputListener<MenuItem>
         {
-            private readonly MenuItem item;
-
-            public Input(MenuItem item)
+            public Input(MenuItem par) : base(par)
             {
-                this.item = item;
             }
 
             public override void Enter(InputEvent ev, float x, float y, int pointer, Element fromElement)
             {
-                if (item.subMenu != null)
+                if (par.subMenu != null)
                 { //removes selection of child submenu if mouse moved to parent submenu
-                    item.subMenu.SetActiveItem(null, false);
-                    item.subMenu.SetActiveSubMenu(null);
+                    par.subMenu.SetActiveItem(null, false);
+                    par.subMenu.SetActiveSubMenu(null);
                 }
 
-                if (item.subMenu == null || item.IsDisabled())
+                if (par.subMenu == null || par.IsDisabled())
                 { //hides last visible submenu (if any)
-                    item.HideSubMenu();
+                    par.HideSubMenu();
                 }
                 else
                 {
-                    item.ShowSubMenu();
+                    par.ShowSubMenu();
                 }
             }
         }

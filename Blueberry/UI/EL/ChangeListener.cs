@@ -20,5 +20,15 @@ namespace Blueberry.UI
         public class ChangeEvent : Event
         {
         }
-}
+    }
+
+    public abstract class ChangeListener<T> : ChangeListener
+    {
+        protected T par;
+
+        public ChangeListener(T par)
+        {
+            this.par = par;
+        }
+    }
 }

@@ -9,8 +9,8 @@ namespace Blueberry.UI
         private PopupMenuStyle style;
         private IPopupMenuListener listener;
 
-        private InputListener stageListener;
-        private InputListener sharedMenuItemInputListener;
+        private InputListener<PopupMenu> stageListener;
+        private InputListener<PopupMenu> sharedMenuItemInputListener;
 
         private ChangeListener sharedMenuItemChangeListener;
 
@@ -58,69 +58,63 @@ namespace Blueberry.UI
 
         #region Listeners
 
-        private class StageListener : InputListener
+        private class StageListener : InputListener<PopupMenu>
         {
-            private readonly PopupMenu menu;
-
-            public StageListener(PopupMenu menu)
+            public StageListener(PopupMenu par) : base(par)
             {
-                this.menu = menu;
             }
 
             public override bool TouchDown(InputEvent ev, float x, float y, int pointer, int button)
             {
-                if (menu.GetRootMenu().SubMenuStructureContains(x, y) == false)
+                if (par.GetRootMenu().SubMenuStructureContains(x, y) == false)
                 {
-                    menu.Remove();
+                    par.Remove();
                 }
                 return true;
             }
 
             public override bool KeyDown(InputEvent ev, int keycode)
             {
-                var elements = menu.GetElements();
+                var elements = par.GetElements();
 
-                if (elements.Count == 0 || menu.activeSubMenu != null) return false;
+                if (elements.Count == 0 || par.activeSubMenu != null) return false;
 
                 if (keycode == (int)Key.Down)
                 {
-                    menu.SelectNextItem();
+                    par.SelectNextItem();
                 }
 
-                if (menu.activeItem == null) return false;
+                if (par.activeItem == null) return false;
 
                 if (keycode == (int)Key.Up)
                 {
-                    menu.SelectPreviousItem();
+                    par.SelectPreviousItem();
                 }
 
-                if (keycode == (int)Key.Left && menu.activeItem.containerMenu.parentSubMenu != null)
+                if (keycode == (int)Key.Left && par.activeItem.containerMenu.parentSubMenu != null)
                 {
-                    menu.activeItem.containerMenu.parentSubMenu.SetActiveSubMenu(null);
+                    par.activeItem.containerMenu.parentSubMenu.SetActiveSubMenu(null);
                 }
 
-                if (keycode == (int)Key.Right && menu.activeItem.GetSubMenu() != null)
+                if (keycode == (int)Key.Right && par.activeItem.GetSubMenu() != null)
                 {
-                    menu.activeItem.ShowSubMenu();
-                    menu.activeSubMenu.SelectNextItem();
+                    par.activeItem.ShowSubMenu();
+                    par.activeSubMenu.SelectNextItem();
                 }
 
                 if (keycode == (int)Key.Enter)
                 {
-                    menu.activeItem.FireChangeEvent();
+                    par.activeItem.FireChangeEvent();
                 }
 
                 return false;
             }
         }
 
-        private class SharedMenuItemInputListener : InputListener
+        private class SharedMenuItemInputListener : InputListener<PopupMenu>
         {
-            private readonly PopupMenu menu;
-
-            public SharedMenuItemInputListener(PopupMenu menu)
+            public SharedMenuItemInputListener(PopupMenu par) : base(par)
             {
-                this.menu = menu;
             }
 
             public override void Enter(InputEvent ev, float x, float y, int pointer, Element fromElement)
@@ -129,7 +123,7 @@ namespace Blueberry.UI
                     var item = (MenuItem)ev.GetListenerElement();
                     if (item.IsDisabled() == false)
                     {
-                        menu.SetActiveItem(item, false);
+                        par.SetActiveItem(item, false);
                     }
                 }
             }
@@ -137,12 +131,12 @@ namespace Blueberry.UI
             public override void Exit(InputEvent ev, float x, float y, int pointer, Element toElement)
             {
                 if (pointer == -1 && ev.GetListenerElement() is MenuItem) {
-                    if (menu.activeSubMenu != null) return;
+                    if (par.activeSubMenu != null) return;
 
                     var item = (MenuItem)ev.GetListenerElement();
-                    if (item == menu.activeItem)
+                    if (item == par.activeItem)
                     {
-                        menu.SetActiveItem(null, false);
+                        par.SetActiveItem(null, false);
                     }
                 }
             }

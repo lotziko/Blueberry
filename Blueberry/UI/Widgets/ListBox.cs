@@ -122,21 +122,18 @@ namespace Blueberry.UI
 
         #region Listener
 
-        private class Listener : InputListener
+        private class Listener : InputListener<ListBox<T>>
         {
-            private readonly ListBox<T> lb;
-
-            public Listener(ListBox<T> lb)
+            public Listener(ListBox<T> par) : base(par)
             {
-                this.lb = lb;
             }
 
             public override bool KeyDown(InputEvent ev, int keycode)
             {
-                if (keycode == (int)Key.A && Input.IsCtrlDown() && lb.selection.GetMultiple())
+                if (keycode == (int)Key.A && Input.IsCtrlDown() && par.selection.GetMultiple())
                 {
-                    lb.selection.Clear();
-                    lb.selection.AddAll(lb.items);
+                    par.selection.Clear();
+                    par.selection.AddAll(par.items);
                     return true;
                 }
                 return false;
@@ -145,21 +142,21 @@ namespace Blueberry.UI
             public override bool TouchDown(InputEvent ev, float x, float y, int pointer, int button)
             {
                 if (pointer != 0 || button != 0) return false;
-                if (lb.selection.IsDisabled()) return false;
-                lb.GetStage().SetKeyboardFocus(lb);
-                if (lb.items.Count == 0) return false;
-                float height = lb.GetHeight();
-                IDrawable background = lb.style.background;
+                if (par.selection.IsDisabled()) return false;
+                par.GetStage().SetKeyboardFocus(par);
+                if (par.items.Count == 0) return false;
+                float height = par.GetHeight();
+                IDrawable background = par.style.background;
                 if (background != null)
                 {
                     height -= background.TopHeight + background.BottomHeight;
                     y -= background.BottomHeight;
                 }
-                int index = (int)(y / lb.itemHeight);
-                if (index > lb.items.Count - 1) return false;
+                int index = (int)(y / par.itemHeight);
+                if (index > par.items.Count - 1) return false;
                 index = Math.Max(0, index);
-                lb.selection.Choose(lb.items[index]);
-                lb.touchDown = index;
+                par.selection.Choose(par.items[index]);
+                par.touchDown = index;
                 Render.Request();
                 return true;
             }
@@ -167,13 +164,13 @@ namespace Blueberry.UI
             public override void TouchUp(InputEvent ev, float x, float y, int pointer, int button)
             {
                 if (pointer != 0 || button != 0) return;
-                lb.touchDown = -1;
+                par.touchDown = -1;
             }
 
             public override void Exit(InputEvent ev, float x, float y, int pointer, Element toElement)
             {
                 if (pointer != 0) return;
-                lb.touchDown = -1;
+                par.touchDown = -1;
             }
         }
 

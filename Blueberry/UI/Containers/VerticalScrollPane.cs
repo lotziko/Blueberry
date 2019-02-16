@@ -34,57 +34,54 @@ namespace Blueberry.UI
 
         #region Listeners
 
-        private class InListener : InputListener
+        private class InListener : InputListener<VerticalScrollPane>
         {
-            private readonly VerticalScrollPane p;
-
             private float handlePosition;
             private bool dragH, dragV;
 
-            public InListener(VerticalScrollPane p)
+            public InListener(VerticalScrollPane par) : base(par)
             {
-                this.p = p;
             }
 
             public override void Enter(InputEvent ev, float x, float y, int pointer, Element fromElement)
             {
-                p.GetStage().SetScrollFocus(p);
+                par.GetStage().SetScrollFocus(par);
             }
 
             public override void Exit(InputEvent ev, float x, float y, int pointer, Element toElement)
             {
-                p.GetStage().SetScrollFocus(null);
+                par.GetStage().SetScrollFocus(null);
             }
 
             public override bool TouchDown(InputEvent ev, float x, float y, int pointer, int button)
             {
                 if (pointer == 0 && button != 0) return false;
-                p.GetStage().SetScrollFocus(p);
+                par.GetStage().SetScrollFocus(par);
 
-                if (p.scrollX && p.hScrollBounds.Contains(x, y))
+                if (par.scrollX && par.hScrollBounds.Contains(x, y))
                 {
                     ev.Stop();
                     dragH = true;
-                    if (p.hKnobBounds.Contains(x, y))
+                    if (par.hKnobBounds.Contains(x, y))
                     {
-                        p.lastPoint.Set(x, y);
-                        handlePosition = p.hKnobBounds.X;
+                        par.lastPoint.Set(x, y);
+                        handlePosition = par.hKnobBounds.X;
                         return true;
                     }
-                    p.SetScrollX(p.amountX + p.areaWidth * (x < p.hKnobBounds.X ? -1 : 1));
+                    par.SetScrollX(par.amountX + par.areaWidth * (x < par.hKnobBounds.X ? -1 : 1));
                     return true;
                 }
-                else if (p.scrollY && p.vScrollBounds.Contains(x, y))
+                else if (par.scrollY && par.vScrollBounds.Contains(x, y))
                 {
                     ev.Stop();
                     dragV = true;
-                    if (p.vKnobBounds.Contains(x, y))
+                    if (par.vKnobBounds.Contains(x, y))
                     {
-                        p.lastPoint.Set(x, y);
-                        handlePosition = p.vKnobBounds.Y;
+                        par.lastPoint.Set(x, y);
+                        handlePosition = par.vKnobBounds.Y;
                         return true;
                     }
-                    p.SetScrollY(p.amountY + p.areaHeight * (y < p.vKnobBounds.Y ? -1 : 1));
+                    par.SetScrollY(par.amountY + par.areaHeight * (y < par.vKnobBounds.Y ? -1 : 1));
                     return true;
                 }
                 return false;
@@ -100,48 +97,45 @@ namespace Blueberry.UI
             {
                 if (dragH)
                 {
-                    float delta = x - p.lastPoint.X;
+                    float delta = x - par.lastPoint.X;
                     float scrollH = handlePosition + delta;
                     handlePosition = scrollH;
-                    scrollH = Math.Max(p.hScrollBounds.X, scrollH);
-                    scrollH = Math.Min(p.hScrollBounds.X + p.hScrollBounds.Width - p.hKnobBounds.Width, scrollH);
-                    float total = p.hScrollBounds.Width - p.hKnobBounds.Width;
-                    if (total != 0) p.SetScrollPercentX((scrollH - p.hScrollBounds.X) / total);
-                    p.lastPoint.Set(x, y);
+                    scrollH = Math.Max(par.hScrollBounds.X, scrollH);
+                    scrollH = Math.Min(par.hScrollBounds.X + par.hScrollBounds.Width - par.hKnobBounds.Width, scrollH);
+                    float total = par.hScrollBounds.Width - par.hKnobBounds.Width;
+                    if (total != 0) par.SetScrollPercentX((scrollH - par.hScrollBounds.X) / total);
+                    par.lastPoint.Set(x, y);
                     Render.Request();
                 }
                 else if (dragV)
                 {
-                    float delta = y - p.lastPoint.Y;
+                    float delta = y - par.lastPoint.Y;
                     float scrollV = handlePosition + delta;
                     handlePosition = scrollV;
-                    scrollV = Math.Max(p.vScrollBounds.Y, scrollV);
-                    scrollV = Math.Min(p.vScrollBounds.Y + p.vScrollBounds.Height - p.vKnobBounds.Height, scrollV);
-                    float total = p.vScrollBounds.Height - p.vKnobBounds.Height;
-                    if (total != 0) p.SetScrollPercentY(/*1 - */((scrollV - p.vScrollBounds.Y) / total));
-                    p.lastPoint.Set(x, y);
+                    scrollV = Math.Max(par.vScrollBounds.Y, scrollV);
+                    scrollV = Math.Min(par.vScrollBounds.Y + par.vScrollBounds.Height - par.vKnobBounds.Height, scrollV);
+                    float total = par.vScrollBounds.Height - par.vKnobBounds.Height;
+                    if (total != 0) par.SetScrollPercentY(/*1 - */((scrollV - par.vScrollBounds.Y) / total));
+                    par.lastPoint.Set(x, y);
                     Render.Request();
                 }
             }
         }
 
-        protected class ScrollListener : InputListener
+        protected class ScrollListener : InputListener<VerticalScrollPane>
         {
-            private VerticalScrollPane p;
-
-            public ScrollListener(VerticalScrollPane p)
+            public ScrollListener(VerticalScrollPane par) : base(par)
             {
-                this.p = p;
             }
 
             public override bool Scrolled(InputEvent ev, float x, float y, float amountX, float amountY)
             {
-                if (p.scrollX || p.scrollY)
+                if (par.scrollX || par.scrollY)
                 {
-                    if (p.scrollY)
-                        p.SetScrollY(p.amountY + p.GetMouseWheelY() * -amountY);
-                    if (p.scrollX)
-                        p.SetScrollX(p.amountX + p.GetMouseWheelX() * amountX);
+                    if (par.scrollY)
+                        par.SetScrollY(par.amountY + par.GetMouseWheelY() * -amountY);
+                    if (par.scrollX)
+                        par.SetScrollX(par.amountX + par.GetMouseWheelX() * amountX);
                 }
                 else
                 {

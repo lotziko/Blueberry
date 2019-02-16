@@ -91,24 +91,21 @@ namespace Blueberry.UI
 
         #region Listener
 
-        private class Listener : InputListener
+        private class Listener : InputListener<SplitPane>
         {
-            private SplitPane p;
-
-            public Listener(SplitPane pane)
+            public Listener(SplitPane par) : base(par)
             {
-                p = pane;
             }
 
             public override bool TouchDown(InputEvent ev, float x, float y, int pointer, int button)
             {
-                if (p.handleBounds.Contains(x, y))
+                if (par.handleBounds.Contains(x, y))
                 {
-                    FocusManager.ResetFocus(p.GetStage());
+                    FocusManager.ResetFocus(par.GetStage());
 
-                    p.lastPoint.Set(x, y);
-                    p.handlePosition.Set(x, y);
-                    p.dragging = true;
+                    par.lastPoint.Set(x, y);
+                    par.handlePosition.Set(x, y);
+                    par.dragging = true;
                     return true;
                 }
                 return false;
@@ -116,62 +113,62 @@ namespace Blueberry.UI
 
             public override void TouchDragged(InputEvent ev, float x, float y, int pointer)
             {
-                if (!p.dragging)
+                if (!par.dragging)
                     return;
 
-                IDrawable handle = p.style.handle;
-                if (!p.vertical)
+                IDrawable handle = par.style.handle;
+                if (!par.vertical)
                 {
-                    float delta = x - p.lastPoint.X;
-                    float availWidth = p.GetWidth() - handle.MinWidth;
-                    float dragX = p.handlePosition.X + delta;
-                    p.handlePosition.X = dragX;
+                    float delta = x - par.lastPoint.X;
+                    float availWidth = par.GetWidth() - handle.MinWidth;
+                    float dragX = par.handlePosition.X + delta;
+                    par.handlePosition.X = dragX;
                     dragX = Math.Max(0, dragX);
                     dragX = Math.Min(availWidth, dragX);
-                    p.splitAmount = dragX / availWidth;
-                    p.lastPoint.Set(x, y);
+                    par.splitAmount = dragX / availWidth;
+                    par.lastPoint.Set(x, y);
                 }
                 else
                 {
-                    float delta = y - p.lastPoint.Y;
-                    float availHeight = p.GetHeight() - handle.MinHeight;
-                    float dragY = p.handlePosition.Y + delta;
-                    p.handlePosition.Y = dragY;
+                    float delta = y - par.lastPoint.Y;
+                    float availHeight = par.GetHeight() - handle.MinHeight;
+                    float dragY = par.handlePosition.Y + delta;
+                    par.handlePosition.Y = dragY;
                     dragY = Math.Max(0, dragY);
                     dragY = Math.Min(availHeight, dragY);
-                    p.splitAmount = dragY / availHeight;
-                    p.lastPoint.Set(x, y);
+                    par.splitAmount = dragY / availHeight;
+                    par.lastPoint.Set(x, y);
                 }
-                p.Invalidate();
+                par.Invalidate();
                 Render.Request();
             }
 
             public override void TouchUp(InputEvent ev, float x, float y, int pointer, int button)
             {
-                p.dragging = false;
-                p.cursorOverHandle = false;
+                par.dragging = false;
+                par.cursorOverHandle = false;
                 //Is used to reset cursor and handle state on mouse release if it's over handle
                 MouseMoved(ev, x, y);
             }
 
             public override void Exit(InputEvent ev, float x, float y, int pointer, Element toElement)
             {
-                if (!p.dragging)
-                    p.cursorOverHandle = false;
+                if (!par.dragging)
+                    par.cursorOverHandle = false;
                 ResetCursor();
             }
 
             public override bool MouseMoved(InputEvent ev, float x, float y)
             {
-                p.cursorOverHandle = p.handleBounds.Contains(x, y);
+                par.cursorOverHandle = par.handleBounds.Contains(x, y);
                 ResetCursor();
                 return false;
             }
 
             private void ResetCursor()
             {
-                /*if (p.cursorOverHandle)
-                    Mouse.SetCursor(p.vertical ? MouseCursor.SizeNS : MouseCursor.SizeWE);
+                /*if (par.cursorOverHandle)
+                    Mouse.SetCursor(par.vertical ? MouseCursor.SizeNS : MouseCursor.SizeWE);
                 else
                     Mouse.SetCursor(MouseCursor.Arrow);*/
             }

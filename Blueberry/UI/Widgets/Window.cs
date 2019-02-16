@@ -55,16 +55,16 @@ namespace Blueberry.UI
 
         private class TitleTable : Table
         {
-            private Window w;
+            private Window par;
 
-            public TitleTable(Window w) : base()
+            public TitleTable(Window par) : base()
             {
-                this.w = w;
+                this.par = par;
             }
 
             public override void Draw(Graphics graphics, float parentAlpha)
             {
-                if (w.drawTitleTable) base.Draw(graphics, parentAlpha);
+                if (par.drawTitleTable) base.Draw(graphics, parentAlpha);
             }
         }
 
@@ -237,61 +237,55 @@ namespace Blueberry.UI
 
         #region Listeners
 
-        private class CaptureInputListener : InputListener
+        private class CaptureInputListener : InputListener<Window>
         {
-            private Window w;
-
-            public CaptureInputListener(Window w)
+            public CaptureInputListener(Window par) : base(par)
             {
-                this.w = w;
             }
 
             public override bool TouchDown(InputEvent ev, float x, float y, int pointer, int button)
             {
-                w.ToFront();
+                par.ToFront();
                 return false;
             }
         }
 
-        private class Listener : InputListener
+        private class Listener : InputListener<Window>
         {
-            private Window w;
-
-            public Listener(Window w)
-            {
-                this.w = w;
-            }
-
             float startX, startY, lastX, lastY;
+
+            public Listener(Window par) : base(par)
+            {
+            }
 
             private void UpdateEdge(float x, float y)
             {
-                float border = w.resizeBorder;// / 2f;
-                float width = w.GetWidth(), height = w.GetHeight();
-                float padTop = w.GetPadTop(), padLeft = w.GetPadLeft(), padBottom = w.GetPadBottom(), padRight = w.GetPadRight();
+                float border = par.resizeBorder;// / 2f;
+                float width = par.GetWidth(), height = par.GetHeight();
+                float padTop = par.GetPadTop(), padLeft = par.GetPadLeft(), padBottom = par.GetPadBottom(), padRight = par.GetPadRight();
                 float left = padLeft, right = width - padRight, bottom = height - padBottom;
-                w.edge = 0;
-                if (w.isResizable && x > 0 && x < width && y > 0 && y < height)// && x >= left - border && x <= right + border && y >= bottom + border/*bottom - border*/)
+                par.edge = 0;
+                if (par.isResizable && x > 0 && x < width && y > 0 && y < height)// && x >= left - border && x <= right + border && y >= bottom + border/*bottom - border*/)
                 {
                     if (x < border)
-                        w.edge |= AlignInternal.left;
+                        par.edge |= AlignInternal.left;
                     if (x > width - border)
-                        w.edge |= AlignInternal.right;
+                        par.edge |= AlignInternal.right;
                     if (y < border)
-                        w.edge |= AlignInternal.top;
+                        par.edge |= AlignInternal.top;
                     if (y > height - border)
-                        w.edge |= AlignInternal.bottom;
-                    /*if (w.edge != 0) border += 25;
+                        par.edge |= AlignInternal.bottom;
+                    /*if (par.edge != 0) border += 25;
                     if (x < border)
-                        w.edge |= AlignInternal.left;
+                        par.edge |= AlignInternal.left;
                     if (x > width - border)
-                        w.edge |= AlignInternal.right;
+                        par.edge |= AlignInternal.right;
                     if (y < border)
-                        w.edge |= AlignInternal.top;
+                        par.edge |= AlignInternal.top;
                     if (y > height - border)
-                        w.edge |= AlignInternal.bottom;*/
+                        par.edge |= AlignInternal.bottom;*/
                 }
-                if (w.isMovable && w.edge == 0 && y <= /*height*/padTop && y >= /*height - padTop*/ 0 && x >= left && x <= right) w.edge = MOVE;
+                if (par.isMovable && par.edge == 0 && y <= /*height*/padTop && y >= /*height - padTop*/ 0 && x >= left && x <= right) par.edge = MOVE;
             }
 
             public override bool TouchDown(InputEvent ev, float x, float y, int pointer, int button)
@@ -299,41 +293,41 @@ namespace Blueberry.UI
                 if (button == 0)
                 {
                     UpdateEdge(x, y);
-                    w.dragging = w.edge != 0;
+                    par.dragging = par.edge != 0;
                     startX = x;
                     startY = y;
-                    lastX = x - w.GetWidth();
-                    lastY = y - w.GetHeight();
+                    lastX = x - par.GetWidth();
+                    lastY = y - par.GetHeight();
                 }
-                return w.edge != 0 || w.isModal;
+                return par.edge != 0 || par.isModal;
             }
 
             public override void TouchUp(InputEvent ev, float x, float y, int pointer, int button)
             {
-                w.dragging = false;
+                par.dragging = false;
             }
 
             public override void TouchDragged(InputEvent ev, float x, float y, int pointer)
             {
-                //if (!w.dragging) return;
+                //if (!par.dragging) return;
 
-                float width = w.GetWidth(), height = w.GetHeight();
-                float windowX = w.GetX(), windowY = w.GetY();
+                float width = par.GetWidth(), height = par.GetHeight();
+                float windowX = par.GetX(), windowY = par.GetY();
 
-                float minWidth = Math.Max(w.MinWidth, w.titleTable.MinWidth), maxWidth = w.MaxWidth;
-                float minHeight = w.MinHeight, maxHeight = w.MaxHeight;
-                var stage = w.GetStage();
+                float minWidth = Math.Max(par.MinWidth, par.titleTable.MinWidth), maxWidth = par.MaxWidth;
+                float minHeight = par.MinHeight, maxHeight = par.MaxHeight;
+                var stage = par.GetStage();
                 float parentWidth = stage.Width;
                 float parentHeight = stage.Height;
-                bool clampPosition = w.keepWithinStage && w.GetParent() == stage.Root;
+                bool clampPosition = par.keepWithinStage && par.GetParent() == stage.Root;
 
-                if ((w.edge & MOVE) != 0)
+                if ((par.edge & MOVE) != 0)
                 {
                     float amountX = x - startX, amountY = y - startY;
                     windowX += amountX;
                     windowY += amountY;
                 }
-                if ((w.edge & AlignInternal.left) != 0)
+                if ((par.edge & AlignInternal.left) != 0)
                 {
                     float amountX = x - startX;
                     if (width - amountX < minWidth)
@@ -343,7 +337,7 @@ namespace Blueberry.UI
                     width -= amountX;
                     windowX += amountX;
                 }
-                if ((w.edge & AlignInternal.top) != 0)
+                if ((par.edge & AlignInternal.top) != 0)
                 {
                     float amountY = y - startY;
                     if (height - amountY < minHeight)
@@ -353,7 +347,7 @@ namespace Blueberry.UI
                     height -= amountY;
                     windowY += amountY;
                 }
-                if ((w.edge & AlignInternal.right) != 0)
+                if ((par.edge & AlignInternal.right) != 0)
                 {
                     float amountX = x - lastX - width;
                     if (width + amountX < minWidth)
@@ -362,7 +356,7 @@ namespace Blueberry.UI
                         amountX = parentWidth - windowX - width;
                     width += amountX;
                 }
-                if ((w.edge & AlignInternal.bottom) != 0)
+                if ((par.edge & AlignInternal.bottom) != 0)
                 {
                     float amountY = y - lastY - height;
                     if (height + amountY < minHeight)
@@ -372,46 +366,46 @@ namespace Blueberry.UI
                     height += amountY;
                 }
 
-                w.SetBounds((float)Math.Round(windowX), (float)Math.Round(windowY), (float)Math.Round(width), (float)Math.Round(height));
+                par.SetBounds((float)Math.Round(windowX), (float)Math.Round(windowY), (float)Math.Round(width), (float)Math.Round(height));
                 Render.Request();
             }
 
             public override bool MouseMoved(InputEvent ev, float x, float y)
             {
-                if (w.dragging || !w.isResizable)
+                if (par.dragging || !par.isResizable)
                     return false;
-                /*if (x < w.resizeBorder)
+                /*if (x < par.resizeBorder)
                 {
-                    if (y < w.resizeBorder)
+                    if (y < par.resizeBorder)
                         Mouse.SetCursor(MouseCursor.SizeNWSE);
-                    else if (y > w.height - w.resizeBorder)
+                    else if (y > par.height - par.resizeBorder)
                         Mouse.SetCursor(MouseCursor.SizeNESW);
                     else
                         Mouse.SetCursor(MouseCursor.SizeWE);
                 }
-                else if (x > w.width - w.resizeBorder)
+                else if (x > par.width - par.resizeBorder)
                 {
-                    if (y < w.resizeBorder)
+                    if (y < par.resizeBorder)
                         Mouse.SetCursor(MouseCursor.SizeNESW);
-                    else if (y > w.height - w.resizeBorder)
+                    else if (y > par.height - par.resizeBorder)
                         Mouse.SetCursor(MouseCursor.SizeNWSE);
                     else
                         Mouse.SetCursor(MouseCursor.SizeWE);
                 }
-                else if (y < w.resizeBorder)
+                else if (y < par.resizeBorder)
                 {
-                    if (x < w.resizeBorder)
+                    if (x < par.resizeBorder)
                         Mouse.SetCursor(MouseCursor.SizeNWSE);
-                    else if (x > w.width - w.resizeBorder)
+                    else if (x > par.width - par.resizeBorder)
                         Mouse.SetCursor(MouseCursor.SizeNESW);
                     else
                         Mouse.SetCursor(MouseCursor.SizeNS);
                 }
-                else if (y > w.height - w.resizeBorder)
+                else if (y > par.height - par.resizeBorder)
                 {
-                    if (x < w.resizeBorder)
+                    if (x < par.resizeBorder)
                         Mouse.SetCursor(MouseCursor.SizeNESW);
-                    else if (x > w.width - w.resizeBorder)
+                    else if (x > par.width - par.resizeBorder)
                         Mouse.SetCursor(MouseCursor.SizeNWSE);
                     else
                         Mouse.SetCursor(MouseCursor.SizeNS);
@@ -421,49 +415,49 @@ namespace Blueberry.UI
                     Mouse.SetCursor(MouseCursor.Arrow);
                 }*/
                 //UpdateEdge(x, y);
-                return w.isModal;
+                return par.isModal;
             }
 
             public override void Exit(InputEvent ev, float x, float y, int pointer, Element toElement)
             {
-                if (w.dragging)
+                if (par.dragging)
                     return;
                 //Mouse.SetCursor(MouseCursor.Arrow);
             }
 
             public override bool Scrolled(InputEvent ev, float x, float y, float amountX, float amountY)
             {
-                return w.isModal;
+                return par.isModal;
             }
 
             public override bool KeyDown(InputEvent ev, int keycode)
             {
-                return w.isModal;
+                return par.isModal;
             }
 
             public override bool KeyUp(InputEvent ev, int keycode)
             {
-                return w.isModal;
+                return par.isModal;
             }
 
             public override bool KeyTyped(InputEvent ev, int keycode, char character)
             {
-                return w.isModal;
+                return par.isModal;
             }
         }
 
         private class CloseChangeListener : ChangeListener
         {
-            private Window w;
+            private Window par;
 
-            public CloseChangeListener(Window w)
+            public CloseChangeListener(Window par)
             {
-                this.w = w;
+                this.par = par;
             }
 
             public override void Changed(ChangeEvent ev, Element element)
             {
-                w.Close();
+                par.Close();
             }
         }
 
@@ -558,21 +552,21 @@ namespace Blueberry.UI
 
         private class WindowFadeAction : Action
         {
-            private Window w;
+            private Window par;
 
-            public WindowFadeAction(Window w)
+            public WindowFadeAction(Window par)
             {
-                this.w = w;
+                this.par = par;
             }
 
             public Touchable previousTouchable;
 
             public override bool Update(float delta)
             {
-                w.SetTouchable(previousTouchable);
-                w.Remove();
-                w.color.A = 255;
-                w.fadeOutActionRunning = false;
+                par.SetTouchable(previousTouchable);
+                par.Remove();
+                par.color.A = 1;
+                par.fadeOutActionRunning = false;
                 return true;
             }
         }
@@ -580,7 +574,7 @@ namespace Blueberry.UI
         /** @return this window for the purpose of chaining methods eg. stage.addActor(new MyWindow(stage).fadeIn(0.3f)); */
         public Window FadeIn(float time)
         {
-            SetColor(new Col(255, 255, 255, 0));
+            SetColor(new Col(1.0f, 1.0f, 1.0f, 0));
             AddAction(Actions.FadeIn(time, Interpolation.fade));
             return this;
         }
@@ -647,7 +641,7 @@ namespace Blueberry.UI
         public IDrawable background;
         public IFont titleFont;
         /** Optional. */
-        public Col titleFontColor = new Col(1, 1, 1, 1);
+        public Col titleFontColor = new Col(1.0f, 1.0f, 1.0f, 1.0f);
         /** Optional. */
         public IDrawable stageBackground;
 

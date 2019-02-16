@@ -9,14 +9,17 @@ namespace Blueberry.UI
 	    Dictionary<Element, object> values = new Dictionary<Element, object>();
         bool cancelHide;
         Element previousKeyboardFocus, previousScrollFocus;
-        FocusListener focusListener;
 
-        protected InputListener ignoreTouchDown = new IgnoreListener();
+        protected IEventListener ignoreTouchDown, focusListener;
 
         #region Listener
 
-        private class IgnoreListener : InputListener
+        private class IgnoreListener : InputListener<Dialog>
         {
+            public IgnoreListener(Dialog par) : base(par)
+            {
+            }
+
             public override bool TouchDown(InputEvent ev, float x, float y, int pointer, int button)
             {
                 ev.Cancel();
@@ -53,6 +56,8 @@ namespace Blueberry.UI
             contentTable.Defaults().Space(2).PadLeft(3).PadRight(3);
             buttonTable.Defaults().Space(6).PadBottom(3);
 
+            ignoreTouchDown = new IgnoreListener(this);
+
             AddListener(new Change(this));
             focusListener = new Focus(this);
         }
@@ -61,31 +66,28 @@ namespace Blueberry.UI
 
         private class Change : ChangeListener
         {
-            private readonly Dialog d;
+            private readonly Dialog par;
 
-            public Change(Dialog d)
+            public Change(Dialog par)
             {
-                this.d = d;
+                this.par = par;
             }
 
             public override void Changed(ChangeEvent ev, Element element)
             {
-                if (!d.values.ContainsKey(element)) return;
-                while (element.GetParent() != d.buttonTable)
+                if (!par.values.ContainsKey(element)) return;
+                while (element.GetParent() != par.buttonTable)
                     element = element.GetParent();
-                d.Result(d.values[element]);
-                if (!d.cancelHide) d.Hide();
-                d.cancelHide = false;
+                par.Result(par.values[element]);
+                if (!par.cancelHide) par.Hide();
+                par.cancelHide = false;
             }
         }
 
-        private class Focus : FocusListener
+        private class Focus : FocusListener<Dialog>
         {
-            private readonly Dialog d;
-
-            public Focus(Dialog d)
+            public Focus(Dialog par) : base(par)
             {
-                this.d = d;
             }
 
             public override void ScrollFocusChanged(FocusEvent ev, Element element, bool focused)
@@ -100,11 +102,11 @@ namespace Blueberry.UI
 
             private void FocusChanged(FocusEvent ev)
             {
-                var stage = d.GetStage();
-                if (d.IsModal() && stage != null && stage.Root.GetElements().Count > 0
-                        && stage.Root.GetElements().Peek() == d) { // Dialog is top most actor.
+                var stage = par.GetStage();
+                if (par.IsModal() && stage != null && stage.Root.GetElements().Count > 0
+                        && stage.Root.GetElements().Peek() == par) { // Dialog is top most actor.
                     var newFocusedElement = ev.GetRelatedElement();
-                    if (newFocusedElement != null && !newFocusedElement.IsDescendantOf(d)) ev.Cancel();
+                    if (newFocusedElement != null && !newFocusedElement.IsDescendantOf(par)) ev.Cancel();
                 }
             }
         }
@@ -213,15 +215,13 @@ namespace Blueberry.UI
 
         #region Listener
 
-        private class KeyListener : InputListener
+        private class KeyListener : InputListener<Dialog>
         {
-            private readonly Dialog d;
             private readonly int keycode;
             private readonly object obj;
 
-            public KeyListener(Dialog d, int keycode, object obj)
+            public KeyListener(Dialog par, int keycode, object obj) : base(par)
             {
-                this.d = d;
                 this.keycode = keycode;
                 this.obj = obj;
             }
@@ -230,9 +230,9 @@ namespace Blueberry.UI
             {
                 if (keycode == keycode2)
                 {
-                    d.Result(obj);
-                    if (!d.cancelHide) d.Hide();
-                    d.cancelHide = false;
+                    par.Result(obj);
+                    if (!par.cancelHide) par.Hide();
+                    par.cancelHide = false;
                 }
                 return false;
             }

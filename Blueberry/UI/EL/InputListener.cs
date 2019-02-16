@@ -1,6 +1,6 @@
 ﻿namespace Blueberry.UI
 {
-    public class InputListener : IEventListener
+    public abstract class InputListener : IEventListener
     {
         private static Vec2 tmpCoords;
 
@@ -100,6 +100,16 @@
         public virtual bool KeyUp(InputEvent ev, int keycode)
         {
             return false;
+        }
+    }
+
+    public abstract class InputListener<T> : InputListener
+    {
+        protected readonly T par;
+
+        public InputListener(T par)
+        {
+            this.par = par;
         }
     }
 }

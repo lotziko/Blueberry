@@ -425,44 +425,41 @@ namespace Blueberry.UI
 
         #region ClickListener
 
-        private class Listener : ClickListener
+        private class Listener : ClickListener<Tree>
         {
-            private Tree _t;
-
-            public Listener(Tree t) : base()
+            public Listener(Tree par) : base(par)
             {
-                _t = t;
             }
 
             public override void Clicked(InputEvent ev, float x, float y)
             {
-                var node = _t.GetNodeAt(y);
+                var node = par.GetNodeAt(y);
                 if (node == null) return;
-                if (node != _t.GetNodeAt(GetTouchDownY())) return;
-                if (_t.selection.GetMultiple() && _t.selection.HasItems() && Input.IsShiftDown())
+                if (node != par.GetNodeAt(GetTouchDownY())) return;
+                if (par.selection.GetMultiple() && par.selection.HasItems() && Input.IsShiftDown())
                 {
                     // Select range (shift).
-                    if (_t.rangeStart == null) _t.rangeStart = node;
-                    Node rangeStart = _t.rangeStart;
-                    if (!Input.IsCtrlDown()) _t.selection.Clear();
+                    if (par.rangeStart == null) par.rangeStart = node;
+                    Node rangeStart = par.rangeStart;
+                    if (!Input.IsCtrlDown()) par.selection.Clear();
                     float start = rangeStart.element.GetY(), end = node.element.GetY();
                     if (start > end)
-                        _t.SelectNodes(_t.rootNodes, end, start);
+                        par.SelectNodes(par.rootNodes, end, start);
                     else
                     {
-                        _t.SelectNodes(_t.rootNodes, start, end);
-                        //_t.selection.Items()//.ord().Reverse();
+                        par.SelectNodes(par.rootNodes, start, end);
+                        //par.selection.Items()//.ord().Reverse();
                     }
 
-                    _t.selection.FireChangeEvent();
-                    _t.rangeStart = rangeStart;
+                    par.selection.FireChangeEvent();
+                    par.rangeStart = rangeStart;
                     return;
                 }
-                if (node.children.Count > 0 && (!_t.selection.GetMultiple() || !Input.IsCtrlDown()))
+                if (node.children.Count > 0 && (!par.selection.GetMultiple() || !Input.IsCtrlDown()))
                 {
                     // Toggle expanded if left of icon.
                     float rowX = node.element.GetX();
-                    if (node.icon != null) rowX -= _t.iconSpacingRight + node.icon.MinWidth;
+                    if (node.icon != null) rowX -= par.iconSpacingRight + node.icon.MinWidth;
                     if (x < rowX)
                     {
                         node.SetExpanded(!node.expanded);
@@ -471,20 +468,20 @@ namespace Blueberry.UI
                     }
                 }
                 if (!node.IsSelectable()) return;
-                _t.selection.Choose(node);
-                if (!_t.selection.IsEmpty()) _t.rangeStart = node;
+                par.selection.Choose(node);
+                if (!par.selection.IsEmpty()) par.rangeStart = node;
             }
 
             public override bool MouseMoved(InputEvent ev, float x, float y)
             {
-                _t.SetOverNode(_t.GetNodeAt(y));
+                par.SetOverNode(par.GetNodeAt(y));
                 return false;
             }
 
             public override void Exit(InputEvent ev, float x, float y, int pointer, Element toElement)
             {
                 base.Exit(ev, x, y, pointer, toElement);
-                if (toElement == null || !toElement.IsDescendantOf(_t)) _t.SetOverNode(null);
+                if (toElement == null || !toElement.IsDescendantOf(par)) par.SetOverNode(null);
             }
         }
 
