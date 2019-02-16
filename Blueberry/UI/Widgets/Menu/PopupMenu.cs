@@ -5,7 +5,6 @@ namespace Blueberry.UI
     public class PopupMenu : Table
     {
         private static Vec2 tmpVector = new Vec2();
-        private const int borderSize = 1;
 
         private PopupMenuStyle style;
         private IPopupMenuListener listener;
@@ -243,6 +242,11 @@ namespace Blueberry.UI
             Add(new Separator(style)).PadTop(2).PadBottom(2).Fill().Expand().Row();
         }
 
+        public void AddSeparator(Skin skin, string stylename = "default")
+        {
+            AddSeparator(skin.Get<SeparatorStyle>(stylename));
+        }
+
         /**
 	     * Returns input listener that can be added to scene2d actor. When right mouse button is pressed on that actor,
 	     * menu will be displayed
@@ -315,16 +319,17 @@ namespace Blueberry.UI
 	     */
         public void ShowMenu(Stage stage, Element element)
         {
+            var borderSize = style == null ? 1 : style.borderSize;
             var pos = new Vec2(0, 0);
             element.LocalToStageCoordinates(ref pos.X, ref pos.Y);
             float menuY;
-            if (pos.Y - GetHeight() <= 0)
+            if (pos.Y + GetHeight() > stage.Height)
             {
-                menuY = pos.Y + element.GetHeight() + GetHeight() - borderSize;
+                menuY = pos.Y - borderSize - GetHeight();
             }
             else
             {
-                menuY = pos.Y + borderSize;
+                menuY = pos.Y + borderSize + element.GetHeight();
             }
             ShowMenu(stage, pos.X, menuY);
         }
@@ -409,6 +414,7 @@ namespace Blueberry.UI
     {
         public IDrawable background;
         public IDrawable border;
+        public int borderSize = 1;
 
         public PopupMenuStyle()
         {
