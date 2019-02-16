@@ -13,7 +13,9 @@ namespace Blueberry.UI
         private bool contentMoved, focusOnEnter = true;
         private int button;
 
-        public Action<int> OnZoomChanged;
+        public event Action<int> OnZoomChanged;
+
+        protected IDrawable background;
 
         public ZoomableArea() : this(new DebugArea())
         {
@@ -47,6 +49,9 @@ namespace Blueberry.UI
             Validate();
             if (ClipBegin(graphics, 0, 0, GetWidth(), GetHeight()))
             {
+                if (background != null)
+                    background.Draw(graphics, GetX(), GetY(), GetWidth(), GetHeight(), Col.White);
+
                 base.Draw(graphics, parentAlpha);
                 ClipEnd(graphics);
             }
@@ -80,7 +85,7 @@ namespace Blueberry.UI
             FixContentPosition();
         }
 
-        private void FitContentAtCenter()
+        public void FitContentAtCenter()
         {
             if (content == null)
                 return;
@@ -104,28 +109,41 @@ namespace Blueberry.UI
 
         #region ZoomListener
 
-        private class ZoomListener : InputListener
+        private class ZoomListener : InputListener<ZoomableArea>
         {
-            private readonly ZoomableArea area;
+            private Element prevKFocus, prevSFocus;
             private Vec2 lastPosition;
             private bool canDrag;
 
-            public ZoomListener(ZoomableArea area)
+            public ZoomListener(ZoomableArea par) : base(par)
             {
-                this.area = area;
             }
 
             public override void Enter(InputEvent ev, float x, float y, int pointer, Element fromElement)
             {
-                if (area.focusOnEnter)
-                    area.GetStage().SetScrollFocus(area);
+                if (par.focusOnEnter)
+                {
+                    prevKFocus = par.GetStage().GetKeyboardFocus();
+                    prevSFocus = par.GetStage().GetScrollFocus();
+                    par.GetStage().SetKeyboardFocus(par);
+                    par.GetStage().SetScrollFocus(par);
+                }
+            }
+
+            public override void Exit(InputEvent ev, float x, float y, int pointer, Element toElement)
+            {
+                if (par.focusOnEnter)
+                {
+                    par.GetStage().SetKeyboardFocus(prevKFocus == par ? null : prevKFocus);
+                    par.GetStage().SetScrollFocus(prevSFocus == par ? null : prevSFocus);
+                }
             }
 
             public override bool TouchDown(InputEvent ev, float x, float y, int pointer, int button)
             {
-                area.GetStage().SetScrollFocus(area);
+                par.GetStage().SetScrollFocus(par);
                 lastPosition.Set(x, y);
-                if (button == area.button)
+                if (button == par.button)
                     canDrag = true;
                 return true;
             }
@@ -139,10 +157,10 @@ namespace Blueberry.UI
             {
                 if (canDrag)
                 {
-                    var content = area.content;
+                    var content = par.content;
                     content.SetPosition(content.GetX() - lastPosition.X + x, content.GetY() - lastPosition.Y + y);
-                    area.FixContentPosition();
-                    area.contentMoved = true;
+                    par.FixContentPosition();
+                    par.contentMoved = true;
                     lastPosition.Set(x, y);
                     Render.Request();
                 }
@@ -150,7 +168,7 @@ namespace Blueberry.UI
 
             public override bool Scrolled(InputEvent ev, float x, float y, float amountX, float amountY)
             {
-                var content = area.content;
+                var content = par.content;
                 if (Input.IsCtrlDown())
                 {
                     amountY *= -1;
@@ -159,18 +177,18 @@ namespace Blueberry.UI
                     float normalizedX = x < content.GetX() ? 0f : (x > content.GetX() + preWidth ? 1f : (x - content.GetX()) / preWidth);
                     float normalizedY = y < content.GetY() ? 0f : (y > content.GetY() + preHeight ? 1f : (y - content.GetY()) / preHeight);
 
-                    area.SetZoomIndex((int)MathF.Clamp(area.zoomIndex - amountY, 0, ZOOM_LEVELS.Length - 1));
+                    par.SetZoomIndex((int)MathF.Clamp(par.zoomIndex - amountY, 0, ZOOM_LEVELS.Length - 1));
 
                     float postWidth = content.GetWidth() * content.GetScaleX();
                     float postHeight = content.GetHeight() * content.GetScaleY();
 
                     content.SetPosition(content.GetX() + (preWidth - postWidth) * normalizedX, content.GetY() + (preHeight - postHeight) * normalizedY);
-                    area.FixContentPosition();
+                    par.FixContentPosition();
                 }
                 else
                 {
                     content.SetPosition(content.GetX() - amountX * content.GetWidth() * content.GetScaleX() / 20, content.GetY() + amountY * content.GetHeight() * content.GetScaleY() / 20);
-                    area.FixContentPosition();
+                    par.FixContentPosition();
                 }
                 Render.Request();
 
@@ -179,6 +197,11 @@ namespace Blueberry.UI
         }
 
         #endregion
+
+        public void SetBackground(IDrawable background)
+        {
+            this.background = background;
+        }
 
         private class DebugArea : Element
         {
