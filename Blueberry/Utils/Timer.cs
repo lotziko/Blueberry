@@ -9,7 +9,6 @@ namespace Blueberry
     {
         static Dictionary<Task, CancellationTokenSource> _scheduledTasks = new Dictionary<Task, CancellationTokenSource>();
 
-
         public static void Schedule(Task task, TimeSpan delay)
         {
             Schedule(task, TimeSpan.FromSeconds(0), delay, 1);
@@ -38,7 +37,7 @@ namespace Blueberry
                 bool delayed = delay.Milliseconds > 0;
                 while(count == -1 || count > 0)
                 {
-                    CancellationToken token = (CancellationToken)s;
+                    var token = (CancellationToken)s;
                     if (token.IsCancellationRequested)
                     {
                         task.Schedule(false);
@@ -48,23 +47,11 @@ namespace Blueberry
                         
                     if (delayed)
                     {
-                        var watch = new Stopwatch();
-                        watch.Start();
-                        while (!token.IsCancellationRequested && watch.Elapsed <  delay)
-                        {
-                            
-                        }
-                        watch.Stop();
+                        token.WaitHandle.WaitOne(delay);
                     }
                     task.Run();
                     {
-                        var watch = new Stopwatch();
-                        watch.Start();
-                        while (token.IsCancellationRequested && watch.Elapsed < interval)
-                        {
-                            
-                        }
-                        watch.Stop();
+                        token.WaitHandle.WaitOne(interval);
                     }
                     --count;
                 }
