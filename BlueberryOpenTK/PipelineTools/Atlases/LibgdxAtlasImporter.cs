@@ -21,7 +21,7 @@ namespace BlueberryOpenTK.PipelineTools
                         pageImage = null;
                     else if (pageImage == null)
                     {
-                        var imagePath = directory + "\\" + line;
+                        var imagePath = directory + "/" + line;
 
                         float width = 0, height = 0;
                         if (ReadArguments(reader) == 2)

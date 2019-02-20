@@ -19,55 +19,45 @@ namespace BlueberryOpenTK.PipelineTools
                     {
                         regions = new List<Region>()
                     };
-                    int regionCount = br.ReadInt32();
-                    for (int i = 0; i < regionCount; i++)
+                    int pagesCount = br.ReadInt32();
+                    for(int i = 0; i < pagesCount; i++)
                     {
-                        var region = new Region()
+                        int regionCount = br.ReadInt32();
+                        for(int j = 0; j < regionCount; j++)
                         {
-                            name = br.ReadString(),
-                            rotate = br.ReadBoolean(),
-                            left = br.ReadInt32(),
-                            top = br.ReadInt32(),
-                            width = br.ReadInt32(),
-                            height = br.ReadInt32()
-                        };
+                            var region = new Region()
+                            {
+                                name = br.ReadString(),
+                                rotate = br.ReadBoolean(),
+                                left = br.ReadInt32(),
+                                top = br.ReadInt32(),
+                                width = br.ReadInt32(),
+                                height = br.ReadInt32(),
+                                page = i
+                            };
 
-                        if (br.ReadBoolean() == true)
-                        {
-                            region.splits = new int[] { br.ReadInt32(), br.ReadInt32(), br.ReadInt32(), br.ReadInt32() };
+                            if (br.ReadBoolean() == true)
+                            {
+                                region.splits = new int[] { br.ReadInt32(), br.ReadInt32(), br.ReadInt32(), br.ReadInt32() };
+                            }
+
+                            if (br.ReadBoolean() == true)
+                            {
+                                region.pads = new int[] { br.ReadInt32(), br.ReadInt32(), br.ReadInt32(), br.ReadInt32() };
+                            }
+
+                            region.originalWidth = br.ReadInt32();
+                            region.originalHeight = br.ReadInt32();
+
+                            region.offsetX = br.ReadInt32();
+                            region.offsetY = br.ReadInt32();
+
+                            region.index = br.ReadInt32();
+
+                            atlas.regions.Add(region);
                         }
 
-                        if (br.ReadBoolean() == true)
-                        {
-                            region.pads = new int[] { br.ReadInt32(), br.ReadInt32(), br.ReadInt32(), br.ReadInt32() };
-                        }
-
-                        region.originalWidth = br.ReadInt32();
-                        region.originalHeight = br.ReadInt32();
-
-                        region.offsetX = br.ReadInt32();
-                        region.offsetY = br.ReadInt32();
-
-                        region.index = br.ReadInt32();
-
-                        atlas.regions.Add(region);
-                    }
-
-                    int textureCount = br.ReadInt32();
-                    int width = br.ReadInt32(), height = br.ReadInt32();
-
-                    //atlas.texture = new Texture2D[textureCount];
-                    //var container = new AtlasContainer
-                    //{
-                    //    atlas = atlas,
-                    //    textureBuffer = new List<byte[]>(),
-                    //    textureWidth = width,
-                    //    textureHeight = height
-                    //};
-
-                    for (int i = 0; i < textureCount; i++)
-                    {
-                        int compressedSize = br.ReadInt32();
+                        int width = br.ReadInt32(), height = br.ReadInt32(), compressedSize = br.ReadInt32();
                         byte[] buffer = new byte[compressedSize];
                         for (int j = 0; j < compressedSize; j++)
                         {
@@ -75,7 +65,6 @@ namespace BlueberryOpenTK.PipelineTools
                         }
                         buffer = Data.Decompress(buffer);
                         atlas.texture.Add(new Texture2D(buffer, width, height));
-                        //container.textureBuffer.Add(buffer);
                     }
 
                     br.Close();
