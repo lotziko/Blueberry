@@ -3,9 +3,9 @@ using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Drawing;
 
-namespace BlueberryOpenTK
+namespace Blueberry
 {
-    public class Texture2D : IDisposable
+    public partial class Texture2D : IDisposable
     {
         internal int texturePointer;
         protected int width, height;
@@ -48,13 +48,29 @@ namespace BlueberryOpenTK
         public Texture2D(byte[] data, int width, int height, bool hasMipmap = false) : this(width, height, GL.GenTexture(), hasMipmap)
         {
             GL.BindTexture(TextureTarget.Texture2D, texturePointer);
-            //GL.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
-            //GL.PixelStore(PixelStoreParameter.UnpackAlignment, 8);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToBorder);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToBorder);
+            if (hasMipmap)
+                GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+        }
+
+        public Texture2D(Col[] data, int width, int height, bool hasMipmap = false, TextureWrap wrap = TextureWrap.ClampToBorder) : this(width, height, GL.GenTexture(), hasMipmap)
+        {
+            var bitmap = new OpenTK.Graphics.Color4[data.Length];
+            for(int i = 0; i < bitmap.Length; i++)
+            {
+                bitmap[i] = data[i].c;
+            }
+            GL.BindTexture(TextureTarget.Texture2D, texturePointer);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.Float, bitmap);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)wrap.ToOpenTK());
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)wrap.ToOpenTK());
             if (hasMipmap)
                 GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             GL.BindTexture(TextureTarget.Texture2D, 0);

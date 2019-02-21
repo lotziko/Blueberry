@@ -3,6 +3,10 @@ using System;
 
 namespace Blueberry
 {
+    public partial class Texture2D
+    {
+    }
+
     public partial struct Mat
     {
     }

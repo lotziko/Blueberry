@@ -93,6 +93,7 @@ namespace Blueberry
         public void Clear(Col c)
         {
             GL.ClearColor(c.c.R, c.c.G, c.c.B, c.c.A);
+            GL.Clear(ClearBufferMask.ColorBufferBit);
         }
 
         public void SetRenderTarget(RenderTarget2D target)
@@ -131,6 +132,13 @@ namespace Blueberry
             col = (color ?? Col.White).c;
             ActiveBatch = tBatch;
             tBatch.AddTexture(texture, destination, col);
+        }
+
+        public void DrawTextureTiled(Texture2D texture, Rect destination, Col? color = null)
+        {
+            col = (color ?? Col.White).c;
+            ActiveBatch = tBatch;
+            tBatch.AddTextureTiled(texture, destination, col);
         }
 
         public void DrawRectangle(Rect rect, bool border = false, Col? color = null)

@@ -195,6 +195,22 @@ namespace BlueberryOpenTK
             ++pointer;
         }
 
+        public void AddTextureTiled(Texture2D texture, Rect destination, Color4 color)
+        {
+            if ((pointer + 1) * 4 > vertices.Length)
+                EnsureArraysCapacity();
+
+            int p = pointer * 4;
+
+            vertices[p].Set(destination.X, destination.Y, 0, 0, color);
+            vertices[p + 1].Set(destination.Right, destination.Y, 1 * destination.Width * texture.TexelH, 0, color);
+            vertices[p + 2].Set(destination.Right, destination.Bottom, 1 * destination.Width * texture.TexelH, 1 * destination.Height * texture.TexelV, color);
+            vertices[p + 3].Set(destination.X, destination.Bottom, 0, 1 * destination.Height * texture.TexelV, color);
+
+            textures[pointer] = texture.texturePointer;
+            ++pointer;
+        }
+
         public void AddTexture(Texture2D texture, Rect source, Rect destination, Color4 color)
         {
             if ((pointer + 1) * 4 > vertices.Length)

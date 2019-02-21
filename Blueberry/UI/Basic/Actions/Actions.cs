@@ -50,14 +50,14 @@ namespace Blueberry.UI
         /** Transitions from the alpha at the time this action starts to an alpha of 1. */
         static public AlphaAction FadeIn(float duration)
         {
-            return Alpha(255, duration, null);
+            return Alpha(1, duration, null);
         }
 
         /** Transitions from the alpha at the time this action starts to an alpha of 1. */
         static public AlphaAction FadeIn(float duration, Interpolation interpolation)
         {
             AlphaAction action = Action<AlphaAction>();
-            action.SetAlpha(255);
+            action.SetAlpha(1);
             action.SetDuration(duration);
             action.SetInterpolation(interpolation);
             return action;

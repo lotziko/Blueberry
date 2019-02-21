@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Blueberry.UI
 {
@@ -219,10 +217,37 @@ namespace Blueberry.UI
                     return;
                 par.SetChecked(!par.isChecked, true);
                 par.OnClicked?.Invoke();
+                Render.Request();
                 FocusManager.SwitchFocus(par.GetStage(), par);
             }
         }
 
         #endregion
+    }
+
+    public class ButtonStyle
+    {
+        public IDrawable up, down, over, @checked, checkedOver, disabled, focusedBorder;
+
+        public ButtonStyle()
+        {
+
+        }
+
+        public ButtonStyle(IDrawable up, IDrawable down, IDrawable @checked)
+        {
+            this.up = up;
+            this.down = down;
+            this.@checked = @checked;
+        }
+
+        public ButtonStyle(ButtonStyle style)
+        {
+            this.up = style.up;
+            this.down = style.down;
+            this.over = style.over;
+            this.checkedOver = style.checkedOver;
+            this.disabled = style.disabled;
+        }
     }
 }

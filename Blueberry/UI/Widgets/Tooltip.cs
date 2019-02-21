@@ -266,10 +266,10 @@ namespace Blueberry.UI
             public override void Run()
             {
                 if (tooltip.target.GetStage() == null) return;
-                //if (!tooltip.target.GetStage().GetElements().Contains(tooltip))
-                //{
-                tooltip.target.GetStage().AddElement(tooltip.FadeIn());
-                //}
+                if (!tooltip.target.GetStage().GetElements().Contains(tooltip))
+                {
+                    tooltip.target.GetStage().AddElement(tooltip.FadeIn());
+                }
 
                 //ActorUtils.keepWithinStage(getStage(), Tooltip.this);
             }

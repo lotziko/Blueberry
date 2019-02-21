@@ -120,7 +120,7 @@ namespace Blueberry.UI
 		/// <returns>The begin.</returns>
 		public bool ClipBegin(Graphics graphics)
         {
-            return ClipBegin(graphics, x, y, width, height);
+            return ClipBegin(graphics, 0, 0, width, height);
         }
 
 
@@ -133,6 +133,8 @@ namespace Blueberry.UI
         {
             if (width <= 0 || height <= 0)
                 return false;
+
+            graphics.Flush();
 
             var tableBounds = new Rect(x, y, width, height);
             var scissorBounds = stage.CalculateScissors(tableBounds, this);//var scissorBounds = ScissorStack.CalculateScissors(stage?.entity?.scene?.camera, graphics.TransformMatrix, tableBounds);
@@ -151,7 +153,7 @@ namespace Blueberry.UI
         /// <returns>The end.</returns>
         public void ClipEnd(Graphics graphics)
         {
-            //graphics.SetScissorTest(false);
+            graphics.Flush();
             ScissorStack.PopScissors();
         }
 
@@ -672,7 +674,10 @@ namespace Blueberry.UI
 		public virtual bool Remove()
         {
             if (parent != null)
+            {
+                Render.Request();
                 return parent.RemoveElement(this);
+            }
             return false;
         }
 

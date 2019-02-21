@@ -9,7 +9,7 @@ namespace Blueberry.UI
         private MenuBar menuBar;
 
         public TextButton openButton;
-        public IDrawable buttonDefault;
+        public IDrawable buttonDefaultOver, buttonDefaultUp;
 
         private string title;
 
@@ -22,7 +22,8 @@ namespace Blueberry.UI
             this.title = title;
 
             openButton = new TextButton(title, new TextButtonStyle(style.openButtonStyle));
-            buttonDefault = openButton.GetStyle().up;
+            buttonDefaultUp = openButton.GetStyle().up;
+            buttonDefaultOver = openButton.GetStyle().over;
 
             openButton.AddListener(new Listener(this));
         }
@@ -71,7 +72,7 @@ namespace Blueberry.UI
         {
             var pos = new Vec2(0, 0);
             openButton.LocalToStageCoordinates(ref pos.X, ref pos.Y);
-            SetPosition(pos.X, pos.Y - GetHeight());
+            SetPosition(pos.X, pos.Y + openButton.GetHeight());
             openButton.GetStage().AddElement(this);
             menuBar.SetCurrentMenu(this);
         }
@@ -97,12 +98,14 @@ namespace Blueberry.UI
 
         internal void SelectButton()
         {
-            openButton.GetStyle().up = openButton.GetStyle().over;
+            openButton.GetStyle().up = openButton.GetStyle().down;
+            openButton.GetStyle().over = openButton.GetStyle().down;
         }
 
         internal void DeselectButton()
         {
-            openButton.GetStyle().up = buttonDefault;
+            openButton.GetStyle().up = buttonDefaultUp;
+            openButton.GetStyle().over = buttonDefaultOver;
         }
     }
 

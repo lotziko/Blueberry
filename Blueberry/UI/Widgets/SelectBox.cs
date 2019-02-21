@@ -6,7 +6,6 @@ namespace Blueberry.UI
 {
     public class SelectBox<T> : Element, IDisablable where T : class
     {
-
         SelectBoxStyle style;
         protected internal readonly List<T> items = new List<T>();
         protected internal readonly ListSelection<T> selection;
@@ -15,6 +14,7 @@ namespace Blueberry.UI
         private readonly ClickListener<SelectBox<T>> clickListener;
         bool disabled;
         private int alignment = AlignInternal.left;
+        private IDrawable background;
 
         public SelectBox(Skin skin, string stylename = "default") : this(skin.Get<SelectBoxStyle>(stylename))
         {
@@ -212,18 +212,7 @@ namespace Blueberry.UI
         public override void Draw(Graphics graphics, float parentAlpha)
         {
             Validate();
-            
-            IDrawable background;
-            if (disabled && style.backgroundDisabled != null)
-                background = style.backgroundDisabled;
-            else if (selectBoxList.HasParent() && style.backgroundOpen != null)
-                background = style.backgroundOpen;
-            else if (clickListener.IsOver() && style.backgroundOver != null)
-                background = style.backgroundOver;
-            else if (style.background != null)
-                background = style.background;
-            else
-                background = null;
+
             var font = style.font;
             var fontColor = (disabled && style.disabledFontColor != Col.Transparent) ? style.disabledFontColor : style.fontColor;
 
@@ -255,11 +244,42 @@ namespace Blueberry.UI
         protected /*GlyphLayout*/void DrawItem(Graphics graphics, IFont font, T item, float x, float y, float width, Col color)
         {
             var str = ToString(item);
-            font.Draw(graphics, str, x, y, (int)width, color);
+            if (ClipBegin(graphics, 0, 0, GetWidth() - background.RightWidth, GetHeight()))
+            {
+                font.Draw(graphics, str, x, y, (int)width, color);
+                ClipEnd(graphics);
+            }
+        }
+
+        public override void Update(float delta)
+        {
+            base.Update(delta);
+            RefreshBackground();
+        }
+
+        protected virtual void RefreshBackground()
+        {
+            IDrawable background;
+            if (disabled && style.backgroundDisabled != null)
+                background = style.backgroundDisabled;
+            else if (selectBoxList.HasParent() && style.backgroundOpen != null)
+                background = style.backgroundOpen;
+            else if (clickListener.IsOver() && style.backgroundOver != null)
+                background = style.backgroundOver;
+            else if (style.background != null)
+                background = style.background;
+            else
+                background = null;
+            
+            if (background != this.background)
+            {
+                this.background = background;
+                Render.Request();
+            }
         }
 
         /** Sets the alignment of the selected item in the select par.See {@link #getList()} and {@link List#setAlignment(int)} to set
-	     * the alignment in the list shown when the select par is open.
+         * the alignment in the list shown when the select par is open.
 
          * @param alignment See { @link Align }. */
         public void SetAlignment(int alignment)
@@ -347,7 +367,7 @@ namespace Blueberry.UI
 
         protected internal void OnHide(Element selectBoxList)
         {
-            selectBoxList.color.A = 255;
+            selectBoxList.color.A = 1;
             selectBoxList.AddAction(Actions.Sequence(Actions.FadeOut(0.4f, Interpolation.fade), Actions.RemoveElement()));
         }
 
@@ -402,6 +422,7 @@ namespace Blueberry.UI
         private class SBLClickListener : ClickListener
         {
             private readonly SelectBoxList<T> par;
+            private int lastIndex;
 
             public SBLClickListener(SelectBoxList<T> par)
             {
@@ -416,18 +437,22 @@ namespace Blueberry.UI
 
             public override bool MouseMoved(InputEvent ev, float x, float y)
             {
-                par.list.SetSelectedIndex(Math.Min(par.selectBox.items.Count - 1, (int)(y / par.list.GetItemHeight())));
+                //int index = Math.Min(par.selectBox.items.Count - 1, (int)(y / par.list.GetItemHeight()));
+                int index = par.list.GetItemIndexAt(y);
+                par.list.SetSelectedIndex(index);
+                if (index != lastIndex)
+                {
+                    lastIndex = index;
+                    Render.Request();
+                }
                 return true;
             }
         }
 
-        private class SBLInputListener : InputListener
+        private class SBLInputListener : InputListener<SelectBoxList<T>>
         {
-            private readonly SelectBoxList<T> par;
-
-            public SBLInputListener(SelectBoxList<T> par)
+            public SBLInputListener(SelectBoxList<T> par) : base(par)
             {
-                this.par = par;
             }
 
             public override void Exit(InputEvent ev, float x, float y, int pointer, Element toElement)
@@ -479,8 +504,8 @@ namespace Blueberry.UI
             IDrawable listBackground = list.GetStyle().background;
             if (listBackground != null) height += listBackground.TopHeight + listBackground.BottomHeight;
 
-            float heightBelow = screenPosition.Y;
-            float heightAbove = stage.Height - screenPosition.Y - selectBox.GetHeight();
+            float heightBelow = stage.Height - screenPosition.Y - selectBox.GetHeight();
+            float heightAbove = screenPosition.Y;
             bool below = true;
             if (height > heightBelow)
             {

@@ -352,7 +352,7 @@ namespace Blueberry.UI
 
         protected virtual void DrawText(Graphics graphics, IFont font, float x, float y, Col color)
         {
-            font.Draw(graphics, displayText, x, y, visibleTextStart, visibleTextEnd, color);
+            font.Draw(graphics, displayText, x + textOffset, y, visibleTextStart, visibleTextEnd, color);
         }
 
         protected virtual float GetTextY(IFont font, IDrawable background)
@@ -380,7 +380,7 @@ namespace Blueberry.UI
         protected virtual void DrawCursor(IDrawable cursorPatch, Graphics graphics, IFont font, float x, float y)
         {
             cursorPatch.Draw(graphics,
-                x + textOffset + glyphPositions[cursor] - glyphPositions[visibleTextStart] + fontOffset - 1 /*font.getData().cursorX*/,
+                x + textOffset + glyphPositions[cursor] - glyphPositions[visibleTextStart] + fontOffset /*font.getData().cursorX*/,
                 y - font.Descent / 2, cursorPatch.MinWidth, textHeight, color);
         }
 
@@ -1261,7 +1261,7 @@ namespace Blueberry.UI
             public override bool KeyTyped(InputEvent ev, int keycode, char character)
             {
                 if (par.disabled || par.readOnly) return false;
-
+                
                 // Disallow "typing" most ASCII control characters, which would show up as a space when onlyFontChars is true.
                 switch (character)
                 {
@@ -1274,6 +1274,8 @@ namespace Blueberry.UI
                         if (character < 32) return false;
                         break;
                 }
+
+                Render.Request();
 
                 //lotziko fix for selection lose when typing wrong char
                 if (par.filter != null && !par.filter.AcceptChar(par, character) && !char.IsControl(character))
@@ -1342,19 +1344,16 @@ namespace Blueberry.UI
 
         }
         
-        private class Listener : ClickListener
+        private class Listener : ClickListener<TextField>
         {
-            private TextField t;
-
-            public Listener(TextField t)
+            public Listener(TextField par) : base(par)
             {
-                this.t = t;
             }
 
             public override void Enter(InputEvent ev, float x, float y, int pointer, Element fromElement)
             {
                 base.Enter(ev, x, y, pointer, fromElement);
-                if (pointer == -1 && t.IsDisabled() == false)
+                if (pointer == -1 && par.IsDisabled() == false)
                 {
                     //Mouse.SetCursor(MouseCursor.IBeam);
                 }

@@ -56,7 +56,6 @@ namespace Blueberry.UI
 
                 if (clip)
                 {
-                    graphics.Flush();
                     float padLeft = this.padLeft.Get(this), padTop = this.padTop.Get(this);
                     if (ClipBegin(graphics, padLeft, padTop, GetWidth() - padLeft - padRight.Get(this), GetHeight() - padTop - padBottom.Get(this)))
                     {
@@ -94,7 +93,7 @@ namespace Blueberry.UI
                 return;
 
             background.Draw(graphics, x, y, width, height, new Col(color, color.A * parentAlpha));
-            graphics.Flush();
+            //graphics.Flush();
         }
 
         #region Getters
@@ -1286,31 +1285,5 @@ namespace Blueberry.UI
     public enum Debug
     {
         NONE, ALL, TABLE, CELL, ELEMENT
-    }
-
-    public class ButtonStyle
-    {
-        public IDrawable up, down, over, checkked, checkedOver, disabled, focusedBorder;
-
-        public ButtonStyle()
-        {
-
-        }
-
-        public ButtonStyle(IDrawable up, IDrawable down, IDrawable checkked)
-        {
-            this.up = up;
-            this.down = down;
-            this.checkked = checkked;
-        }
-
-        public ButtonStyle(ButtonStyle style)
-        {
-            this.up = style.up;
-            this.down = style.down;
-            this.over = style.over;
-            this.checkedOver = style.checkedOver;
-            this.disabled = style.disabled;
-        }
     }
 }

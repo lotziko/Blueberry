@@ -4,19 +4,19 @@ namespace Blueberry.DataTools
 {
     public class DataBinding<T> : IDataBinding<T>
     {
-        private T value;
+        protected T value;
 
         public event Action<object> OnChange;
 
-        public T Value
+        public virtual T Value
         {
             get => value;
             set
             {
-                if (!this.value.Equals(value))
+                if (this.value == null || !this.value.Equals(value))
                 {
                     this.value = value;
-                    OnChange?.Invoke(value);
+                    CallChangeEvent(value);
                 }
             }
         }
@@ -26,12 +26,22 @@ namespace Blueberry.DataTools
             get => value;
             set
             {
-                if (!this.value.Equals(value))
+                if (this.value == null || !this.value.Equals(value))
                 {
                     this.value = (T)value;
-                    OnChange?.Invoke(value);
+                    CallChangeEvent(value);
                 }
             }
+        }
+
+        protected void CallChangeEvent(object value)
+        {
+            OnChange?.Invoke(value);
+        }
+
+        public void ForceChange()
+        {
+            CallChangeEvent(Value);
         }
     }
 }

@@ -12,6 +12,8 @@ namespace BlueberryOpenTK
 
         private Scene _current, _next;
 
+        public Col BackgroundColor { get; set; } = Col.Black;
+        
         public Scene Scene
         {
             get
@@ -52,7 +54,7 @@ namespace BlueberryOpenTK
             if (_current != null)
                 _current.Update((float)e.Time);
         }
-
+        
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
@@ -63,7 +65,7 @@ namespace BlueberryOpenTK
                 return;
             }
 
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            graphics.Clear(BackgroundColor);
             
             if (_current != null)
             {

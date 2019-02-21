@@ -301,7 +301,8 @@ namespace Blueberry.UI
         public void ShowMenu(Stage stage, float x, float y)
         {
             SetPosition(x, y/* - getHeight()*/);
-            if (stage.Height - GetY() > stage.Height) SetY(GetY() + GetHeight());
+            if (stage.Width - GetX() < GetWidth()) SetX(GetX() - GetWidth());
+            if (stage.Height - GetY() < GetHeight()) SetY(GetY() - GetHeight());
             //ActorUtils.KeepWithinStage(stage, this);
             stage.AddElement(this);
         }

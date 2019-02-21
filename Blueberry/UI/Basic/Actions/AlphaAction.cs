@@ -6,6 +6,11 @@ namespace Blueberry.UI
         private float start, end;
         private Col color;
 
+        public AlphaAction()
+        {
+
+        }
+
         protected override void Begin()
         {
             if (color == default) color = target.GetColor();
@@ -14,7 +19,7 @@ namespace Blueberry.UI
 
         protected override void LocalUpdate(float percent)
         {
-            color.A = (byte)(start + (end - start) * percent);
+            color.A = start + (end - start) * percent;
             target.SetColor(color);
             Render.Request();
         }

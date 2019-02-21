@@ -7,6 +7,11 @@ namespace Blueberry.DataTools
         event Action<object> OnChange;
 
         object Value { get; set; }
+
+        /// <summary>
+        /// Force call a change event
+        /// </summary>
+        void ForceChange();
     }
 
     public interface IDataBinding<T> : IDataBinding

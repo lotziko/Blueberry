@@ -10,6 +10,7 @@ namespace OpenTKTest
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
             using (var gw = new MainCore())

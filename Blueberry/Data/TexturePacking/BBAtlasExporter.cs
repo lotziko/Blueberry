@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Blueberry.DataTools
 {
-    [ContentExporter("BBAtlas")]
+    [AtlasExporter("BBAtlas")]
     public class BBAtlasExporter : ContentExporter<AtlasExportData>
     {
         public override void Export(string output, string name, AtlasExportData data)

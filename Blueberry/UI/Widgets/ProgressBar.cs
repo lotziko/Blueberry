@@ -39,8 +39,8 @@ namespace Blueberry.UI
 
         private void Binding_OnChange(object obj)
         {
-            if (obj is float)
-                SetValue((float)obj);
+            if (obj is IDataBinding b && b.Value is float)
+                SetValue((float)b.Value);
         }
 
         #endregion

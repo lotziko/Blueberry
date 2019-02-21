@@ -1,7 +1,4 @@
 ﻿using Blueberry.DataTools;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Blueberry.UI
 {
@@ -42,6 +39,7 @@ namespace Blueberry.UI
 
                 binding = value;
                 binding.OnChange += Binding_OnChange;
+                binding.ForceChange();
             }
         }
 
@@ -98,7 +96,7 @@ namespace Blueberry.UI
             return this;
         }
 
-        public Label SetText(string text)
+        public virtual Label SetText(string text)
         {
             if (this.text != text)
             {

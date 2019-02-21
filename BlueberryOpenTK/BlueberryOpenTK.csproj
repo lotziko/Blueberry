@@ -46,6 +46,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,7 +60,7 @@
   <ItemGroup>
     <Compile Include="Core.cs" />
     <None Include="Graphics\Fonts\BitmapFontOld.cs" />
-    <Compile Include="Graphics\Fonts\BitmapFont.cs" />
+    <Compile Include="Graphics\Fonts\FreeTypeFont.cs" />
     <Compile Include="Graphics\Graphics.cs" />
     <Compile Include="ECS\Components\Camera.cs" />
     <Compile Include="Graphics\IBatch.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Graphics\TextureAtlases\TextureAtlas.cs" />
     <Compile Include="Graphics\TextureBatch.cs" />
     <Compile Include="Graphics\TextureAtlases\TextureRegion.cs" />
+    <Compile Include="Graphics\TextureWrapExt.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="PipelineTools\Atlases\BBAtlasImporter.cs" />
     <Compile Include="PipelineTools\Content.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="UI\Containers\VerticalGroup.cs" />
     <Compile Include="UI\Drawables\NinePatchDrawable.cs" />
     <Compile Include="UI\Drawables\TextureRegionDrawable.cs" />
+    <Compile Include="UI\Skin.cs" />
     <Compile Include="UI\Stage.cs" />
     <Compile Include="Utils\Viewports\Viewport.cs" />
     <Compile Include="Utils\WrapperStructs.cs" />

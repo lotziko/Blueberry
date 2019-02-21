@@ -22,11 +22,27 @@ namespace Blueberry.UI
         {
             menuItems = new Table();
 
-            //
+            mainTable = new MainTable(this);
 
             mainTable.Left();
             mainTable.Add(menuItems);
             mainTable.SetBackground(style.background);
+        }
+
+        private class MainTable : Table
+        {
+            private MenuBar par;
+
+            public MainTable(MenuBar par) : base()
+            {
+                this.par = par;
+            }
+
+            protected override void SizeChanged()
+            {
+                base.SizeChanged();
+                par.CloseMenu();
+            }
         }
 
         public void AddMenu(Menu menu)

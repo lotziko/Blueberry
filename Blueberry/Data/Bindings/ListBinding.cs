@@ -46,5 +46,10 @@ namespace Blueberry.DataTools
         {
             OnChange?.Invoke(value);
         }
+
+        public void ForceChange()
+        {
+            OnChange?.Invoke(Value);
+        }
     }
 }

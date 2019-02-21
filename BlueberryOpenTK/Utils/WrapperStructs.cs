@@ -1,9 +1,14 @@
-﻿using OpenTK;
+﻿using BlueberryOpenTK;
+using OpenTK;
 using OpenTK.Graphics;
-using System;
 
 namespace Blueberry
 {
+    public partial struct Tex
+    {
+        public Texture2D t;
+    }
+
     public partial struct Mat
     {
         public Matrix4 m;
@@ -73,6 +78,15 @@ namespace Blueberry
             c = new Color4(this.r, this.g, this.b, this.a);
         }
 
+        public Col(float r, float g, float b, float a)
+        {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+            this.a = a;
+            this.c = new Color4(r, g, b, a);
+        }
+
         public Col(Col col)
         {
             r = col.R;
@@ -91,7 +105,7 @@ namespace Blueberry
             c = new Color4(r, g, b, a);
         }
 
-        public Col(Color4 c)
+        internal Col(Color4 c)
         {
             r = c.R;
             g = c.G;
@@ -100,7 +114,7 @@ namespace Blueberry
             this.c = new Color4(r, g, b, a);
         }
 
-        public Col(Color4 c, float alpha)
+        internal Col(Color4 c, float alpha)
         {
             r = c.R;
             g = c.G;
@@ -121,6 +135,7 @@ namespace Blueberry
 
         public static Col Red { get; } = new Col(Color4.Red);
         public static Col White { get; } = new Col(Color4.White);
+        public static Col Black { get; } = new Col(Color4.Black);
         public static Col Gray { get; } = new Col(Color4.Gray);
         public static Col DarkGray { get; } = new Col(Color4.DarkGray);
         public static Col Transparent { get; } = new Col(new Color4(0, 0, 0, 0));

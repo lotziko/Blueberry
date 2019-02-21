@@ -99,6 +99,15 @@ namespace Blueberry
             this.c = new Color(r, g, b, a);
         }
 
+        public Col(float r, float g, float b, float a)
+        {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+            this.a = a;
+            this.c = new Color(r, g, b, a);
+        }
+
         public static bool operator ==(Col value1, Col value2)
         {
             return value1.c.R == value2.c.R && value1.c.G == value2.c.G && value1.c.B == value2.c.B && value1.c.A == value2.c.A;
@@ -111,6 +120,7 @@ namespace Blueberry
 
         public static Col Transparent { get; } = new Col(Color.Transparent);
         public static Col White { get; } = new Col(Color.White);
+        public static Col Black { get; } = new Col(Color.Black);
         public static Col Gray { get; } = new Col(Color.Gray);
     }
 

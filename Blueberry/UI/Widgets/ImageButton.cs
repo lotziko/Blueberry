@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Blueberry.UI.Widgets
+namespace Blueberry.UI
 {
     public class ImageButton : Button
     {
@@ -22,10 +20,14 @@ namespace Blueberry.UI.Widgets
 
         public ImageButton(IDrawable imageUp, ImageButtonStyle style) : base(style)
         {
-            style.imageUp = imageUp;
+            style = new ImageButtonStyle(style)
+            {
+                imageUp = imageUp
+            };
             image = new Image();
             image.SetScaling(Scaling.fit);
             Add(image);
+            SetStyle(style);
             SetSize(PreferredWidth, PreferredHeight);
             if (style.imageDisabled == null)
                 generateDisabledImage = true;
@@ -46,13 +48,15 @@ namespace Blueberry.UI.Widgets
                 drawable = style.imageOver;
             else if (style.imageUp != null)
                 drawable = style.imageUp;
+
+            if (generateDisabledImage && style.imageDisabled == null && IsDisabled())
+                image.SetColor(Col.Gray);
+            else
+                image.SetColor(Col.White);
+
             if (image.GetDrawable() != drawable)
             {
                 image.SetDrawable(drawable);
-                if (generateDisabledImage && style.imageDisabled == null && IsDisabled())
-                    image.SetColor(Col.Gray);
-                else
-                    image.SetColor(Col.White);
                 Render.Request();
             }
         }

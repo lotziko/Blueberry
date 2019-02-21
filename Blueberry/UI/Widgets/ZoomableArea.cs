@@ -121,7 +121,7 @@ namespace Blueberry.UI
 
             public override void Enter(InputEvent ev, float x, float y, int pointer, Element fromElement)
             {
-                if (par.focusOnEnter)
+                if (par.focusOnEnter && !canDrag)
                 {
                     prevKFocus = par.GetStage().GetKeyboardFocus();
                     prevSFocus = par.GetStage().GetScrollFocus();
@@ -132,7 +132,7 @@ namespace Blueberry.UI
 
             public override void Exit(InputEvent ev, float x, float y, int pointer, Element toElement)
             {
-                if (par.focusOnEnter)
+                if (par.focusOnEnter && !canDrag)
                 {
                     par.GetStage().SetKeyboardFocus(prevKFocus == par ? null : prevKFocus);
                     par.GetStage().SetScrollFocus(prevSFocus == par ? null : prevSFocus);

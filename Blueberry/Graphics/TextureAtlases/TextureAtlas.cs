@@ -84,6 +84,8 @@ namespace Blueberry
             return result;
         }
 
+        public List<Region> GetRegions() => regions;
+
         public NinePatch FindNinePatch(string name)
         {
             for (var i = 0; i < Count; i++)
@@ -104,7 +106,7 @@ namespace Blueberry
         }
     }
 
-    internal class Region
+    public class Region
     {
         internal string name;
         internal int index = -1, left, top, width, height, originalWidth, originalHeight, offsetX, offsetY, page;
@@ -117,6 +119,13 @@ namespace Blueberry
         /// <returns></returns>
 
         public string Name => name;
+
+        public int Page => page;
+
+        public int X => left;
+        public int Y => top;
+        public int Width => width;
+        public int Height => height;
 
         /// <summary>
         /// Constructor

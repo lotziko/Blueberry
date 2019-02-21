@@ -7,6 +7,8 @@ namespace Blueberry
     {
         internal List<Texture2D> texture = new List<Texture2D>();
 
+        public int PageCount => texture.Count;
+
         /// <summary>
         /// Constructor
         /// </summary>
