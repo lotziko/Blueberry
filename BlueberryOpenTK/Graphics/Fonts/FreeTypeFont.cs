@@ -190,7 +190,7 @@ namespace BlueberryOpenTK
                 }
                 else if (text[i] == ' ')
                 {
-                    computedWidth = ComputeWidth(text, curIndex, i);
+                    computedWidth = ComputeWidth(text, curIndex, i + 1);
                     if (x + computedWidth > beginX + width && computedWidth < width)
                     {
                         x = beginX;
@@ -315,7 +315,7 @@ namespace BlueberryOpenTK
             for (int i = begin; i < end; i++)
             {
                 tmpGlyph = GetGlyph(text[i]);
-                width += tmpGlyph.xadvance - tmpGlyph.xbearing;// + spacing + padRight + padLeft;
+                width += tmpGlyph.xadvance;// + spacing + padRight + padLeft;
             }
             return width;
         }
