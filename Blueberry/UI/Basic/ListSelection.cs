@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Blueberry.UI
@@ -9,12 +10,12 @@ namespace Blueberry.UI
         bool rangeSelect = true;
         int rangeStart;
 
+        public event Action<T> OnChange;
 
         public ListSelection(List<T> array)
         {
             this.array = array;
         }
-
 
         public override void Choose(T item)
         {
@@ -54,6 +55,7 @@ namespace Blueberry.UI
             }
 
             base.Choose(item);
+            OnChange?.Invoke(item);
         }
 
 

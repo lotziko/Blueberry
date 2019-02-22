@@ -16,6 +16,8 @@ namespace Blueberry.UI
         private int alignment = AlignInternal.left;
         private IDrawable background;
 
+        public event Action<T> OnChange;
+
         public SelectBox(Skin skin, string stylename = "default") : this(skin.Get<SelectBoxStyle>(stylename))
         {
 
@@ -24,6 +26,10 @@ namespace Blueberry.UI
         public SelectBox(SelectBoxStyle style)
         {
             selection = new ListSelection<T>(items);
+            selection.OnChange += (value) =>
+            {
+                OnChange?.Invoke(value);
+            };
 
             SetStyle(style);
             SetSize(PreferredWidth, PreferredHeight);
@@ -419,14 +425,12 @@ namespace Blueberry.UI
             }
         }
 
-        private class SBLClickListener : ClickListener
+        private class SBLClickListener : ClickListener<SelectBoxList<T>>
         {
-            private readonly SelectBoxList<T> par;
             private int lastIndex;
 
-            public SBLClickListener(SelectBoxList<T> par)
+            public SBLClickListener(SelectBoxList<T> par) : base(par)
             {
-                this.par = par;
             }
 
             public override void Clicked(InputEvent ev, float x, float y)
