@@ -69,6 +69,8 @@ namespace Blueberry.UI
         private bool readOnly = false;
         private float cursorPercentHeight = 0.8f;
 
+        protected IDrawable background;
+
         public Action<string> OnChange;
 
         public TextField(String text, Skin skin, string stylename = "default") : this(text, skin.Get<TextFieldStyle>(stylename)) { }
@@ -263,6 +265,7 @@ namespace Blueberry.UI
         public override void Update(float delta)
         {
             base.Update(delta);
+            RefreshBackground();
             var stage = GetStage();
             bool focused = (stage != null && stage.GetKeyboardFocus() == this);
             if (!focused) keyRepeatTask.Cancel();
@@ -270,6 +273,23 @@ namespace Blueberry.UI
             if (drawBorder && focused && !disabled)
             {
                 Blink();
+            }
+        }
+
+        protected virtual void RefreshBackground()
+        {
+            bool focused = (stage != null && stage.GetKeyboardFocus() == this);
+            IDrawable background = (disabled && style.disabledBackground != null) ? style.disabledBackground
+                    : ((focused && style.focusedBackground != null) ? style.focusedBackground : style.background);
+
+            if (!disabled && style.backgroundOver != null && (clickListener.IsOver() || focused))
+            {
+                background = style.backgroundOver;
+            }
+            if (background != this.background)
+            {
+                this.background = background;
+                Render.Request();
             }
         }
 
@@ -285,13 +305,7 @@ namespace Blueberry.UI
                     : ((focused && style.focusedFontColor != null) ? style.focusedFontColor : style.fontColor);
             IDrawable selection = style.selection;
             IDrawable cursorPatch = style.cursor;
-            IDrawable background = (disabled && style.disabledBackground != null) ? style.disabledBackground
-                    : ((focused && style.focusedBackground != null) ? style.focusedBackground : style.background);
-
-            if (!disabled && style.backgroundOver != null && (clickListener.IsOver() || focused))
-            {
-                background = style.backgroundOver;
-            }
+            
 
             var color = new Col(this.color, this.color.A * parentAlpha);
             float x = GetX();
