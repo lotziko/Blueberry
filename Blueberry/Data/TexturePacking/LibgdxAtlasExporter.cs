@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Blueberry.DataTools
 {
-    [AtlasExporter("Libgdx atlas")]
+    [AtlasExporter("Libgdx Atlas")]
     public class LibgdxAtlasExporter : ContentExporter<AtlasExportData>
     {
         private Settings settings;
