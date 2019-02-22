@@ -142,6 +142,7 @@ namespace Blueberry.UI
             public override bool TouchDown(InputEvent ev, float x, float y, int pointer, int button)
             {
                 par.GetStage().SetScrollFocus(par);
+                par.GetStage().SetKeyboardFocus(par);
                 lastPosition.Set(x, y);
                 if (button == par.button)
                     canDrag = true;
