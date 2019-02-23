@@ -5,6 +5,14 @@ namespace Blueberry
     public static partial class Input
     {
         public static IInputProcessor InputProcessor { get; set; }
+
+        public static event EventHandler<KeyEventArgs> KeyDown;
+        public static event EventHandler<KeyEventArgs> KeyUp;
+        public static event EventHandler<KeyPressEventArgs> KeyPress;
+        public static event EventHandler<MouseButtonEventArgs> MouseUp;
+        public static event EventHandler<MouseButtonEventArgs> MouseDown;
+        public static event EventHandler<MouseMoveEventArgs> MouseMove;
+        public static event EventHandler<ScrollEventArgs> MouseWheel;
     }
 
     public class KeyEventArgs : EventArgs

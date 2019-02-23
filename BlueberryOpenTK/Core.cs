@@ -30,14 +30,6 @@ namespace Blueberry
         public int Width { get => window.Width; set => window.Width = value; }
         public int Height { get => window.Height; set => window.Height = value; }
 
-        public event EventHandler<KeyEventArgs> KeyDown;
-        public event EventHandler<KeyEventArgs> KeyUp;
-        public event EventHandler<KeyPressEventArgs> KeyPress;
-        public event EventHandler<MouseButtonEventArgs> MouseUp;
-        public event EventHandler<MouseButtonEventArgs> MouseDown;
-        public event EventHandler<MouseMoveEventArgs> MouseMove;
-        public event EventHandler<ScrollEventArgs> MouseWheel;
-
         protected Scene currentScene, nextScene;
         protected OpenTKWindow window;
 
@@ -47,12 +39,12 @@ namespace Blueberry
             {
                 VSync = VSyncMode.Adaptive
             };
+            Input.Initialize(window);
 
             graphics = new Graphics();
             Screen.Width = Width;
             Screen.Height = Height;
             Render.NeedsRequest = true;
-            Input.Initialize(this);
         }
 
         public void Run(int rate)
@@ -142,41 +134,6 @@ namespace Blueberry
                 Screen.Height = Height;
                 Render.Request();
                 core.currentScene?.OnResize(Width, Height);
-            }
-
-            protected override void OnKeyUp(KeyboardKeyEventArgs e)
-            {
-                core.KeyUp?.Invoke(this, new KeyEventArgs((Key)e.Key, e.Shift, e.Control, e.Alt));
-            }
-
-            protected override void OnKeyDown(KeyboardKeyEventArgs e)
-            {
-                core.KeyDown?.Invoke(this, new KeyEventArgs((Key)e.Key, e.Shift, e.Control, e.Alt));
-            }
-
-            protected override void OnKeyPress(OpenTK.KeyPressEventArgs e)
-            {
-                core.KeyPress?.Invoke(this, new KeyPressEventArgs(e.KeyChar));
-            }
-
-            protected override void OnMouseDown(OpenTK.Input.MouseButtonEventArgs e)
-            {
-                core.MouseDown?.Invoke(this, new MouseButtonEventArgs((MouseButton)e.Button, e.X, e.Y));
-            }
-
-            protected override void OnMouseUp(OpenTK.Input.MouseButtonEventArgs e)
-            {
-                core.MouseUp?.Invoke(this, new MouseButtonEventArgs((MouseButton)e.Button, e.X, e.Y));
-            }
-
-            protected override void OnMouseMove(OpenTK.Input.MouseMoveEventArgs e)
-            {
-                core.MouseMove?.Invoke(this, new MouseMoveEventArgs(e.X, e.Y));
-            }
-
-            protected override void OnMouseWheel(MouseWheelEventArgs e)
-            {
-                core.MouseWheel?.Invoke(this, new ScrollEventArgs(e.Mouse.Scroll.X, e.Mouse.Scroll.Y));
             }
         }
     }

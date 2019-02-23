@@ -6,79 +6,72 @@ namespace Blueberry
         private static float previousWheelX, previousWheelY;
         private static bool shift, alt, ctrl;
 
-        public static void Initialize(Core core)
+        internal static void Initialize(OpenTK.GameWindow core)
         {
-            core.KeyDown += Core_KeyDown;
-            core.KeyUp += Core_KeyUp;
-            core.KeyPress += Core_KeyPress;
-            core.MouseDown += Core_MouseDown;
-            core.MouseUp += Core_MouseUp;
-            core.MouseMove += Core_MouseMove;
-            core.MouseWheel += Core_MouseWheel;
-        }
-
-        private static void Core_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Shift || e.Key.IsShift())
-                shift = true;
-            if (e.Control || e.Key.IsCtrl())
-                ctrl = true;
-            if (e.Alt || e.Key.IsAlt())
-                alt = true;
-
-            switch (e.Key)
+            core.KeyDown += (sender, e) =>
             {
-                case Key.Back:
-                    InputProcessor?.KeyTyped(0, '\b');
-                    break;
-                default:
-                    InputProcessor?.KeyDown((int)e.Key);
-                    break;
-            }
-        }
+                if (e.Shift || e.Key.IsShift())
+                    shift = true;
+                if (e.Control || e.Key.IsCtrl())
+                    ctrl = true;
+                if (e.Alt || e.Key.IsAlt())
+                    alt = true;
 
-        private static void Core_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Shift || e.Key.IsShift())
-                shift = false;
-            if (e.Control || e.Key.IsCtrl())
-                ctrl = false;
-            if (e.Alt || e.Key.IsAlt())
-                alt = false;
-
-            InputProcessor?.KeyUp((int)e.Key);
-        }
-
-        private static void Core_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            InputProcessor?.KeyTyped(0, e.Char);
-        }
-
-        private static void Core_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            InputProcessor?.TouchDown(e.X, e.Y, 0, (int)e.Button);
-        }
-
-        private static void Core_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            InputProcessor?.TouchUp(e.X, e.Y, 0, (int)e.Button);
-        }
-
-        private static void Core_MouseMove(object sender, MouseMoveEventArgs e)
-        {
-            if (OpenTK.Input.Mouse.GetState().LeftButton == OpenTK.Input.ButtonState.Pressed)
+                switch (e.Key)
+                {
+                    case OpenTK.Input.Key.Back:
+                        InputProcessor?.KeyTyped(0, '\b');
+                        break;
+                    default:
+                        InputProcessor?.KeyDown((int)e.Key);
+                        break;
+                }
+                KeyDown?.Invoke(core, new KeyEventArgs((Key)e.Key, e.Shift, e.Control, e.Alt));
+            };
+            core.KeyUp += (sender, e) =>
             {
-                InputProcessor?.TouchDragged(e.X, e.Y, 0);
-            }
-            else
-                InputProcessor?.MouseMoved(e.X, e.Y);
-        }
+                if (e.Shift || e.Key.IsShift())
+                    shift = false;
+                if (e.Control || e.Key.IsCtrl())
+                    ctrl = false;
+                if (e.Alt || e.Key.IsAlt())
+                    alt = false;
 
-        private static void Core_MouseWheel(object sender, ScrollEventArgs e)
-        {
-            InputProcessor?.Scrolled(e.X - previousWheelX, e.Y - previousWheelY);
-            previousWheelX = e.X;
-            previousWheelY = e.Y;
+                InputProcessor?.KeyUp((int)e.Key);
+                KeyUp?.Invoke(core, new KeyEventArgs((Key)e.Key, e.Shift, e.Control, e.Alt));
+            };
+            core.KeyPress += (sender, e) =>
+            {
+                InputProcessor?.KeyTyped(0, e.KeyChar);
+                KeyPress?.Invoke(core, new KeyPressEventArgs(e.KeyChar));
+            };
+            core.MouseDown += (sender, e) =>
+            {
+                InputProcessor?.TouchDown(e.X, e.Y, 0, (int)e.Button);
+                MouseDown?.Invoke(core, new MouseButtonEventArgs((MouseButton)e.Button, e.X, e.Y));
+            };
+            core.MouseUp += (sender, e) =>
+            {
+                InputProcessor?.TouchUp(e.X, e.Y, 0, (int)e.Button);
+                MouseUp?.Invoke(core, new MouseButtonEventArgs((MouseButton)e.Button, e.X, e.Y));
+            };
+            core.MouseMove += (sender, e) =>
+            {
+                if (OpenTK.Input.Mouse.GetState().LeftButton == OpenTK.Input.ButtonState.Pressed)
+                {
+                    InputProcessor?.TouchDragged(e.X, e.Y, 0);
+                }
+                else
+                    InputProcessor?.MouseMoved(e.X, e.Y);
+                MouseMove?.Invoke(core, new MouseMoveEventArgs(e.X, e.Y));
+            };
+            core.MouseWheel += (sender, e) =>
+            {
+                InputProcessor?.Scrolled(e.X - previousWheelX, e.Y - previousWheelY);
+                previousWheelX = e.X;
+                previousWheelY = e.Y;
+                MouseWheel?.Invoke(core, new ScrollEventArgs(e.Mouse.Scroll.X, e.Mouse.Scroll.Y));
+            };
         }
 
         internal static long GetCurrentEventTime()
@@ -126,6 +119,21 @@ namespace Blueberry
         private static bool IsAlt(this Key key)
         {
             return (key == Key.AltLeft || key == Key.AltRight);
+        }
+
+        private static bool IsShift(this OpenTK.Input.Key key)
+        {
+            return (key == OpenTK.Input.Key.ShiftLeft || key == OpenTK.Input.Key.ShiftRight);
+        }
+
+        private static bool IsCtrl(this OpenTK.Input.Key key)
+        {
+            return (key == OpenTK.Input.Key.ControlLeft || key == OpenTK.Input.Key.ControlRight);
+        }
+
+        private static bool IsAlt(this OpenTK.Input.Key key)
+        {
+            return (key == OpenTK.Input.Key.AltLeft || key == OpenTK.Input.Key.AltRight);
         }
     }
 }
