@@ -1,9 +1,9 @@
-﻿using BlueberryOpenTK;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Blueberry
 {
-    public partial class TextureAtlas
+    public partial class TextureAtlas : IDisposable
     {
         internal List<Texture2D> texture = new List<Texture2D>();
 
