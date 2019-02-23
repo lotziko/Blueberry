@@ -1,10 +1,4 @@
-﻿using BlueberryOpenTK;
-using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Windows.Forms;
-
+﻿
 namespace Blueberry
 {
     public static partial class Input
@@ -12,62 +6,18 @@ namespace Blueberry
         private static float previousWheelX, previousWheelY;
         private static bool shift, alt, ctrl;
 
-        #region Helper
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        private static extern int ToUnicodeEx(
-           uint wVirtKey,
-           uint wScanCode,
-           Keys[] lpKeyState,
-           StringBuilder pwszBuff,
-           int cchBuff,
-           uint wFlags,
-           IntPtr dwhkl);
-
-        [DllImport("user32.dll", ExactSpelling = true)]
-        internal static extern IntPtr GetKeyboardLayout(uint threadId);
-
-        [DllImport("user32.dll", ExactSpelling = true)]
-        internal static extern bool GetKeyboardState(Keys[] keyStates);
-
-        [DllImport("user32.dll", ExactSpelling = true)]
-        internal static extern uint GetWindowThreadProcessId(IntPtr hwindow, out uint processId);
-
-        public static string CodeToString(int scanCode)
-        {
-            uint procId;
-            uint thread = GetWindowThreadProcessId(Process.GetCurrentProcess().MainWindowHandle, out procId);
-            IntPtr hkl = GetKeyboardLayout(thread);
-
-            if (hkl == IntPtr.Zero)
-            {
-                Console.WriteLine("Sorry, that keyboard does not seem to be valid.");
-                return string.Empty;
-            }
-
-            Keys[] keyStates = new Keys[256];
-            if (!GetKeyboardState(keyStates))
-                return string.Empty;
-
-            StringBuilder sb = new StringBuilder(10);
-            int rc = ToUnicodeEx((uint)scanCode, (uint)scanCode, keyStates, sb, sb.Capacity, 0, hkl);
-            return sb.ToString();
-        }
-
-        #endregion
-
         public static void Initialize(Core core)
         {
-            core.KeyDown += On_KeyDown;
-            core.KeyUp += On_KeyUp;
-            core.KeyPress += On_KeyPress;
-            core.MouseMove += On_MouseMove;
-            core.MouseDown += On_MouseDown;
-            core.MouseUp += On_MouseUp;
-            core.MouseWheel += On_MouseWheel;
+            core.KeyDown += Core_KeyDown;
+            core.KeyUp += Core_KeyUp;
+            core.KeyPress += Core_KeyPress;
+            core.MouseDown += Core_MouseDown;
+            core.MouseUp += Core_MouseUp;
+            core.MouseMove += Core_MouseMove;
+            core.MouseWheel += Core_MouseWheel;
         }
 
-        public static void On_KeyDown(object sender, OpenTK.Input.KeyboardKeyEventArgs e)
+        private static void Core_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Shift || e.Key.IsShift())
                 shift = true;
@@ -76,11 +26,9 @@ namespace Blueberry
             if (e.Alt || e.Key.IsAlt())
                 alt = true;
 
-            //Console.WriteLine(CodeToString((int)e.ScanCode));
-
             switch (e.Key)
             {
-                case OpenTK.Input.Key.Back:
+                case Key.Back:
                     InputProcessor?.KeyTyped(0, '\b');
                     break;
                 default:
@@ -89,7 +37,7 @@ namespace Blueberry
             }
         }
 
-        public static void On_KeyUp(object sender, OpenTK.Input.KeyboardKeyEventArgs e)
+        private static void Core_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Shift || e.Key.IsShift())
                 shift = false;
@@ -101,14 +49,24 @@ namespace Blueberry
             InputProcessor?.KeyUp((int)e.Key);
         }
 
-        public static void On_KeyPress(object sender, OpenTK.KeyPressEventArgs e)
+        private static void Core_KeyPress(object sender, KeyPressEventArgs e)
         {
-            InputProcessor?.KeyTyped(0, e.KeyChar);
+            InputProcessor?.KeyTyped(0, e.Char);
         }
 
-        public static void On_MouseMove(object sender, OpenTK.Input.MouseMoveEventArgs e)
+        private static void Core_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.Mouse.LeftButton == OpenTK.Input.ButtonState.Pressed)
+            InputProcessor?.TouchDown(e.X, e.Y, 0, (int)e.Button);
+        }
+
+        private static void Core_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            InputProcessor?.TouchUp(e.X, e.Y, 0, (int)e.Button);
+        }
+
+        private static void Core_MouseMove(object sender, MouseMoveEventArgs e)
+        {
+            if (OpenTK.Input.Mouse.GetState().LeftButton == OpenTK.Input.ButtonState.Pressed)
             {
                 InputProcessor?.TouchDragged(e.X, e.Y, 0);
             }
@@ -116,21 +74,11 @@ namespace Blueberry
                 InputProcessor?.MouseMoved(e.X, e.Y);
         }
 
-        public static void On_MouseDown(object sender, OpenTK.Input.MouseButtonEventArgs e)
+        private static void Core_MouseWheel(object sender, ScrollEventArgs e)
         {
-            InputProcessor?.TouchDown(e.X, e.Y, 0, (int)e.Button);
-        }
-
-        public static void On_MouseUp(object sender, OpenTK.Input.MouseButtonEventArgs e)
-        {
-            InputProcessor?.TouchUp(e.X, e.Y, 0, (int)e.Button);
-        }
-
-        public static void On_MouseWheel(object sender, OpenTK.Input.MouseWheelEventArgs e)
-        {
-            InputProcessor?.Scrolled(e.Mouse.Scroll.X - previousWheelX, e.Mouse.Scroll.Y - previousWheelY);
-            previousWheelX = e.Mouse.Scroll.X;
-            previousWheelY = e.Mouse.Scroll.Y;
+            InputProcessor?.Scrolled(e.X - previousWheelX, e.Y - previousWheelY);
+            previousWheelX = e.X;
+            previousWheelY = e.Y;
         }
 
         internal static long GetCurrentEventTime()
@@ -165,19 +113,19 @@ namespace Blueberry
             return OpenTK.Input.Keyboard.GetState().IsKeyDown((OpenTK.Input.Key)key);
         }
 
-        private static bool IsShift(this OpenTK.Input.Key key)
+        private static bool IsShift(this Key key)
         {
-            return (key == OpenTK.Input.Key.ShiftLeft || key == OpenTK.Input.Key.ShiftRight);
+            return (key == Key.ShiftLeft || key == Key.ShiftRight);
         }
 
-        private static bool IsCtrl(this OpenTK.Input.Key key)
+        private static bool IsCtrl(this Key key)
         {
-            return (key == OpenTK.Input.Key.ControlLeft || key == OpenTK.Input.Key.ControlRight);
+            return (key == Key.ControlLeft || key == Key.ControlRight);
         }
 
-        private static bool IsAlt(this OpenTK.Input.Key key)
+        private static bool IsAlt(this Key key)
         {
-            return (key == OpenTK.Input.Key.AltLeft || key == OpenTK.Input.Key.AltRight);
+            return (key == Key.AltLeft || key == Key.AltRight);
         }
     }
 }
