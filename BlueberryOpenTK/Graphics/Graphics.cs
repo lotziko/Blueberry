@@ -117,28 +117,42 @@ namespace Blueberry
         {
             col = (color ?? Col.White).c;
             ActiveBatch = tBatch;
-            tBatch.AddTexture(texture, x, y, col);
+            tBatch.Draw(texture, x, y, col);
         }
 
         public void DrawTexture(Texture2D texture, Rect source, Rect destination, Col? color = null)
         {
             col = (color ?? Col.White).c;
             ActiveBatch = tBatch;
-            tBatch.AddTexture(texture, source, destination, col);
+            tBatch.Draw(texture, destination.X, destination.Y, destination.Width, destination.Height, source.X * texture.TexelH, source.Y * texture.TexelV, source.Right * texture.TexelH, source.Bottom * texture.TexelV, col);
+        }
+
+        public void DrawTexture(Texture2D texture, float x, float y, float width, float height, float u, float v, float u2, float v2, Col? color = null)
+        {
+            col = (color ?? Col.White).c;
+            ActiveBatch = tBatch;
+            tBatch.Draw(texture, x, y, width, height, u, v, u2, v2, col);
         }
 
         public void DrawTexture(Texture2D texture, Rect destination, Col? color = null)
         {
             col = (color ?? Col.White).c;
             ActiveBatch = tBatch;
-            tBatch.AddTexture(texture, destination, col);
+            tBatch.Draw(texture, destination.X, destination.Y, destination.Width, destination.Height, col);
         }
 
-        public void DrawTextureTiled(Texture2D texture, Rect destination, Col? color = null)
+        public void DrawTexture(Texture2D texture, float x, float y, float width, float height, Col? color = null)
         {
             col = (color ?? Col.White).c;
             ActiveBatch = tBatch;
-            tBatch.AddTextureTiled(texture, destination, col);
+            tBatch.Draw(texture, x, y, width, height, col);
+        }
+
+        public void DrawTextureTiled(Texture2D texture, float x, float y, float width, float height, Col? color = null)
+        {
+            col = (color ?? Col.White).c;
+            ActiveBatch = tBatch;
+            tBatch.Draw(texture, x, y, width, height, 0, 0, 1 * texture.Width * texture.TexelH, 1 * texture.Height * texture.TexelV, col);
         }
 
         public void DrawRectangle(Rect rect, bool border = false, Col? color = null)

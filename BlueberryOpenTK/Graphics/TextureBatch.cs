@@ -9,7 +9,7 @@ namespace BlueberryOpenTK
     public class TextureBatch : IBatch
     {
         const int initialCapacity = 256;
-        protected int vbo, vao, currentCapacity, pointer;
+        protected int vbo, vao, currentCapacity, pointer, p;
         protected bool isDirty = false;
         protected PolygonMode currentMode;
 
@@ -156,9 +156,45 @@ namespace BlueberryOpenTK
             GL.BindVertexArray(0);
 
             pointer = 0;
+            p = 0;
         }
 
-        public void AddTexture(Texture2D texture, float x, float y)
+        public void Draw(Texture2D texture, float x, float y, float width, float height, float u, float v, float u2, float v2, Color4 c)
+        {
+            if ((pointer + 1) * 4 > vertices.Length)
+                EnsureArraysCapacity();
+
+            vertices[p].Set(x, y, u, v, c);
+            vertices[p + 1].Set(x + width, y, u2, v, c);
+            vertices[p + 2].Set(x + width, y + height, u2, v2, c);
+            vertices[p + 3].Set(x, y + height, u, v2, c);
+
+            textures[pointer] = texture.texturePointer;
+            ++pointer;
+            p += 4;
+        }
+
+        public void Draw(Texture2D texture, float x, float y, Color4 c)
+        {
+            Draw(texture, x, y, texture.Width, texture.Height, c);
+        }
+
+        public void Draw(Texture2D texture, float x, float y, float width, float height, Color4 c)
+        {
+            if ((pointer + 1) * 4 > vertices.Length)
+                EnsureArraysCapacity();
+
+            vertices[p].Set(x, y, 0, 0, c);
+            vertices[p + 1].Set(x + width, y, 0, 1, c);
+            vertices[p + 2].Set(x + width, y + height, 1, 1, c);
+            vertices[p + 3].Set(x, y + height, 0, 1, c);
+
+            textures[pointer] = texture.texturePointer;
+            ++pointer;
+            p += 4;
+        }
+
+        /*public void AddTexture(Texture2D texture, float x, float y)
         {
 
         }
@@ -225,7 +261,7 @@ namespace BlueberryOpenTK
 
             textures[pointer] = texture.texturePointer;
             ++pointer;
-        }
+        }*/
 
         private void EnsureArraysCapacity()
         {
