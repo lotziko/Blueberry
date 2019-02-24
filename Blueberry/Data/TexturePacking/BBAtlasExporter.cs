@@ -48,7 +48,6 @@ namespace Blueberry.DataTools
 
                     var pageData = new ImageData(new byte[page.imageWidth * page.imageHeight * 4], page.imageWidth, page.imageHeight);
 
-                    writer.Write(page.outputRects.Count);
                     foreach (var r in page.outputRects)
                     {
                         int x = r.x + page.x;
@@ -74,11 +73,15 @@ namespace Blueberry.DataTools
                             int pos = (x + (i + y) * page.imageWidth) * 4;
                             Array.Copy(r.data.bitmap, (w * i) * 4, pageData.bitmap, pos, w * 4);
                         }
-
-                        WriteArea(writer, page, r, r.name);
                     }
 
+                    //write
                     WriteImage(writer, page, pageData);
+                    writer.Write(page.outputRects.Count);
+                    foreach (var r in page.outputRects)
+                    {
+                        WriteArea(writer, page, r, r.name);
+                    }
                 }
 
                 writer.Close();
@@ -88,13 +91,13 @@ namespace Blueberry.DataTools
 
         private void WriteArea(BinaryWriter writer, Page page, TextureArea region, string name)
         {
-            writer.Write(region.name);
-            writer.Write(region.rotated);
-
             writer.Write(page.x + region.x);
             writer.Write(page.y + region.y);
             writer.Write(region.regionWidth);
             writer.Write(region.regionHeight);
+
+            writer.Write(region.name);
+            writer.Write(region.rotated);
 
             //splits
             if (region.splits != null)

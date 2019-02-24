@@ -6,15 +6,16 @@ namespace Blueberry
 {
     public partial class TextureRegion
     {
-        private Rect source;
-        private Rect destination = new Rect();
-        private Vec2 offset = Vec2.Zero;
-        private static Vec2 position = new Vec2();
-        private static Rect tmpSrc = new Rect();
+        protected float u, v;
+        protected float u2, v2;
+        protected int regionWidth, regionHeight;
 
-        public Rect Source => source;
+        public virtual int Width => regionWidth;
+        public virtual int Height => regionHeight;
 
-        public int Width => (int)source.Width;
-        public int Height => (int)source.Height;
+        public TextureRegion()
+        {
+
+        }
     }
 }

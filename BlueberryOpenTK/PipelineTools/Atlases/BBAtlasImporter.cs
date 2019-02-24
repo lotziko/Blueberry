@@ -17,23 +17,28 @@ namespace BlueberryOpenTK.PipelineTools
                 {
                     var atlas = new TextureAtlas
                     {
-                        regions = new List<Region>()
+                        regions = new List<AtlasRegion>()
                     };
                     int pagesCount = br.ReadInt32();
                     for(int i = 0; i < pagesCount; i++)
                     {
+                        Texture2D texture;
+                        int width = br.ReadInt32(), height = br.ReadInt32(), compressedSize = br.ReadInt32();
+                        byte[] buffer = new byte[compressedSize];
+                        for (int j = 0; j < compressedSize; j++)
+                        {
+                            buffer[j] = br.ReadByte();
+                        }
+                        buffer = Data.Decompress(buffer);
+                        atlas.texture.Add(texture = new Texture2D(buffer, width, height));
+
                         int regionCount = br.ReadInt32();
                         for(int j = 0; j < regionCount; j++)
                         {
-                            var region = new Region()
+                            var region = new AtlasRegion(texture, br.ReadInt32(), br.ReadInt32(), br.ReadInt32(), br.ReadInt32())
                             {
                                 name = br.ReadString(),
-                                rotate = br.ReadBoolean(),
-                                left = br.ReadInt32(),
-                                top = br.ReadInt32(),
-                                width = br.ReadInt32(),
-                                height = br.ReadInt32(),
-                                page = i
+                                rotate = br.ReadBoolean()
                             };
 
                             if (br.ReadBoolean() == true)
@@ -56,15 +61,6 @@ namespace BlueberryOpenTK.PipelineTools
 
                             atlas.regions.Add(region);
                         }
-
-                        int width = br.ReadInt32(), height = br.ReadInt32(), compressedSize = br.ReadInt32();
-                        byte[] buffer = new byte[compressedSize];
-                        for (int j = 0; j < compressedSize; j++)
-                        {
-                            buffer[j] = br.ReadByte();
-                        }
-                        buffer = Data.Decompress(buffer);
-                        atlas.texture.Add(new Texture2D(buffer, width, height));
                     }
 
                     br.Close();

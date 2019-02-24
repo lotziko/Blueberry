@@ -64,15 +64,10 @@ namespace BlueberryOpenTK.PipelineTools
                         int width = int.Parse(arguments[0]);
                         int height = int.Parse(arguments[1]);
 
-                        var region = new Region
+                        var region = new AtlasRegion(pageImage, left, top, width, height)
                         {
-                            page = result.texture.IndexOf(pageImage),
                             name = line,
-                            rotate = rotate,
-                            left = left,
-                            top = top,
-                            width = width,
-                            height = height
+                            rotate = rotate
                         };
 
                         if (ReadArguments(reader) == 4)

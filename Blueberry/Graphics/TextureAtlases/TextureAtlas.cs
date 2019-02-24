@@ -9,7 +9,7 @@ namespace Blueberry
         /// Holds texture regions accessed by name
         /// </summary>
 
-        internal List<Region> regions = new List<Region>();
+        internal List<AtlasRegion> regions = new List<AtlasRegion>();
         internal string assetName;
         internal int Count => regions.Count;
 
@@ -24,7 +24,7 @@ namespace Blueberry
         /// </summary>
         /// <param name="regions"></param>
 
-        internal TextureAtlas(List<Region> regions)
+        internal TextureAtlas(List<AtlasRegion> regions)
         {
             this.regions = regions;
         }
@@ -35,14 +35,13 @@ namespace Blueberry
         /// <param name="name"></param>
         /// <returns></returns>
 
-        public TextureRegion FindRegion(string name)
+        public AtlasRegion FindRegion(string name)
         {
             for (var i = 0; i < Count; i++)
             {
                 if (regions[i].name == name)
                 {
-                    var region = regions[i];
-                    return CreateRegion(region.page, region.left, region.top, region.width, region.height, region.offsetX, region.offsetY);
+                    return regions[i];
                 }
             }
             throw new KeyNotFoundException(name);
@@ -54,15 +53,14 @@ namespace Blueberry
         /// <param name="name"></param>
         /// <returns></returns>
 
-        public List<TextureRegion> FindRegions(string name)
+        public List<AtlasRegion> FindRegions(string name)
         {
-            var result = new List<TextureRegion>();
+            var result = new List<AtlasRegion>();
             for (var i = 0; i < Count; i++)
             {
                 if (regions[i].name == name)
                 {
-                    var region = regions[i];
-                    result.Add(CreateRegion(region.page, region.left, region.top, region.originalWidth, region.originalHeight, region.offsetX, region.offsetY));
+                    result.Add(regions[i]);
                 }
             }
             return result;
@@ -73,18 +71,18 @@ namespace Blueberry
         /// </summary>
         /// <returns></returns>
 
-        public Dictionary<string, TextureRegion> FindRegions()
+        public Dictionary<string, AtlasRegion> FindRegions()
         {
-            var result = new Dictionary<string, TextureRegion>();
+            var result = new Dictionary<string, AtlasRegion>();
             for (var i = 0; i < Count; i++)
             {
                 var region = regions[i];
-                result.Add(regions[i].name, CreateRegion(region.page, region.left, region.top, region.originalWidth, region.originalHeight, region.offsetX, region.offsetY));
+                result.Add(region.name, region);
             }
             return result;
         }
 
-        public List<Region> GetRegions() => regions;
+        public List<AtlasRegion> Regions => regions;
 
         public NinePatch FindNinePatch(string name)
         {
@@ -93,67 +91,15 @@ namespace Blueberry
                 if (regions[i].name == name)
                 {
                     var region = regions[i];
-                    var textureRegion = new TextureRegion(texture[region.page], region.left, region.top, region.originalWidth, region.originalHeight);
                     if (region.splits == null)
                         throw new Exception("TextureRegion is not a ninepatch");
-                    var ninepatch = new NinePatch(textureRegion, region.splits[0], region.splits[1], region.splits[2], region.splits[3]);
+                    var ninepatch = new NinePatch(region, region.splits[0], region.splits[1], region.splits[2], region.splits[3]);
                     if (region.pads != null)
                         ninepatch.SetPads(region.pads[0], region.pads[1], region.pads[2], region.pads[3]);
                     return ninepatch;
                 }
             }
             throw new KeyNotFoundException(name);
-        }
-    }
-
-    public class Region
-    {
-        internal string name;
-        internal int index = -1, left, top, width, height, originalWidth, originalHeight, offsetX, offsetY, page;
-        internal int[] splits, pads;
-        internal bool rotate;
-
-        /// <summary>
-        /// Get name
-        /// </summary>
-        /// <returns></returns>
-
-        public string Name => name;
-
-        public int Page => page;
-
-        public int X => left;
-        public int Y => top;
-        public int Width => width;
-        public int Height => height;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="left"></param>
-        /// <param name="top"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-
-        public Region(string name, int left, int top, int width, int height)
-        {
-            this.name = name;
-            this.left = left;
-            this.top = top;
-            this.width = width;
-            this.height = height;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-
-        public Region() { }
-
-        public override string ToString()
-        {
-            return name;
         }
     }
 }

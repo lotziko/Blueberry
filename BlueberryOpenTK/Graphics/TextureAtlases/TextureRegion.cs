@@ -4,36 +4,58 @@ namespace Blueberry
 {
     public partial class TextureRegion
     {
-        private Texture2D texture;
-       
-        public Texture2D Texture => texture;
+        public readonly Texture2D texture;
 
-        public void Draw(Graphics graphics, float x, float y, Col? col = null)
+        public virtual void Draw(Graphics graphics, float x, float y, Col? col = null)
         {
-            destination.Set(x, y, source.Width, source.Height);
-            graphics.DrawTexture(texture, source, destination, col);
+            graphics.DrawTexture(texture, x, y, regionWidth, regionHeight, u, v, u2, v2, col);
         }
 
-        public void Draw(Graphics graphics, float x, float y, float width, float height, Col? col = null)
+        public virtual void Draw(Graphics graphics, float x, float y, float width, float height, Col? col = null)
         {
-            destination.Set(x, y, width, height);
-            graphics.DrawTexture(texture, source, destination, col);
+            graphics.DrawTexture(texture, x, y, width, height, u, v, u2, v2, col);
         }
 
-        public TextureRegion(Texture2D texture, int left, int top, int width, int height, int offsetX = 0, int offsetY = 0)
+        public TextureRegion(Texture2D texture, int left, int top, int width, int height)
         {
             this.texture = texture;
-            source = new Rect(left, top, width, height);
-            offset = new Vec2(offsetX, offsetY);
+            regionWidth = width;
+            regionHeight = height;
+
+            u = left * texture.TexelH;
+            v = top * texture.TexelV;
+
+            u2 = (left + width) * texture.TexelH;
+            v2 = (top + height) * texture.TexelV;
+
+            if (regionWidth == 1 && regionHeight == 1)
+            {
+                float adjustX = 0.25f / texture.Width;
+                u += adjustX;
+                u2 -= adjustX;
+                float adjustY = 0.25f / texture.Height;
+                v += adjustY;
+                v2 -= adjustY;
+            }
         }
 
         public TextureRegion(TextureRegion region, int left, int top, int width, int height)
         {
             texture = region.texture;
-            Rect oldBounds = region.source;
-            var x = oldBounds.X + left;
-            var y = oldBounds.Y + top;
-            source = tmpSrc = new Rect(x, y, width, height);
+            u = region.u + left * texture.TexelH;
+            v = region.v + top * texture.TexelV;
+            u2 = u + width * texture.TexelH;
+            v2 = v + height * texture.TexelV;
+
+            if (regionWidth == 1 && regionHeight == 1)
+            {
+                float adjustX = 0.25f / texture.Width;
+                u += adjustX;
+                u2 -= adjustX;
+                float adjustY = 0.25f / texture.Height;
+                v += adjustY;
+                v2 -= adjustY;
+            }
         }
     }
 }
