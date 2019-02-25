@@ -57,7 +57,7 @@ namespace Blueberry
             };
             core.MouseMove += (sender, e) =>
             {
-                if (OpenTK.Input.Mouse.GetState().LeftButton == OpenTK.Input.ButtonState.Pressed)
+                if (e.Mouse.LeftButton == OpenTK.Input.ButtonState.Pressed)
                 {
                     InputProcessor?.TouchDragged(e.X, e.Y, 0);
                 }
