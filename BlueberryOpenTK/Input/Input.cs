@@ -67,10 +67,12 @@ namespace Blueberry
             };
             core.MouseWheel += (sender, e) =>
             {
-                InputProcessor?.Scrolled(e.X - previousWheelX, e.Y - previousWheelY);
-                previousWheelX = e.X;
-                previousWheelY = e.Y;
-                MouseWheel?.Invoke(core, new ScrollEventArgs(e.Mouse.Scroll.X, e.Mouse.Scroll.Y));
+                var deltaX = e.Mouse.Scroll.X - previousWheelX;
+                var deltaY = e.Mouse.Scroll.Y - previousWheelY;
+                InputProcessor?.Scrolled(deltaX, deltaY);
+                previousWheelX = e.Mouse.Scroll.X;
+                previousWheelY = e.Mouse.Scroll.Y;
+                MouseWheel?.Invoke(core, new ScrollEventArgs(deltaX, deltaY));
             };
         }
 
