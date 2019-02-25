@@ -185,7 +185,7 @@ namespace BlueberryOpenTK
                 EnsureArraysCapacity();
 
             vertices[p].Set(x, y, 0, 0, c);
-            vertices[p + 1].Set(x + width, y, 0, 1, c);
+            vertices[p + 1].Set(x + width, y, 1, 0, c);
             vertices[p + 2].Set(x + width, y + height, 1, 1, c);
             vertices[p + 3].Set(x, y + height, 0, 1, c);
 

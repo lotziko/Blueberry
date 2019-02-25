@@ -152,7 +152,7 @@ namespace Blueberry
         {
             col = (color ?? Col.White).c;
             ActiveBatch = tBatch;
-            tBatch.Draw(texture, x, y, width, height, 0, 0, 1 * texture.Width * texture.TexelH, 1 * texture.Height * texture.TexelV, col);
+            tBatch.Draw(texture, x, y, width, height, 0, 0, 1 * width * texture.TexelH, 1 * height * texture.TexelV, col);
         }
 
         public void DrawRectangle(Rect rect, bool border = false, Col? color = null)
