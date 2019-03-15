@@ -1,7 +1,7 @@
 ﻿using Blueberry;
 using Blueberry.DataTools;
 using Blueberry.UI;
-using BlueberryOpenTK;
+using Blueberry.OpenGL;
 
 namespace OpenTKTest
 {
@@ -27,7 +27,7 @@ namespace OpenTKTest
 
             var atlas = Content.Load<TextureAtlas>(root + "Content/UI.bba");
             var preview = Content.Load<TextureAtlas>(root + "Content/UI.bba");//C:\Users\lotziko\Dropbox\tst\1.atlas");
-            var font = new FreeTypeFont(root + "Content/OpenSans-Regular.ttf", /*17*/20);
+            var font = new FreeTypeFont(root + "Content/OpenSans-Regular.ttf", 20);
             var skin = new Skin.Builder(root + "Content/UI.json").Font("default", font).Atlas(atlas).Build();
             
             t.Add(new AtlasPackerTable(new AtlasController(preview), skin));

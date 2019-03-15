@@ -7,7 +7,7 @@ namespace Blueberry.UI
         {
             Camera.ForceCalculate();
 
-            graphics.Projection = Camera.ProjectionMatrix;
+            //graphics.Projection = Camera.ProjectionMatrix;
             graphics.Transform = Camera.TransformMatrix;
             graphics.Begin();
             root.Draw(graphics, _alpha);

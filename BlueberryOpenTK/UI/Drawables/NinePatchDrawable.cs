@@ -1,4 +1,4 @@
-﻿using BlueberryOpenTK;
+﻿using Blueberry.OpenGL;
 using System;
 
 namespace Blueberry.UI

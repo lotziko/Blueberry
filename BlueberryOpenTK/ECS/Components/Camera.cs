@@ -23,7 +23,7 @@ namespace Blueberry
             //_transformMatrix.m = Matrix4.CreateTranslation(Round ? new Vector3(-(int)Position.X, -(int)Position.Y, 0) : new Vector3(-Position.X, -Position.Y, 0));
             //_transformMatrix.m *= Matrix4.CreateTranslation(new Vector3(_width * 0.5f, _height * 0.5f, 0));
             //_transformMatrix.m *= Matrix4.CreateScale(bufferWidth / _width, bufferHeight / _height, 1);
-            _projectionMatrix.m = Graphics.IsDrawingToFramebuffer ? Matrix4.CreateOrthographicOffCenter(0, bufferWidth, bufferHeight, 0, -1, 1) : Matrix4.CreateOrthographicOffCenter(0, bufferWidth, 0, bufferHeight, -1, 1);
+            _projectionMatrix.m = Matrix4.CreateOrthographicOffCenter(0, bufferWidth, 0, bufferHeight, -1, 1);//Graphics.IsDrawingToFramebuffer ? Matrix4.CreateOrthographicOffCenter(0, bufferWidth, bufferHeight, 0, -1, 1) : Matrix4.CreateOrthographicOffCenter(0, bufferWidth, 0, bufferHeight, -1, 1);
             _inverseTransformMatrix.m = Matrix4.Invert(_transformMatrix.m);
             _combinedMatrix.m = Matrix4.Mult(_transformMatrix.m, _projectionMatrix.m);
             _inverseCombinedMatrix.m = Matrix4.Invert(_combinedMatrix.m);
@@ -36,7 +36,7 @@ namespace Blueberry
             worldCoords = Vec2.Transform(worldCoords, _combinedMatrix);
 
             worldCoords.X = (float)Math.Round(viewportWidth * (worldCoords.X + 1) / 2 + viewportX, 3);
-            worldCoords.Y = (float)Math.Round(Screen.Height - (viewportHeight * (worldCoords.Y + 1) / 2 + viewportY), 3);
+            worldCoords.Y = (float)Math.Round(/*Screen.Height - */(viewportHeight * (worldCoords.Y + 1) / 2 + viewportY), 3);
 
             return worldCoords;
         }
@@ -45,7 +45,7 @@ namespace Blueberry
         {
             float x = screenCoords.X - viewportX;
             float y = screenCoords.Y;
-            y = Screen.Height - y - 1;
+            y = /*Screen.Height - */y - 1;
             y = y - viewportY;
 
             screenCoords.X = (2 * x) / viewportWidth - 1;

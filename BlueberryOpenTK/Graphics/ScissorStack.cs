@@ -32,17 +32,17 @@ namespace Blueberry
             }
             else
             {
-                GL.Enable(EnableCap.ScissorTest);
+                //GL.Enable(EnableCap.ScissorTest);
             }
 
             //flip coordinate system for framebuffer
-            if (Graphics.IsDrawingToFramebuffer)
+            /*if (Graphics.IsDrawingToFramebuffer)
             {
                 scissor.Y = Screen.Height - scissor.Y - scissor.Height;
-            }
+            }*/
 
             scissors.Push(scissor);
-            GL.Scissor((int)scissor.X, (int)scissor.Y, (int)scissor.Width, (int)scissor.Height);
+            //GL.Scissor((int)scissor.X, (int)scissor.Y, (int)scissor.Width, (int)scissor.Height);
 
             return true;
         }
@@ -54,19 +54,19 @@ namespace Blueberry
             // reset the ScissorRectangle to the viewport bounds
             if (scissors.Count == 0)
             {
-                GL.Scissor(0, 0, Screen.Width, Screen.Height);
-                GL.Disable(EnableCap.ScissorTest);
+                //GL.Scissor(0, 0, Screen.Width, Screen.Height);
+                //GL.Disable(EnableCap.ScissorTest);
             }
             else
             {
                 var peek = scissors.Peek();
-                GL.Scissor((int)peek.X, (int)peek.Y, (int)peek.Width, (int)peek.Height);
+                //GL.Scissor((int)peek.X, (int)peek.Y, (int)peek.Width, (int)peek.Height);
             }
 
             return scissor;
         }
 
-        public static Rect CalculateScissors(Camera camera, float viewportX, float viewportY, float viewportWidth, float viewportHeight, Mat batchTransform, Rect area)
+        /*public static Rect CalculateScissors(Camera camera, float viewportX, float viewportY, float viewportWidth, float viewportHeight, Mat batchTransform, Rect area)
         {
             var scissor = new Rect();
             tmp.Set(area.X, area.Y);
@@ -82,6 +82,6 @@ namespace Blueberry
             scissor.Height = tmp.Y - scissor.Y;
 
             return scissor;
-        }
+        }*/
     }
 }

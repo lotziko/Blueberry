@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace BlueberryOpenTK.PipelineTools
+namespace Blueberry.OpenGL.PipelineTools
 {
     [ContentImporter(".bba")]
     public class BBAtlasImporter : ContentImporter<TextureAtlas>
@@ -22,7 +22,7 @@ namespace BlueberryOpenTK.PipelineTools
                     int pagesCount = br.ReadInt32();
                     for(int i = 0; i < pagesCount; i++)
                     {
-                        Texture2D texture;
+                        Texture texture;
                         int width = br.ReadInt32(), height = br.ReadInt32(), compressedSize = br.ReadInt32();
                         byte[] buffer = new byte[compressedSize];
                         for (int j = 0; j < compressedSize; j++)
@@ -30,7 +30,7 @@ namespace BlueberryOpenTK.PipelineTools
                             buffer[j] = br.ReadByte();
                         }
                         buffer = Data.Decompress(buffer);
-                        atlas.texture.Add(texture = new Texture2D(buffer, width, height));
+                        atlas.texture.Add(texture = new Texture(buffer, width, height));
 
                         int regionCount = br.ReadInt32();
                         for(int j = 0; j < regionCount; j++)

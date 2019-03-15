@@ -1,7 +1,7 @@
 ﻿using Blueberry;
 using System.IO;
 
-namespace BlueberryOpenTK.PipelineTools
+namespace Blueberry.OpenGL.PipelineTools
 {
     [ContentImporter(".atlas")]
     public class LibgdxAtlasImporter : ContentImporter<TextureAtlas>
@@ -12,7 +12,7 @@ namespace BlueberryOpenTK.PipelineTools
             var result = new TextureAtlas();
             using (var reader = new StreamReader(filename))
             {
-                Texture2D pageImage = null;
+                Texture pageImage = null;
                 while (true)
                 {
                     string line = reader.ReadLine();
@@ -49,7 +49,7 @@ namespace BlueberryOpenTK.PipelineTools
                         //    repeatY = Repeat;
                         //}
 
-                        pageImage = Texture2D.LoadFromFile(imagePath);
+                        pageImage = Texture.LoadFromFile(imagePath);
                         result.texture.Add(pageImage);
                     }
                     else

@@ -57,14 +57,14 @@ namespace Blueberry
         {
             camera.ForceCalculate();
             var pT = graphics.Transform;
-            var pP = graphics.Projection;
+            //var pP = graphics.Projection;
             graphics.Transform = camera.TransformMatrix;
-            graphics.Projection = camera.ProjectionMatrix;
+            //graphics.Projection = camera.ProjectionMatrix;
             graphics.Begin();
             renderables.Render(graphics, camera);
             graphics.End();
             graphics.Transform = pT;
-            graphics.Projection = pP;
+            //graphics.Projection = pP;
         }
 
         public void Begin() { }

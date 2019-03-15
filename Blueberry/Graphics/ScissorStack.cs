@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Blueberry
 {
-    public static partial class ScissorStack
+    public static partial class graphics
     {
         
     }

@@ -8,12 +8,16 @@ namespace OpenTKTest
 {
     public class DirectoryTable : Table
     {
-        public DirectoryTable(Skin skin) : base()
+        public DirectoryTable(AtlasController controller, Skin skin) : base()
         {
             var field = new TextField("", skin);
-            Add(field);
+            field.OnChange += (value) =>
+            {
+                controller.OutputDirectory = value;
+            };
+            Add(field).PadRight(10).Fill();
 
-            var btn = new ImageButton(skin.GetDrawable("icon-search"), skin);
+            var btn = new ImageButton(skin.GetDrawable("icon-search"), skin, "highlighted");
             btn.OnClicked += () =>
             {
                 var dialog = new System.Windows.Forms.FolderBrowserDialog();
@@ -22,9 +26,13 @@ namespace OpenTKTest
                     field.SetText(dialog.SelectedPath);
                 }
             };
-            Add(btn);
+            Add(btn).Fill().Row();
 
             var box = new SelectBox<ExporterContainer>(skin);
+            box.OnChange += (value) =>
+            {
+                controller.Exporter = value.exporter;
+            };
             var a = Assembly.GetAssembly(typeof(SelectBox<ExporterContainer>));
             var items = new List<ExporterContainer>();
             var at = typeof(AtlasExporterAttribute);
@@ -32,25 +40,29 @@ namespace OpenTKTest
             {
                 if (Attribute.IsDefined(type, at))
                 {
-                    items.Add(new ExporterContainer(type));
+                    items.Add(new ExporterContainer(type.GetCustomAttribute<AtlasExporterAttribute>().DisplayName, type));
                 }
             }
             box.SetItems(items);
-            Add(box).Width(200);
+            Add(box).Width(200).PadTop(10).Colspan(2);
+
+            Pad(10);
         }
 
         private class ExporterContainer
         {
-            public Type type;
+            public string name;
+            public IContentExporter exporter;
 
-            public ExporterContainer(Type type)
+            public ExporterContainer(string name, Type type)
             {
-                this.type = type;
+                this.name = name;
+                exporter = Activator.CreateInstance(type) as IContentExporter;
             }
 
             public override string ToString()
             {
-                return type.Name;
+                return name;
             }
         }
     }

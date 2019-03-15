@@ -1,200 +1,144 @@
-﻿using OpenTK;
-using OpenTK.Graphics;
+﻿using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
-using System;
 
-namespace BlueberryOpenTK
+namespace Blueberry.OpenGL
 {
     public class PrimitiveBatch : IBatch
     {
-        const int initialCapacity = 256;
-        protected int vbo, vao, currentCapacity, pointer;
-        protected bool isDirty = false;
-        protected PrimitiveType currentType;
-        protected PolygonMode currentMode;
+        const int initialCapacity = 1024;
+        protected int currentCapacity;
+        protected ushort pPtr, vPtr, iPtr;
+        protected GraphicsDevice device;
+        protected PrimitiveEffect primitiveEffect;
+        protected VertexPositionColor[] vertices;
+        protected ushort[] indices;
+        protected PrimitiveInfo[] primitives;
+        protected Mat transform;
 
-        protected Vertex[] vertices;
+        #region Indices
 
-        private ShaderProgram shader = ShaderProgram.BasicPrimitive;
-        private Matrix4 projection, transform;
-
-        public PolygonMode Mode
+        private static readonly ushort[][] rectangleIndices =
         {
-            get => currentMode;
-            set
-            {
-                if (value != currentMode)
-                {
-                    Flush();
-                    currentMode = value;
-                    GL.PolygonMode(MaterialFace.FrontAndBack, value);
-                }
-            }
-        }
+            new ushort[] {0, 1, 3, 1, 2, 3},
+            new ushort[] {0, 1, 1, 2, 2, 3, 3, 0}
+        };
 
-        public PrimitiveType Type
-        {
-            get => currentType;
-            set
-            {
-                if (value != currentType)
-                {
-                    Flush();
-                    currentType = value;
-                }
-            }
-        }
+        #endregion
 
-        public ShaderProgram Shader
-        {
-            get => shader;
-            set
-            {
-                if ((shader = value) == null)
-                    shader = ShaderProgram.BasicPrimitive;
-                //ResetAttributes();
-            }
-        }
-
-        public Matrix4 Projection
-        {
-            get => projection;
-            set
-            {
-                projection = value;
-                shader.Params["projection"].SetValue(projection);
-            }
-        }
-
-        public Matrix4 Transform
+        public Mat Transform
         {
             get => transform;
             set
             {
                 transform = value;
-                shader.Params["transform"].SetValue(transform);
+                primitiveEffect.Transform = value.m;
             }
         }
 
-        public PrimitiveBatch()
+        public PrimitiveBatch(GraphicsDevice device)
         {
+            this.device = device;
+            device.PrimitiveRestartIndex = 0xFFFF;
+            primitiveEffect = new PrimitiveEffect(device);
+
             currentCapacity = initialCapacity;
-            vertices = new Vertex[currentCapacity];
-
-            GL.GenVertexArrays(1, out vao);
-
-            GL.GenBuffers(1, out vbo);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * 6 * 4, vertices, BufferUsageHint.StreamDraw);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-
-            Projection = Matrix4.Identity;
-            Transform = Matrix4.Identity;
-
-            ResetAttributes();
-        }
-
-        public void ResetAttributes()
-        {
-            GL.BindVertexArray(vao);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-
-            GL.VertexAttribPointer(shader.positionAttribute, 2, VertexAttribPointerType.Float, false, 6 * 4, 0);
-            GL.EnableVertexAttribArray(shader.positionAttribute);
-
-            GL.VertexAttribPointer(shader.colorAttribute, 4, VertexAttribPointerType.Float, false, 6 * 4, 2 * 4);
-            GL.EnableVertexAttribArray(shader.colorAttribute);
-
-            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            GL.BindVertexArray(0);
+            vertices = new VertexPositionColor[currentCapacity];
+            indices = new ushort[currentCapacity];
+            primitives = new PrimitiveInfo[currentCapacity];
         }
 
         public void Begin()
         {
             Flush();
-            //GL.ShadeModel(ShadingModel.Flat);
+
+            primitiveEffect.Apply();
         }
 
         public void End()
         {
             Flush();
-            //GL.ShadeModel(ShadingModel.Smooth);
         }
 
         public void Flush()
         {
-            if (pointer == 0)
+            if (pPtr == 0)
                 return;
 
-            GL.UseProgram(shader.Program);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-            GL.BindVertexArray(vao);
+            primitiveEffect.Apply();
 
-            if (isDirty)
+            int verticesCount = 0, primitivesCount = 0;
+            PrimitiveInfo curr = primitives[0];
+            for (int i = 0; i < pPtr; i++)
             {
-                GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * 6 * 4, vertices, BufferUsageHint.StreamDraw);
-                isDirty = false;
+                if (curr.type != primitives[i].type)
+                {
+                    device.DrawUserIndexedPrimitives(curr.type, vertices, 0, verticesCount, indices, curr.indicesOffset, primitivesCount, VertexPositionColor.VertexDeclaration);
+                    curr = primitives[i];
+                    verticesCount = 0;
+                    primitivesCount = 0;
+                }
+                verticesCount += primitives[i].verticesCount;
+                primitivesCount += primitives[i].primitivesCount;
+            }
+
+            device.DrawUserIndexedPrimitives(curr.type, vertices, 0, verticesCount, indices, curr.indicesOffset, primitivesCount, VertexPositionColor.VertexDeclaration);
+
+            pPtr = 0;
+            iPtr = 0;
+            vPtr = 0;
+        }
+
+        public void DrawRectangle(float x, float y, float width, float height, Color4 c, bool border = false)
+        {
+            vertices[vPtr].Set(x, y, c);
+            vertices[vPtr + 1].Set(x + width, y, c);
+            vertices[vPtr + 2].Set(x + width, y + height, c);
+            vertices[vPtr + 3].Set(x, y + height, c);
+
+            if (border)
+            {
+                InsertIndices(rectangleIndices[1], indices, vPtr, iPtr);
+                primitives[pPtr].Set(PrimitiveType.Lines, iPtr, 4, 4);
+                iPtr += 8;
             }
             else
             {
-                GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, pointer * 6 * 4, vertices);
+                InsertIndices(rectangleIndices[0], indices, vPtr, iPtr);
+                primitives[pPtr].Set(PrimitiveType.Triangles, iPtr, 4, 2);
+                iPtr += 6;
             }
-
-            GL.DrawArrays(currentType, 0, pointer);
-
-            GL.UseProgram(0);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            GL.BindVertexArray(0);
-
-            pointer = 0;
+            vPtr += 4;
+            ++pPtr;
         }
 
-        public void AddVertex(float x, float y, Color4 color)
+        protected static void InsertIndices(ushort[] indices, ushort[] array, ushort vPtr, ushort iPtr)
         {
-            if (pointer == vertices.Length)
-                EnsureArraysCapacity();
-
-            vertices[pointer++].Set(x, y, color);
+            indices.CopyTo(array, iPtr);
+            for(int i = 0; i < indices.Length; i++)
+            {
+                array[iPtr + i] += vPtr;
+            }
         }
 
-        private void EnsureArraysCapacity()
+        protected struct PrimitiveInfo
         {
-            currentCapacity += initialCapacity;
+            public PrimitiveType type;
+            public int indicesOffset, verticesCount, primitivesCount;
 
-            var newVertices = new Vertex[currentCapacity];
-            vertices.CopyTo(newVertices, 0);
-            vertices = newVertices;
-            isDirty = true;
-        }
-
-        protected struct Vertex
-        {
-            float x, y, r, g, b, a;
-
-            public void Set(float x, float y, Color4 c)
+            public PrimitiveInfo(PrimitiveType type, int indicesOffset, int verticesCount, int primitivesCount)
             {
-                this.x = x;
-                this.y = y;
-                r = c.R;
-                g = c.G;
-                b = c.B;
-                a = c.A;
+                this.type = type;
+                this.indicesOffset = indicesOffset;
+                this.verticesCount = verticesCount;
+                this.primitivesCount = primitivesCount;
             }
 
-            public Vertex SetColor(Color4 c)
+            public void Set(PrimitiveType type, int indicesOffset, int verticesCount, int primitivesCount)
             {
-                r = c.R;
-                g = c.G;
-                b = c.B;
-                a = c.A;
-                return this;
-            }
-
-            public Vertex SetPosition(float x, float y)
-            {
-                this.x = x;
-                this.y = y;
-                return this;
+                this.type = type;
+                this.indicesOffset = indicesOffset;
+                this.verticesCount = verticesCount;
+                this.primitivesCount = primitivesCount;
             }
         }
     }

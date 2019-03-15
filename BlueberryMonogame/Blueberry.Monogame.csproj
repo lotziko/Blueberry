@@ -7,8 +7,8 @@
     <ProjectGuid>{EA4545D6-86F4-44AD-B31D-552F3D83B15A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BlueberryMonogame</RootNamespace>
-    <AssemblyName>BlueberryMonogame</AssemblyName>
+    <RootNamespace>Blueberry.Monogame</RootNamespace>
+    <AssemblyName>Blueberry.Monogame</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -51,11 +51,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Content\Content.cs" />
+    <Compile Include="Core.cs" />
     <Compile Include="Graphics\Graphics.cs" />
     <Compile Include="ECS\Components\Camera.cs" />
+    <Compile Include="Graphics\PrimitiveBatch.cs" />
+    <Compile Include="Graphics\RenderTarget.cs" />
     <Compile Include="Graphics\ScissorStack.cs" />
+    <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Graphics\TextureAtlases\TextureAtlas.cs" />
     <Compile Include="Graphics\TextureAtlases\TextureRegion.cs" />
+    <Compile Include="Graphics\TextureBatch.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen.cs" />
@@ -66,6 +72,8 @@
     <Compile Include="UI\Containers\VerticalGroup.cs" />
     <Compile Include="UI\Skin.cs" />
     <Compile Include="UI\Stage.cs" />
+    <Compile Include="Utils\RectangleExt.cs" />
+    <Compile Include="Utils\VectorExt.cs" />
     <Compile Include="Utils\Viewports\Viewport.cs" />
     <Compile Include="Utils\WrapperStructs.cs" />
   </ItemGroup>

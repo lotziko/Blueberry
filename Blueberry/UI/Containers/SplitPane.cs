@@ -67,22 +67,22 @@ namespace Blueberry.UI
             {
                 graphics.Flush();
                 tempScissors = stage.CalculateScissors(firstWidgetBounds, this);
-                if (ScissorStack.PushScissors(tempScissors))
+                if (graphics.PushScissors(tempScissors))
                 {
                     firstWidget.Draw(graphics, parentAlpha);
                     graphics.Flush();
-                    ScissorStack.PopScissors();
+                    graphics.PopScissors();
                 }
             }
             if (secondWidget != null && secondWidget.IsVisible())
             {
                 graphics.Flush();
                 tempScissors = stage.CalculateScissors(secondWidgetBounds, this);
-                if (ScissorStack.PushScissors(tempScissors))
+                if (graphics.PushScissors(tempScissors))
                 {
                     secondWidget.Draw(graphics, parentAlpha);
                     graphics.Flush();
-                    ScissorStack.PopScissors();
+                    graphics.PopScissors();
                 }
             }
             handle.Draw(graphics, handleBounds.X, handleBounds.Y, handleBounds.Width, handleBounds.Height, new Col(color, alpha));

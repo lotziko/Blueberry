@@ -125,7 +125,7 @@ namespace Blueberry
 
         public Rect CalculateScissors(Mat batchTransform, Rect area)
         {
-            return ScissorStack.CalculateScissors(Camera, ScreenX, ScreenY, ScreenWidth, ScreenHeight, batchTransform, area);
+            return Graphics.CalculateScissors(Camera, ScreenX, ScreenY, ScreenWidth, ScreenHeight, batchTransform, area);
         }
     }
 }

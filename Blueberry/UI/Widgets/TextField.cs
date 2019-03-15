@@ -459,8 +459,8 @@ namespace Blueberry.UI
 
             if (selectionStart > newDisplayText.Length)
                 selectionStart = textLength;
-            if (GetStage()?.GetKeyboardFocus() == this)
-                OnChange?.Invoke(text);
+            //if (GetStage()?.GetKeyboardFocus() == this)
+            OnChange?.Invoke(text);
         }
 
         private void Blink()

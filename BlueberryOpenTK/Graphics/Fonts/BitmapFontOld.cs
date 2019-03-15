@@ -5,7 +5,7 @@ using Blueberry;
 using Blueberry.DataTools;
 using SharpFont;
 
-namespace BlueberryOpenTK
+namespace Blueberry.OpenGL
 {
     public class BitmapFont : IDisposable
     {

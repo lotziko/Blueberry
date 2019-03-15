@@ -53,7 +53,7 @@ namespace Blueberry.UI
             {
                 ApplyTransform(graphics, ComputeTransform());
                 DrawBackground(graphics, parentAlpha, 0, 0);
-
+                
                 if (clip)
                 {
                     float padLeft = this.padLeft.Get(this), padTop = this.padTop.Get(this);

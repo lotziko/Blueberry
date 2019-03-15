@@ -3,10 +3,6 @@ using System;
 
 namespace Blueberry
 {
-    public partial class Texture2D
-    {
-    }
-
     public partial struct Mat
     {
     }
@@ -28,35 +24,16 @@ namespace Blueberry
         }
     }
 
-    public interface IRect
-    {
-        float X { get; set; }
-        float Y { get; set; }
-        float Width { get; set; }
-        float Height { get; set; }
-    }
-
     public partial struct Rect
     {
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Width { get; set; }
-        public float Height { get; set; }
+        private float x, y, width, height;
 
-        public float Left => X;
-        public float Top => Y;
-        public float Right => X + Width;
-        public float Bottom => Y + Height;
+        public float Left => x;
+        public float Top => y;
+        public float Right => x + width;
+        public float Bottom => y + height;
 
         public void Set(float x, float y, float width, float height)
-        {
-            X = x;
-            Y = y;
-            Width = width;
-            Height = height;
-        }
-
-        public Rect(float x, float y, float width, float height)
         {
             X = x;
             Y = y;
@@ -79,6 +56,11 @@ namespace Blueberry
         public static bool operator !=(Rect value1, Rect value2)
         {
             return value1.X != value2.X || value1.Y != value2.Y || value1.Width == value2.Width || value1.Height == value2.Height;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{{X:{0} Y:{1} Width:{2} Height:{3}}}", X, Y, Width, Height);
         }
     }
 

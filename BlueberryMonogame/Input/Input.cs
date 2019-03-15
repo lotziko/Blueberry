@@ -13,6 +13,11 @@ namespace Blueberry
             throw new NotImplementedException();
         }
 
+        public static bool IsKeyDown(Key key)
+        {
+            return false;
+        }
+
         public static bool IsTouched(int pointer)
         {
             throw new NotImplementedException();

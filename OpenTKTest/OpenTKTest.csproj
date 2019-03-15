@@ -66,6 +66,7 @@
     <Compile Include="UI\AtlasPackerTable.cs" />
     <Compile Include="UI\CheckerboardDrawable.cs" />
     <Compile Include="UI\DirectoryTable.cs" />
+    <Compile Include="UI\PropertiesTable.cs" />
     <Compile Include="UI\TextureAtlasViewer.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -82,9 +83,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BlueberryOpenTK\BlueberryOpenTK.csproj">
+    <ProjectReference Include="..\BlueberryOpenTK\Blueberry.OpenGL.csproj">
       <Project>{9f866f25-e007-41f3-b99c-f99aba151e83}</Project>
-      <Name>BlueberryOpenTK</Name>
+      <Name>Blueberry.OpenGL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,36 +1,15 @@
-﻿using Blueberry;
+﻿using Blueberry.OpenGL;
 using OpenTK;
-using OpenTK.Graphics.OpenGL4;
-using OpenTK.Input;
 using System;
 using System.Threading;
 
 namespace Blueberry
 {
-    public partial class Core
+    public partial class Core : IDisposable
     {
-        public readonly Graphics graphics;
-        public Col BackgroundColor { get; set; } = Col.Black;
-        public bool ForceSceneChange { get; set; } = false;
-
-        public Scene Scene
-        {
-            get
-            {
-                return currentScene;
-            }
-            set
-            {
-                nextScene = value;
-                if (ForceSceneChange)
-                    ChangeScene();
-            }
-        }
-
         public int Width { get => window.Width; set => window.Width = value; }
         public int Height { get => window.Height; set => window.Height = value; }
 
-        protected Scene currentScene, nextScene;
         protected OpenTKWindow window;
 
         public Core()
@@ -41,7 +20,7 @@ namespace Blueberry
             };
             Input.Initialize(window);
 
-            graphics = new Graphics();
+            graphics = new Graphics(window.GraphicsDevice);
             Screen.Width = Width;
             Screen.Height = Height;
             Render.NeedsRequest = true;
@@ -55,7 +34,7 @@ namespace Blueberry
 
         public virtual void RenderFrame()
         {
-            graphics.Projection = Screen.DefaultProjection;
+            //graphics.Projection = Screen.DefaultProjection;
             graphics.Transform = Screen.DefaultTransform;
             currentScene?.Render();
             graphics.Flush();
@@ -67,20 +46,9 @@ namespace Blueberry
             window.Run(updateRate, renderRate);
         }
 
-        protected void ChangeScene()
+        public void Dispose()
         {
-            if (nextScene != null)
-            {
-                if (currentScene != null)
-                    currentScene.End();
-                currentScene = nextScene;
-                nextScene = null;
-
-                currentScene.graphics = graphics;
-                currentScene.Initialize();
-                currentScene.OnResize(Width, Height);
-                currentScene.Begin();
-            }
+            window.Dispose();
         }
 
         protected class OpenTKWindow : GameWindow
@@ -88,10 +56,12 @@ namespace Blueberry
             private Core core;
 
             public int SleepTime { get; set; }
+            public GraphicsDevice GraphicsDevice { get; }
 
             public OpenTKWindow(Core core)
             {
                 this.core = core;
+                GraphicsDevice = new GraphicsDevice();
             }
 
             protected override void OnUpdateFrame(FrameEventArgs e)
@@ -123,17 +93,23 @@ namespace Blueberry
                 }
 
                 SwapBuffers();
-                Thread.Sleep(16);
+                Thread.Sleep(SleepTime);
             }
 
             protected override void OnResize(EventArgs e)
             {
                 base.OnResize(e);
-                GL.Viewport(0, 0, Width, Height);
                 Screen.Width = Width;
                 Screen.Height = Height;
-                Render.Request();
+                GraphicsDevice.Viewport = new Rect(0, 0, Width, Height);
                 core.currentScene?.OnResize(Width, Height);
+                Render.Request();
+            }
+
+            protected override void OnLoad(EventArgs e)
+            {
+                base.OnLoad(e);
+                core.Load();
             }
         }
     }

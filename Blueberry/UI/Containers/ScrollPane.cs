@@ -740,12 +740,12 @@ namespace Blueberry.UI
             
             // caculate the scissor bounds based on the batch transform, the available widget area and the camera transform. We need to
             // project those to screen coordinates for OpenGL to consume.
-            var scissor = stage.CalculateScissors(widgetAreaBounds, this);//ScissorStack.CalculateScissors(stage?.entity?.scene?.camera, graphics.TransformMatrix, widgetAreaBounds);
-            if (ScissorStack.PushScissors(scissor))
+            var scissor = stage.CalculateScissors(widgetAreaBounds, this);//graphics.CalculateScissors(stage?.entity?.scene?.camera, graphics.TransformMatrix, widgetAreaBounds);
+            if (graphics.PushScissors(scissor))
             {
                 DrawElements(graphics, parentAlpha);
                 graphics.Flush();
-                ScissorStack.PopScissors();
+                graphics.PopScissors();
             }
 
             float alpha = color.A * Interpolation.fade.Apply(fadeAlpha / fadeAlphaSeconds);
@@ -1226,10 +1226,10 @@ namespace Blueberry.UI
         public override void DrawDebug(Graphics graphics)
         {
             ApplyTransform(graphics, ComputeTransform());
-            if (ScissorStack.PushScissors(scissorBounds))
+            if (graphics.PushScissors(scissorBounds))
             {
                 DrawDebugElements(graphics, color.A);
-                ScissorStack.PopScissors();
+                graphics.PopScissors();
             }
             ResetTransform(graphics);
         }

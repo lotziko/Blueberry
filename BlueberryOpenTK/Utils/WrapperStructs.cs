@@ -1,4 +1,4 @@
-﻿using BlueberryOpenTK;
+﻿using Blueberry.OpenGL;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -6,7 +6,7 @@ namespace Blueberry
 {
     public partial struct Tex
     {
-        public Texture2D t;
+        public Texture t;
     }
 
     public partial struct Mat
@@ -139,6 +139,53 @@ namespace Blueberry
         public static Col Gray { get; } = new Col(Color4.Gray);
         public static Col DarkGray { get; } = new Col(Color4.DarkGray);
         public static Col Transparent { get; } = new Col(new Color4(0, 0, 0, 0));
+    }
+
+    public partial struct Rect
+    {
+        public float X
+        {
+            get => x;
+            set
+            {
+                x = value;
+            }
+        }
+
+        public float Y
+        {
+            get => y;
+            set
+            {
+                y = value;
+            }
+        }
+
+        public float Width
+        {
+            get => width;
+            set
+            {
+                width = value;
+            }
+        }
+
+        public float Height
+        {
+            get => height;
+            set
+            {
+                height = value;
+            }
+        }
+
+        public Rect(float x, float y, float width, float height)
+        {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+        }
     }
 
     public partial struct Vec3

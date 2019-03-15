@@ -1,7 +1,7 @@
 ﻿
 using System.IO;
 
-namespace BlueberryOpenTK.PipelineTools
+namespace Blueberry.OpenGL.PipelineTools
 {
     public abstract class ContentImporter<T> : IContentImporter
     {

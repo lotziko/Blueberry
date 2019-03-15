@@ -1,10 +1,12 @@
-﻿using BlueberryOpenTK;
+﻿using Blueberry.OpenGL;
 
 namespace Blueberry
 {
     public partial class TextureRegion
     {
-        public readonly Texture2D texture;
+        protected Texture texture;
+
+        public Texture Texture => texture;
 
         public virtual void Draw(Graphics graphics, float x, float y, Col? col = null)
         {
@@ -16,17 +18,19 @@ namespace Blueberry
             graphics.DrawTexture(texture, x, y, width, height, u, v, u2, v2, col);
         }
 
-        public TextureRegion(Texture2D texture, int left, int top, int width, int height)
+        public TextureRegion(Texture texture, int x, int y, int width, int height)
         {
             this.texture = texture;
+            this.x = x;
+            this.y = y;
             regionWidth = width;
             regionHeight = height;
 
-            u = left * texture.TexelH;
-            v = top * texture.TexelV;
+            u = x * texture.TexelH;
+            v = y * texture.TexelV;
 
-            u2 = (left + width) * texture.TexelH;
-            v2 = (top + height) * texture.TexelV;
+            u2 = (x + width) * texture.TexelH;
+            v2 = (y + height) * texture.TexelV;
 
             if (regionWidth == 1 && regionHeight == 1)
             {

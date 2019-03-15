@@ -19,8 +19,11 @@ namespace OpenTKTest
 
             public AtlasPreviewTable(AtlasController controller, Skin skin)
             {
-                var test = new DirectoryTable(skin);
+                var test = new DirectoryTable(controller, skin);
                 Add(test).Row();
+
+                var t = new PropertiesTable(controller, skin);
+                Add(t).Row();
 
                 info = new InfoPanel(controller, skin);
                 Add(info).Right().Row();
@@ -28,7 +31,7 @@ namespace OpenTKTest
                 preview = new TextureAtlasViewer(skin);
                 preview.Atlas = controller.Atlas;
 
-                zoomableArea = new ZoomableArea(preview, true);
+                zoomableArea = new ZoomableArea(preview);
                 zoomableArea.OnZoomChanged += (value) =>
                 {
                     controller.PreviewController.zoom.Value = value;

@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.Text;
 using TrueTypeSharp;
 
-namespace BlueberryOpenTK
+namespace Blueberry
 {
     public class FreeTypeFont : IFont, IDisposable
     {
         protected Dictionary<char, Glyph> avalibleGlyphs = new Dictionary<char, Glyph>();
         protected float scale;
-        protected List<Texture2D> textures = new List<Texture2D>();
+        protected List<Texture> textures = new List<Texture>();
         protected MaxRectsBinPack packer;
         protected TrueTypeFont font;
 
@@ -42,7 +42,7 @@ namespace BlueberryOpenTK
             Descent = desc * scale;
             LineHeight = size * dpi * ascentScale;
 
-            textures.Add(new Texture2D(textureSize, textureSize, true));
+            textures.Add(new Texture(textureSize, textureSize, true));
 
             SpaceWidth = GetGlyph(' ').xadvance;
         }
@@ -120,7 +120,7 @@ namespace BlueberryOpenTK
                 }
                 else if (rect.width == 0)
                 {
-                    textures.Add(new Texture2D(textureSize, textureSize, true));
+                    textures.Add(new Texture(textureSize, textureSize, true));
                     packer.Init(textureSize, textureSize);
                     continue;
                 }

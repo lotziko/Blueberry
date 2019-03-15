@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace Blueberry
 {
-    public partial class Texture2D : IDisposable
+    public partial class Texture : IDisposable
     {
         internal int texturePointer;
         protected int width, height;
@@ -19,7 +19,7 @@ namespace Blueberry
         public int Height => height;
         public Rect Bounds => bounds;
 
-        public Texture2D(int width, int height, bool hasMipmap = false) : this(width, height, GL.GenTexture(), hasMipmap)
+        public Texture(int width, int height, bool hasMipmap = false) : this(width, height, GL.GenTexture(), hasMipmap)
         {
             GL.BindTexture(TextureTarget.Texture2D, texturePointer);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Width, Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
@@ -32,7 +32,7 @@ namespace Blueberry
             GL.BindTexture(TextureTarget.Texture2D, 0);
         }
 
-        public Texture2D(byte[,] data, bool hasMipmap = false) : this(data.GetLength(0), data.GetLength(1), GL.GenTexture(), hasMipmap)
+        public Texture(byte[,] data, bool hasMipmap = false) : this(data.GetLength(0), data.GetLength(1), GL.GenTexture(), hasMipmap)
         {
             GL.BindTexture(TextureTarget.Texture2D, texturePointer);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Width, Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
@@ -45,7 +45,7 @@ namespace Blueberry
             GL.BindTexture(TextureTarget.Texture2D, 0);
         }
 
-        public Texture2D(byte[] data, int width, int height, bool hasMipmap = false) : this(width, height, GL.GenTexture(), hasMipmap)
+        public Texture(byte[] data, int width, int height, bool hasMipmap = false) : this(width, height, GL.GenTexture(), hasMipmap)
         {
             GL.BindTexture(TextureTarget.Texture2D, texturePointer);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
@@ -58,7 +58,7 @@ namespace Blueberry
             GL.BindTexture(TextureTarget.Texture2D, 0);
         }
 
-        public Texture2D(Col[] data, int width, int height, bool hasMipmap = false, TextureWrap wrap = TextureWrap.ClampToBorder) : this(width, height, GL.GenTexture(), hasMipmap)
+        public Texture(Col[] data, int width, int height, bool hasMipmap = false, TextureWrap wrap = TextureWrap.ClampToBorder) : this(width, height, GL.GenTexture(), hasMipmap)
         {
             var bitmap = new OpenTK.Graphics.Color4[data.Length];
             for(int i = 0; i < bitmap.Length; i++)
@@ -94,7 +94,7 @@ namespace Blueberry
             GL.BindTexture(TextureTarget.Texture2D, 0);
         }*/
 
-        private Texture2D(int width, int height, int id, bool hasMipmap)
+        private Texture(int width, int height, int id, bool hasMipmap)
         {
             this.width = width;
             this.height = height;
@@ -129,7 +129,7 @@ namespace Blueberry
             GL.BindTexture(TextureTarget.Texture2D, previous);
         }
 
-        public static Texture2D LoadFromFile(string path)
+        public static Texture LoadFromFile(string path)
         {
             var data = Blueberry.DataTools.Image.Load(path);
 
@@ -147,7 +147,7 @@ namespace Blueberry
 
             GL.BindTexture(TextureTarget.Texture2D, 0);
 
-            return new Texture2D(width, height, tId, false);
+            return new Texture(width, height, tId, false);
         }
 
         public void Dispose()

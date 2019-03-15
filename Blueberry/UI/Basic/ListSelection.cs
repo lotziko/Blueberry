@@ -55,9 +55,12 @@ namespace Blueberry.UI
             }
 
             base.Choose(item);
-            OnChange?.Invoke(item);
         }
 
+        protected override void Changed()
+        {
+            OnChange?.Invoke(GetLastSelected());
+        }
 
         public bool GetRangeSelect()
         {

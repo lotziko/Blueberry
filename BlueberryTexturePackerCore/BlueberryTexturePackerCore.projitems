@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>dfaf3083-2846-4f4c-96e6-721480b80592</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>BlueberryTexturePackerCore</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)App\Models\AtlasModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\Models\PackModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\Models\PageModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\UI\AtlasPreview.cs" />
+    <None Include="$(MSBuildThisFileDirectory)App\Models\IModel.cs" />
+    <None Include="$(MSBuildThisFileDirectory)App\Models\PackerPreviewModel.cs" />
+    <None Include="$(MSBuildThisFileDirectory)App\Models\PackerWindowModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\Models\ProjectModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\Services\MainService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\UI\CheckerboardDrawable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\UI\MainTable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MainScene.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Resources\OpenSans-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\UI.bba">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\UI.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

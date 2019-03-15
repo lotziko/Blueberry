@@ -9,6 +9,8 @@
     <Import_RootNamespace>Blueberry</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Content\Content.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Bindings\DataBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Bindings\IDataBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Bindings\ListBinding.cs" />
@@ -36,9 +38,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)ECS\Lists\EntityList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ECS\Scene.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\IBatch.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IFont.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Ninepatches\NinePatch.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Primitive.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderTarget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ScissorStack.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Texture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlases\AtlasRegion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlases\TextureAtlas.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlases\TextureRegion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureWrap.cs" />
@@ -48,6 +55,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\Input.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\InputAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Key.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\MouseButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Screen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Basic\Action.cs" />

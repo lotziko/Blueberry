@@ -23,6 +23,21 @@ namespace OpenTKTest
             }
         }
 
+        private IContentExporter exporter;
+        public IContentExporter Exporter
+        {
+            get => exporter;
+            set
+            {
+                if (exporter != value)
+                    exporter = value;
+            }
+        }
+
+        public string OutputDirectory { get; set; }
+
+        public Settings AtlasSettings { get; set; } = new Settings();
+
         private void Page_OnChange(object obj)
         {
             var page = atlas.GetTexture(PreviewController.page.Value.curr - 1);

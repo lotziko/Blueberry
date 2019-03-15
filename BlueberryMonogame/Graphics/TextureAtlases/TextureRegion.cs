@@ -1,42 +1,61 @@
-﻿
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace Blueberry
 {
     public partial class TextureRegion
     {
-        private Texture2D texture;
+        protected Texture2D texture;
 
         public Texture2D Texture => texture;
 
+
         public void Draw(Graphics graphics, float x, float y, Col? col = null)
         {
-            destination.Set(x, y, source.Width, source.Height);
-            throw new System.NotImplementedException();
-            //graphics.DrawTexture(texture, source, destination, col);
+            graphics.DrawTexture(texture, x, y, col);
         }
 
         public void Draw(Graphics graphics, float x, float y, float width, float height, Col? col = null)
         {
-            destination.Set(x, y, width, height);
-            throw new System.NotImplementedException();
-            //graphics.DrawTexture(texture, source, destination, col);
+            graphics.DrawTexture(texture, x, y, width, height, col);
         }
 
-        public TextureRegion(Texture2D texture, int left, int top, int width, int height, int offsetX = 0, int offsetY = 0)
+        public TextureRegion(Texture2D texture, int x, int y, int width, int height)
         {
             this.texture = texture;
-            source = new Rect(left, top, width, height);
-            offset = new Vec2(offsetX, offsetY);
+            this.x = x;
+            this.y = y;
+            regionWidth = width;
+            regionHeight = height;
+
+            float texelH = 1.0f / texture.Width, texelV = 1.0f / texture.Height;
+
+            u = x * texelH;
+            v = y * texelV;
+
+            u2 = (x + width) * texelH;
+            v2 = (y + height) * texelV;
+        }
+
+        public TextureRegion(Texture texture, int x, int y, int width, int height)
+        {
+            this.texture = texture;
+            this.x = x;
+            this.y = y;
+            regionWidth = width;
+            regionHeight = height;
+
+            float texelH = 1.0f / texture.Width, texelV = 1.0f / texture.Height;
+
+            u = x * texelH;
+            v = y * texelV;
+
+            u2 = (x + width) * texelH;
+            v2 = (y + height) * texelV;
         }
 
         public TextureRegion(TextureRegion region, int left, int top, int width, int height)
         {
-            texture = region.texture;
-            Rect oldBounds = region.source;
-            var x = oldBounds.X + left;
-            var y = oldBounds.Y + top;
-            source = tmpSrc = new Rect(x, y, width, height);
+            throw new System.NotImplementedException();
         }
     }
 }

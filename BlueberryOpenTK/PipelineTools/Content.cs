@@ -1,10 +1,10 @@
-﻿using BlueberryOpenTK.PipelineTools;
+﻿using Blueberry.OpenGL.PipelineTools;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace BlueberryOpenTK
+namespace Blueberry.OpenGL
 {
     public static class Content
     {
@@ -35,6 +35,22 @@ namespace BlueberryOpenTK
                     }
                 }
             }
+        }
+
+        public static void Unload<T>(T content) where T : class
+        {
+            var path = "";
+            foreach(var asset in loadedAssets)
+            {
+                if (asset.Value == content)
+                {
+                    path = asset.Key;
+                    break;
+                }
+            }
+            loadedAssets.Remove(path);
+            if (content is IDisposable disposable)
+                disposable.Dispose();
         }
 
         public static T Load<T>(string filename)

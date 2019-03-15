@@ -199,6 +199,14 @@ namespace Blueberry.UI
 
         #endregion
 
+        public override Element Hit(float x, float y, bool touchable = true)
+        {
+            //to avoid dragging content outside area
+            if (x > 0 && y > 0 && x < width && y < height)
+                return base.Hit(x, y, touchable);
+            return null;
+        }
+
         public void SetBackground(IDrawable background)
         {
             this.background = background;

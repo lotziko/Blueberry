@@ -8,7 +8,7 @@ namespace Blueberry
 {
     public partial class AtlasRegion : TextureRegion
     {
-        public AtlasRegion(Texture2D texture, int x, int y, int width, int height) : base(texture, x, y, width, height)
+        public AtlasRegion(Texture texture, int x, int y, int width, int height) : base(texture, x, y, width, height)
         {
             originalWidth = width;
             originalHeight = height;

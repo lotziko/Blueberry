@@ -2,13 +2,13 @@
 	"Blueberry.Col": {
 		"black": {a: 1, b: 0, g: 0, r: 0 },
 		"white": {a: 1, b: 1, g: 1, r: 1 },
-		"grey": {a: 1, b: 0.32, g: 0.32, r: 0.32 }
+		"grey": {a: 1, b: 0.52, g: 0.52, r: 0.52 }
 	},
 	"Blueberry.UI.LabelStyle": {
 		"default": {font: "default", fontColor: "white"}
 	},
 	"Blueberry.UI.TextFieldStyle": {
-		"default": {font: "default", fontColor: "grey", focusedFontColor: "white", background: "textfield-background", focusedBackground: "textfield-background-focused", backgroundOver: "textfield-background-focused", selection: "textfield-selection", cursor: "textfield-cursor"}
+		"default": {font: "default", fontColor: "white", focusedFontColor: "white", messageFontColor: "grey", background: "textfield-background", focusedBackground: "textfield-background-focused", backgroundOver: "textfield-background-focused", selection: "textfield-selection", cursor: "textfield-cursor"}
 	},
 	"Blueberry.UI.TooltipStyle": {
 		"default": {background: "tooltip"}
@@ -21,7 +21,11 @@
 	},
 	"Blueberry.UI.ImageButtonStyle": {
 		"default": {down: "button-down", over: "button-over"},
+		"highlighted": {up: "button-highlighted", down: "button-down", over: "button-over"},
 		"old": {down: "button-down-old", up: "button-old", over: "button-over-old", disabled: "button-disabled-old"}
+	},
+	"Blueberry.UI.CheckBoxStyle": {
+		"default": {font: "default", fontColor: "white", disabledFontColor: "grey", checkBackground: "checkbox", checkBackgroundOver: "checkbox-over", checkBackgroundDown: "checkbox-down", tick: "checkbox-tick", tickDisabled: "checkbox-tick-disabled"}
 	},
 	"Blueberry.UI.SeparatorStyle": {
 		"default": {background: "separator", thickness: 1}

@@ -7,8 +7,8 @@
     <ProjectGuid>{9F866F25-E007-41F3-B99C-F99ABA151E83}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BlueberryOpenTK</RootNamespace>
-    <AssemblyName>BlueberryOpenTK</AssemblyName>
+    <RootNamespace>Blueberry.OpenGL</RootNamespace>
+    <AssemblyName>Blueberry.OpenGL</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -58,21 +58,37 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Content\Content.cs" />
     <Compile Include="Core.cs" />
+    <EmbeddedResource Include="Graphics\Effects\Resources\SpriteEffect.glsl" />
     <None Include="Graphics\Fonts\BitmapFontOld.cs" />
+    <Compile Include="Graphics\Effects\PrimitiveEffect.cs" />
+    <Compile Include="Graphics\Effects\EffectResource.cs" />
+    <Compile Include="Graphics\Effects\SpriteEffect.cs" />
     <Compile Include="Graphics\Fonts\FreeTypeFont.cs" />
     <Compile Include="Graphics\Graphics.cs" />
     <Compile Include="ECS\Components\Camera.cs" />
-    <Compile Include="Graphics\IBatch.cs" />
+    <Compile Include="Graphics\GraphicsDevice\GraphicsDevice.cs" />
+    <Compile Include="Graphics\GraphicsDevice\TextureCollection.cs" />
     <Compile Include="Graphics\PrimitiveBatch.cs" />
-    <Compile Include="Graphics\RenderTarget2D.cs" />
+    <None Include="Graphics\PrimitiveBatchOLD.cs" />
+    <Compile Include="Graphics\RenderTarget.cs" />
     <Compile Include="Graphics\ScissorStack.cs" />
-    <Compile Include="Graphics\ShaderProgram.cs" />
-    <Compile Include="Graphics\Texture2D.cs" />
+    <Compile Include="Graphics\Effects\Effect.cs" />
+    <Compile Include="Graphics\Texture.cs" />
+    <Compile Include="Graphics\TextureAtlases\AtlasRegion.cs" />
     <Compile Include="Graphics\TextureAtlases\TextureAtlas.cs" />
     <Compile Include="Graphics\TextureBatch.cs" />
+    <None Include="Graphics\TextureBatchOLD.cs" />
     <Compile Include="Graphics\TextureAtlases\TextureRegion.cs" />
     <Compile Include="Graphics\TextureWrapExt.cs" />
+    <Compile Include="Graphics\Vertices\IVertexType.cs" />
+    <Compile Include="Graphics\Vertices\VertexDeclaration.cs" />
+    <Compile Include="Graphics\Vertices\VertexElement.cs" />
+    <Compile Include="Graphics\Vertices\VertexElementFormat.cs" />
+    <Compile Include="Graphics\Vertices\VertexElementUsage.cs" />
+    <Compile Include="Graphics\Vertices\VertexPositionColorTexture.cs" />
+    <Compile Include="Graphics\Vertices\VertexPositionColor.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="PipelineTools\Atlases\BBAtlasImporter.cs" />
     <Compile Include="PipelineTools\Content.cs" />
@@ -98,6 +114,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UI\Widgets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Graphics\Effects\Resources\BasicEffect.glsl" />
   </ItemGroup>
   <Import Project="..\Blueberry\Blueberry.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -5,7 +5,7 @@ namespace Blueberry
 {
     public partial struct Mat
     {
-        public Matrix m;
+        internal Matrix m;
 
         public Mat(Matrix m)
         {
@@ -24,7 +24,7 @@ namespace Blueberry
 
     public partial struct Col
     {
-        private Color c;
+        internal Color c;
 
         public float R
         {
@@ -122,6 +122,60 @@ namespace Blueberry
         public static Col White { get; } = new Col(Color.White);
         public static Col Black { get; } = new Col(Color.Black);
         public static Col Gray { get; } = new Col(Color.Gray);
+    }
+
+    public partial struct Rect
+    {
+        internal Rectangle r;
+
+        public float X
+        {
+            get => x;
+            set
+            {
+                x = value;
+                r.X = (int)x;
+            }
+        }
+
+        public float Y
+        {
+            get => y;
+            set
+            {
+                y = value;
+                r.Y = (int)y;
+            }
+        }
+
+        public float Width
+        {
+            get => width;
+            set
+            {
+                width = value;
+                r.X = (int)width;
+            }
+        }
+
+        public float Height
+        {
+            get => height;
+            set
+            {
+                height = value;
+                r.Height = (int)height;
+            }
+        }
+
+        public Rect(float x, float y, float width, float height)
+        {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            r = new Rectangle((int)x, (int)y, (int)width, (int)height);
+        }
     }
 
     public partial struct Vec3

@@ -137,8 +137,8 @@ namespace Blueberry.UI
             graphics.Flush();
 
             var tableBounds = new Rect(x, y, width, height);
-            var scissorBounds = stage.CalculateScissors(tableBounds, this);//var scissorBounds = ScissorStack.CalculateScissors(stage?.entity?.scene?.camera, graphics.TransformMatrix, tableBounds);
-            if (ScissorStack.PushScissors(scissorBounds))
+            var scissorBounds = stage.CalculateScissors(tableBounds, this);//var scissorBounds = graphics.CalculateScissors(stage?.entity?.scene?.camera, graphics.TransformMatrix, tableBounds);
+            if (graphics.PushScissors(scissorBounds))
             {
                 //graphics.SetScissorTest(true);
                 return true;
@@ -154,7 +154,7 @@ namespace Blueberry.UI
         public void ClipEnd(Graphics graphics)
         {
             graphics.Flush();
-            ScissorStack.PopScissors();
+            graphics.PopScissors();
         }
 
         #endregion
